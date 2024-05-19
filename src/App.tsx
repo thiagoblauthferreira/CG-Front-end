@@ -1,10 +1,12 @@
-import './App.css';
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
+import LoginComponent from "./pages/Login/login";
 
 function App() {
   return (
-    <div className="App">
-      <span className="text-3xl uppercase bold">teste</span>
-    </div>
+    <Routes>
+      <Route path="/login" element={<LoginComponent />} />
+    </Routes>
   );
 }
 
