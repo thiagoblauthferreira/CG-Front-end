@@ -1,13 +1,8 @@
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormField } from "../../components/FormField";
 import { Link } from "react-router-dom";
-
-export type FormData = {
-  email: string;
-  senha: string;
-};
+import { LoginInterface, LoginSchema } from "./utils/login.zod.interface";
+import { FormFieldConstructor } from "../../components/FormField";
 
 /**
  * caso alguma prop seja passada para
@@ -15,26 +10,14 @@ export type FormData = {
  */
 interface LoginComponentProps {}
 
-const UserSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Email vazio" })
-    .email({ message: "Email inválido" }),
-  senha: z
-    .string()
-    .min(1, { message: "Senha vazia" })
-    .min(8, { message: "Sua senha deve conter no mínimo 8 caracteres" })
-    .max(50, { message: "Sua senha deve conter no máximo 50 caracteres" }),
-});
-
 function LoginPointScreen(props: LoginComponentProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<FormData>({
-    resolver: zodResolver(UserSchema),
+  } = useForm<LoginInterface>({
+    resolver: zodResolver(LoginSchema),
     mode: "onBlur",
   });
 
@@ -44,15 +27,12 @@ function LoginPointScreen(props: LoginComponentProps) {
    * salve token nos cookies se ok
    * redirecione para pagina de doador;
    */
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: LoginInterface) {
     console.log("SUCESSO", data);
   }
 
-  /**
-   * Checa se a sessão está ativa,
-   * se estiver redirecione o usuário
-   * para a tela de usuário
-   */
+  const FormField = FormFieldConstructor<LoginInterface>();
+
   return (
     <section className="login-section">
       <div className="hero min-h-screen bg-base-200">

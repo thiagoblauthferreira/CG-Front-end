@@ -1,83 +1,90 @@
+import { FieldErrors, useForm } from "react-hook-form";
+import { FormFieldConstructor } from "../../../../../components/FormField";
+import { Dispatch, FormEvent, SetStateAction } from "react";
 import {
-  FieldErrors,
-  UseFormRegister,
-  UseFormSetError,
-} from "react-hook-form";
-import { FormField } from "../../../../../components/FormField";
-import { DoadorFormData } from "../../doador.signup";
-import {
-  Dispatch,
-  SetStateAction,
-} from "react";
+  PersonalInfosInterface,
+  PersonalInfosSchema,
+} from "./utils/personalInfos.zod.interface";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface PersonalInfosProps {
-  setCurrentStep: Dispatch<SetStateAction<number>>;
-  currentStep: number;
-  errors: FieldErrors<DoadorFormData> | undefined;
-  register: UseFormRegister<DoadorFormData>;
-  setError: UseFormSetError<DoadorFormData>;
+  steps: {
+    setCurrent: Dispatch<SetStateAction<number>>;
+    current: number;
+  };
+
+  form: {
+    setValues: Dispatch<SetStateAction<any>>;
+    values: any;
+  };
 }
 
-function PersonalInfosStep(props: PersonalInfosProps) {
-  /**
-   * Checa se a sessão está ativa,
-   * se estiver redirecione o usuário
-   * para a tela de usuário
-   */
+export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<PersonalInfosInterface>({
+    resolver: zodResolver(PersonalInfosSchema),
+    mode: "onTouched",
+  });
+
+  async function onSubmit(data: PersonalInfosInterface) {
+    steps.setCurrent(steps.current + 1);
+    form.setValues({ ...form.values, ...data });
+    console.log(form.values);
+  }
+
+  const FormField = FormFieldConstructor<PersonalInfosInterface>();
+
   return (
-    <>
+    <form
+      className="flex flex-col justify-center"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <h1 className="text-3xl uppercase pb-5 text-center bold">Informações</h1>
       <FormField
         name="nome"
         type="text"
         focus={true}
-        register={props.register}
+        register={register}
         placeHolder="Seu Nome"
-        setError={props.setError}
-        error={props.errors?.nome}
+        setError={setError}
+        error={errors?.nome}
       />
       <FormField
         name="email"
         type="email"
-        register={props.register}
+        register={register}
         placeHolder="Seu Email"
-        setError={props.setError}
-        error={props.errors?.email}
+        setError={setError}
+        error={errors?.email}
       />
       <FormField
         name="senha"
         type="password"
-        register={props.register}
+        register={register}
         placeHolder="Sua senha"
-        setError={props.setError}
-        error={props.errors?.senha}
+        setError={setError}
+        error={errors?.senha}
       />
       <FormField
         name="confirma"
         type="password"
-        register={props.register}
+        register={register}
         placeHolder="Confirme sua senha"
-        setError={props.setError}
-        error={props.errors?.confirma}
+        setError={setError}
+        error={errors?.confirma}
       />
       <FormField
         name="nascimento"
         type="date"
-        register={props.register}
-        placeHolder="dd/mm/yyyy"
-        setError={props.setError}
-        error={props.errors?.nascimento}
+        register={register}
+        setError={setError}
+        error={errors?.nascimento}
       />
-      <div
-        onClick={() => {
-          props.setCurrentStep(props.currentStep + 1);
-        }}
-        className="mx-auto mt-5 btn btn-primary w-2/3"
-      >
-        Próximo
-      </div>
-    </>
+      <button className="mx-auto mt-5 btn btn-primary w-2/3">Próximo</button>
+    </form>
   );
 }
-
-export default PersonalInfosStep;

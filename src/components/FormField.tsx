@@ -14,13 +14,14 @@ interface FormFieldProps<T extends FieldValues> {
   type: React.HTMLInputTypeAttribute;
   focus?: boolean;
   placeHolder?: string;
-  className?: string;
+  inputClassName?: string;
+  containerClassName?: string
   pattern?: string;
 }
 
-export function FormField<T extends FieldValues>(props: FormFieldProps<T>) {
+function FormField<T extends FieldValues>(props: FormFieldProps<T>) {
   return (
-    <div className="form-control">
+    <div className={`form-control ${props.containerClassName}`}>
       <label className="label">
         <span className="label-text uppercase">{props.name}</span>
       </label>
@@ -30,13 +31,17 @@ export function FormField<T extends FieldValues>(props: FormFieldProps<T>) {
         type={props.type}
         placeholder={props.placeHolder}
         {...props.register(props.name)}
-        className={`input input-bordered ${props.className} ${
+        className={`input input-bordered ${props.inputClassName} ${
           (props.error && "input-error")
         }`}
       />
-      <span className="text-error h-5 w-full text-xs pt-2">
+      <span className="text-error h-5 w-full text-sm pt-2">
         {props.error?.message}
       </span>
     </div>
   );
+}
+
+export function FormFieldConstructor<T extends FieldValues>() {
+  return FormField<T>
 }
