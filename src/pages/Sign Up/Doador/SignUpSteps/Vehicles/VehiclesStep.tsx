@@ -1,7 +1,13 @@
 import { FieldError, useForm } from "react-hook-form";
 import { SelectInput } from "../../../../../components/SelectInput";
 import { Veiculos } from "./utils/Veiculos";
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  FormEventHandler,
+  SetStateAction,
+  useState,
+} from "react";
 import {
   VehiclesInterface,
   VehiclesSchema,
@@ -37,16 +43,28 @@ function VehiclesStep({ steps, form }: VehiclesProps) {
   const [veiculosNumber, setVeiculosNumber] = useState<number>(1);
   const FormField = FormFieldConstructor<VehiclesInterface>();
 
-  async function onSubmit(data: VehiclesInterface) {
-    console.log("SUCESSO", data);
-    form.setValues({ ...form.values, ...data });
-    console.log(form.values);
-  }
+  const onSubmit: FormEventHandler<HTMLFormElement> = async (e: FormEvent) => {
+    e.preventDefault();
+    const selectInputs = document.querySelectorAll(
+      ".veiculos-form .veiculo select"
+    ) as NodeListOf<HTMLSelectElement>;
+    const veiculos: string[] = [];
+
+    selectInputs.forEach((select) => select.value !== "Escolha" && veiculos.push(select.value));
+
+    /**
+     * Por algum motivo, aqui setValues não registra
+     * os valores atuais junto com o form.values
+     */
+    form.setValues({ ...form.values, veiculos });
+
+    console.log(form.values)
+  };
 
   return (
     <form
-      className="flex flex-col justify-center"
-      onSubmit={handleSubmit(onSubmit)}
+      className="veiculos-form flex flex-col justify-center"
+      onSubmit={onSubmit}
     >
       <h1 className="text-3xl uppercase pb-5 text-center bold">Veículos</h1>
       <span className="text-center py-5">
@@ -54,7 +72,7 @@ function VehiclesStep({ steps, form }: VehiclesProps) {
         transportar suprimentos e ferramentas?{" "}
       </span>
       {new Array(veiculosNumber).fill(undefined).map((_, i) => (
-        <div key={i} className="flex flex-col items-center">
+        <div key={i} className="veiculo flex flex-col items-center">
           <div className="flex w-1/2">
             <select
               defaultValue={"Escolha"}
@@ -67,7 +85,7 @@ function VehiclesStep({ steps, form }: VehiclesProps) {
             </select>
             <TrashIcon
               onClick={removeItem}
-              className="mt-3 ml-1 hover:text-red-500 cursor-pointer"
+              className={`mt-3 ml-1 hover:text-red-500 cursor-pointer disabled`}
             />
           </div>
           <span className="text-error mb-3 h-5 w-fit text-xs pt-2"></span>
@@ -79,7 +97,9 @@ function VehiclesStep({ steps, form }: VehiclesProps) {
       >
         <span className="bold text-lg">+</span>
       </div>
-      <button className="mx-auto btn btn-primary w-2/3">Cadastrar</button>
+      <button type="submit" className="mx-auto btn btn-primary w-2/3">
+        Cadastrar
+      </button>
     </form>
   );
 }

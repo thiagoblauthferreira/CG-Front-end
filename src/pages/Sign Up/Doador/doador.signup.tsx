@@ -10,7 +10,7 @@ import { PersonalInfosStep } from "./SignUpSteps/PersonalInfos/PersonalInfos";
 interface SignUpDoadorProps {}
 
 function SignUpDoadorScreen(props: SignUpDoadorProps) {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(3);
   const [formValues, setFormValues] = useState({});
 
   const steps = [PersonalInfosStep, AdressStep, VehiclesStep];
