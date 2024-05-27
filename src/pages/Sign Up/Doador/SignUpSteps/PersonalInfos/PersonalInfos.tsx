@@ -1,11 +1,12 @@
-import { FieldErrors, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { FormFieldConstructor } from "../../../../../components/FormField";
-import { Dispatch, FormEvent, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import {
   PersonalInfosInterface,
   PersonalInfosSchema,
 } from "./utils/personalInfos.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { resolve } from "path";
 
 interface PersonalInfosProps {
   steps: {
@@ -31,9 +32,9 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
   });
 
   async function onSubmit(data: PersonalInfosInterface) {
-    steps.setCurrent(steps.current + 1);
-    form.setValues({ ...form.values, ...data });
+    form.setValues(data);
     console.log(form.values);
+    steps.setCurrent(steps.current + 1);
   }
 
   const FormField = FormFieldConstructor<PersonalInfosInterface>();
@@ -46,18 +47,16 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
       <h1 className="text-3xl uppercase pb-5 text-center bold">Informações</h1>
       <FormField
         name="nome"
-        type="text"
-        focus={true}
         register={register}
-        placeHolder="Seu Nome"
         setError={setError}
+        placeholder="Seu nome"
         error={errors?.nome}
       />
       <FormField
         name="email"
         type="email"
         register={register}
-        placeHolder="Seu Email"
+        placeholder="Seu Email"
         setError={setError}
         error={errors?.email}
       />
@@ -65,7 +64,7 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
         name="senha"
         type="password"
         register={register}
-        placeHolder="Sua senha"
+        placeholder="Sua senha"
         setError={setError}
         error={errors?.senha}
       />
@@ -73,7 +72,7 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
         name="confirma"
         type="password"
         register={register}
-        placeHolder="Confirme sua senha"
+        placeholder="Confirme sua senha"
         setError={setError}
         error={errors?.confirma}
       />
@@ -84,6 +83,31 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
         setError={setError}
         error={errors?.nascimento}
       />
+      <FormField
+        name="telefone"
+        type="tel"
+        placeholder="xxxxxxxxxxx"
+        register={register}
+        setError={setError}
+        error={errors?.telefone}
+      />
+      <label className="cursor-pointer label">
+        <span className="label-text text-lg">Sou doador</span>
+        <input
+          {...register("isDonor")}
+          type="checkbox"
+          defaultChecked
+          className="checkbox checkbox-accent"
+        />
+      </label>
+      <label className="cursor-pointer label">
+        <span className="label-text text-lg">Sou coordenador de abrigo</span>
+        <input
+          {...register("isCoordinator")}
+          type="checkbox"
+          className="checkbox checkbox-accent"
+        />
+      </label>
       <button className="mx-auto mt-5 btn btn-primary w-2/3">Próximo</button>
     </form>
   );

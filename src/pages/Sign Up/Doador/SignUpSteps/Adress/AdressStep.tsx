@@ -16,9 +16,10 @@ interface AdressProps {
     setValues: Dispatch<SetStateAction<any>>;
     values: any;
   };
+  submitForm: false | Function;
 }
 
-function AdressStep({ steps, form }: AdressProps) {
+function AdressStep({ steps, form, submitForm }: AdressProps) {
   const {
     register,
     handleSubmit,
@@ -30,14 +31,16 @@ function AdressStep({ steps, form }: AdressProps) {
   });
 
   async function onSubmit(data: AdressInterface) {
-    steps.setCurrent(steps.current + 1);
-    form.setValues({ ...data, ...form.values });
-    console.log(form.values);
+    form.setValues({ ...form.values, endereco: data });
+    if (submitForm) submitForm(form.values);
   }
 
   const FormField = FormFieldConstructor<AdressInterface>();
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-center">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col justify-center"
+    >
       <h1 className="text-3xl uppercase pb-5 text-center bold">Endereço</h1>
       <FormField
         error={errors?.CEP}
@@ -45,17 +48,17 @@ function AdressStep({ steps, form }: AdressProps) {
         setError={setError}
         name="CEP"
         type="text"
-        placeHolder="CEP"
+        placeholder="CEP"
       />
-      <div className="flex w-full fex-row items-center">
+      <div className="grid grid-cols-4 gap-1">
         <FormField
           name="cidade"
           type="text"
-          placeHolder="Cidade"
+          placeholder="Cidade"
           error={errors?.cidade}
           register={register}
           setError={setError}
-          containerClassName="w-full"
+          containerClassName="col-span-3"
         />
         <SelectInput
           error={errors?.estado as FieldError | undefined}
@@ -63,38 +66,50 @@ function AdressStep({ steps, form }: AdressProps) {
           setError={setError}
           name="estado"
           items={Estados}
-          className="ml-1"
+          className="col-span-1"
         />
       </div>
       <FormField
         name="bairro"
         type="text"
-        placeHolder="Bairro"
+        placeholder="Bairro"
         error={errors?.bairro}
         register={register}
         setError={setError}
       />
-      <div className="flex fex-row items-center">
+      <div className="grid grid-cols-4 gap-1">
         <FormField
-          error={errors?.rua}
+          error={errors?.logradouro}
           register={register}
           setError={setError}
-          name="rua"
+          name="logradouro"
           type="text"
-          placeHolder="Rua"
-          containerClassName="w-full"
+          placeholder="logradouro"
+          containerClassName="col-span-3"
         />
         <FormField
           name="numero"
           type="number"
-          placeHolder="Nº"
+          placeholder="Nº"
           error={errors?.numero}
           register={register}
           setError={setError}
-          inputClassName="w-24 ml-1"
+          inputClassName="col-span-1"
         />
       </div>
-      <button className="mx-auto mt-5 btn btn-primary w-2/3">Próximo</button>
+      <div className="w-full">
+        <label className="label w-full">
+          <span className="label-text uppercase">Complemento</span>
+        </label>
+        <textarea
+          placeholder="Complemento..."
+          {...register("complemento")}
+          className="w-full textarea textarea-bordered"
+        />
+      </div>
+      <button className="mx-auto mt-5 btn btn-primary w-2/3">
+        Cadastrar-se
+      </button>
     </form>
   );
 }

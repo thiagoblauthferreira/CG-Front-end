@@ -45,7 +45,7 @@ function LoginPointScreen(props: LoginComponentProps) {
               <FormField
                 name="email"
                 type="email"
-                placeHolder="Seu Email"
+                placeholder="Seu Email"
                 register={register}
                 setError={setError}
                 error={errors?.email}
@@ -54,7 +54,7 @@ function LoginPointScreen(props: LoginComponentProps) {
                 name="senha"
                 type="password"
                 register={register}
-                placeHolder="Sua senha"
+                placeholder="Sua senha"
                 setError={setError}
                 error={errors.senha}
               />
