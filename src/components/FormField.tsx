@@ -1,3 +1,4 @@
+import { InputHTMLAttributes } from "react";
 import {
   FieldError,
   FieldValues,
@@ -10,13 +11,11 @@ interface FormFieldProps<T extends FieldValues> {
   error: FieldError | undefined;
   register: UseFormRegister<T>;
   setError: UseFormSetError<T>;
+  accept?: string;
   name: Path<T>;
-  type: React.HTMLInputTypeAttribute;
-  focus?: boolean;
-  placeHolder?: string;
   inputClassName?: string;
-  containerClassName?: string
-  pattern?: string;
+  containerClassName?: string;
+  inputProps: InputHTMLAttributes<HTMLInputElement>
 }
 
 function FormField<T extends FieldValues>(props: FormFieldProps<T>) {
@@ -25,17 +24,15 @@ function FormField<T extends FieldValues>(props: FormFieldProps<T>) {
       <label className="label">
         <span className="label-text uppercase">{props.name}</span>
       </label>
+
       <input
-        autoFocus={props.focus}
-        pattern={props.pattern}
-        type={props.type}
-        placeholder={props.placeHolder}
         {...props.register(props.name)}
+        {...props.inputProps}
         className={`input input-bordered ${props.inputClassName} ${
-          (props.error && "input-error")
+          props.error && "input-error"
         }`}
       />
-      <span className="text-error h-5 w-full text-sm pt-2">
+      <span className="text-error h-7 w-full text-xs pt-1">
         {props.error?.message}
       </span>
     </div>
@@ -43,5 +40,5 @@ function FormField<T extends FieldValues>(props: FormFieldProps<T>) {
 }
 
 export function FormFieldConstructor<T extends FieldValues>() {
-  return FormField<T>
+  return FormField<T>;
 }

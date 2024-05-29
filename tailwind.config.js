@@ -10,6 +10,17 @@ module.exports = {
     require('daisyui'),
   ],
   daisyui: {
-    themes: ["dark", "corporate"]
+    themes: ["business", "corporate"]
   }
 }
+
+/**
+ * bons temas dark
+ * 
+ * business <- gostei bastante *Henrique
+ * night
+ * sunset
+ * dim
+ * dracula
+ * dark <- estavamos usando
+ */
