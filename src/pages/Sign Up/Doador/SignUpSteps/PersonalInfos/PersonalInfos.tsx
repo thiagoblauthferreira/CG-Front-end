@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { FormFieldConstructor } from "../../../../../components/FormField";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import {
   PersonalInfosInterface,
   PersonalInfosSchema,
 } from "./utils/personalInfos.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { resolve } from "path";
+import { phoneMask } from "../Adress/utils/validations";
 
 interface PersonalInfosProps {
   steps: {
@@ -26,6 +26,8 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
+    watch
   } = useForm<PersonalInfosInterface>({
     resolver: zodResolver(PersonalInfosSchema),
     mode: "onTouched",
@@ -38,6 +40,13 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
   }
 
   const FormField = FormFieldConstructor<PersonalInfosInterface>();
+
+  const phone: string = watch("telefone")
+
+  useEffect(() => {
+    setValue("telefone", phoneMask(phone))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phone])
 
   return (
     <form
@@ -85,8 +94,10 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
       />
       <FormField
         name="telefone"
-        type="tel"
+        type="text"
         placeholder="xxxxxxxxxxx"
+        minLength={14}
+        maxlength={15}
         register={register}
         setError={setError}
         error={errors?.telefone}

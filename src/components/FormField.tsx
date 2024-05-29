@@ -9,6 +9,8 @@ import {
 
 interface FormFieldProps<T extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
   error: FieldError | undefined;
+  minlength?: number,
+  maxlength?: number,
   register: UseFormRegister<T>;
   setError: UseFormSetError<T>;
   accept?: string;

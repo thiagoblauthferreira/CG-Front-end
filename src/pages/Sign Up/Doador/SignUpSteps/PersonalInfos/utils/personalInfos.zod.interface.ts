@@ -58,8 +58,8 @@ export const PersonalInfosSchema = z
     telefone: z
       .string()
       .min(1, { message: "Telefone vazio" })
-      .min(10, { message: "Adicione também seu ddd" })
-      .max(11, { message: "telefone invalido" }),
+      .min(14, { message: "Telefone Invalido" })
+      .max(15, { message: "Telefone Invalido" }),
     isDonor: z.boolean(),
     isCoordinator: z.preprocess(value => value === 'on', z.boolean())
   })
@@ -72,3 +72,5 @@ export const PersonalInfosSchema = z
       path: ["confirma"],
     }
   );
+
+

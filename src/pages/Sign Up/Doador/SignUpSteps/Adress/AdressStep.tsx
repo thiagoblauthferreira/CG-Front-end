@@ -1,10 +1,11 @@
 import { FieldError, useForm } from "react-hook-form";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { SelectInput } from "../../../../../components/SelectInput";
 import { Estados } from "./utils/Estados";
 import { FormFieldConstructor } from "../../../../../components/FormField";
 import { AdressInterface, AdressSchema } from "./utils/adress.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { zipCodeMask } from "./utils/validations";
 
 interface AdressProps {
   steps: {
@@ -25,6 +26,8 @@ function AdressStep({ steps, form, submitForm }: AdressProps) {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
+    watch,
   } = useForm<AdressInterface>({
     resolver: zodResolver(AdressSchema),
     mode: "onTouched",
@@ -34,6 +37,13 @@ function AdressStep({ steps, form, submitForm }: AdressProps) {
     form.setValues({ ...form.values, endereco: data });
     if (submitForm) submitForm(form.values);
   }
+
+  const cepMask: string = watch("CEP")
+
+  useEffect(() => {
+    setValue("CEP", zipCodeMask(cepMask))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cepMask])
 
   const FormField = FormFieldConstructor<AdressInterface>();
   return (
@@ -49,6 +59,7 @@ function AdressStep({ steps, form, submitForm }: AdressProps) {
         name="CEP"
         type="text"
         placeholder="CEP"
+        maxlength={9}
       />
       <div className="grid grid-cols-4 gap-1">
         <FormField
