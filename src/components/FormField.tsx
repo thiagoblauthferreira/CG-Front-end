@@ -34,7 +34,7 @@ function FormField<T extends FieldValues>(props: FormFieldProps<T>) {
           props.error && "input-error"
         }`}
       />
-      <span className="text-error h-7 w-full text-xs pt-1">
+      <span className="text-error h-1 w-full text-xs pt-1 pb-4">
         {props.error?.message}
       </span>
     </div>

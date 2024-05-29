@@ -10,7 +10,7 @@ import { ApiHandler } from "../../utils/apis/api.handler";
 interface SignUpDoadorProps {}
 
 function SignUpScreen(props: SignUpDoadorProps) {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
   const [formValues, setFormValues] = useState({});
 
   const steps = [PersonalInfosStep, AdressStep];
