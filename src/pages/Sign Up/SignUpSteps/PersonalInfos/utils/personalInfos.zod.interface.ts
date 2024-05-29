@@ -7,6 +7,9 @@ export type PersonalInfosInterface = {
   senha: string;
   confirma: string;
   nascimento: string;
+  telefone: string;
+  isDonor: boolean;
+  isCoordinator: boolean;
 };
 
 function isAdult(birthDateString: string) {
@@ -52,6 +55,13 @@ export const PersonalInfosSchema = z
           .refine((data) => isYearInRange(data), { message: "Data inválida" })
       )
       .refine((data) => isAdult(data), { message: "Você deve ser adulto" }),
+    telefone: z
+      .string()
+      .min(1, { message: "Telefone vazio" })
+      .min(10, { message: "Adicione também seu ddd" })
+      .max(11, { message: "telefone invalido" }),
+    isDonor: z.boolean(),
+    isCoordinator: z.preprocess(value => value === 'on', z.boolean())
   })
   .refine(
     ({ senha, confirma }) => {

@@ -37,26 +37,30 @@ function LoginPointScreen(props: LoginComponentProps) {
     <section className="login-section">
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex flex-col">
-          <div className="text-center lg:text-left">
+          <div className="text-center">
             <h1 className="text-5xl pb-5 font-bold">Login</h1>
           </div>
-          <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+          <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100 md:px-10">
             <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
               <FormField
                 name="email"
-                type="email"
-                placeHolder="Seu Email"
                 register={register}
                 setError={setError}
                 error={errors?.email}
+                inputProps={{
+                  type: "email",
+                  placeholder: "Seu Email",
+                }}
               />
               <FormField
                 name="senha"
-                type="password"
                 register={register}
-                placeHolder="Sua senha"
                 setError={setError}
                 error={errors.senha}
+                inputProps={{
+                  type: "password",
+                  placeholder: "Sua senha",
+                }}
               />
               <label className="label">
                 <a href="#" className="label-text-alt link link-hover">
