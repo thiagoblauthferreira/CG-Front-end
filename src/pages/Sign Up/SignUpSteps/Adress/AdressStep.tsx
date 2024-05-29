@@ -5,7 +5,6 @@ import { AdressInterface, AdressSchema } from "./utils/adress.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormFieldConstructor } from "../../../../components/FormField";
 import { SelectInput } from "../../../../components/SelectInput";
-import { ViaCEP } from "../../../../utils/apis/viaCEP";
 import { handleCEP } from "./utils/handleCEP";
 
 interface AdressProps {
@@ -65,8 +64,7 @@ function AdressStep({ steps, form }: AdressProps) {
           containerClassName="col-span-3"
           inputProps={{
             type: "text",
-            value: adress?.localidade,
-            disabled: !!adress?.localidade,
+            defaultValue: adress?.localidade,
             placeholder: "Cidade",
           }}
         />
@@ -81,7 +79,7 @@ function AdressStep({ steps, form }: AdressProps) {
           }
           inputProps={{
             value: adress?.uf,
-            disabled: !!adress?.uf,
+            disabled: !!adress?.uf
           }}
         />
       </div>
@@ -93,8 +91,7 @@ function AdressStep({ steps, form }: AdressProps) {
         inputProps={{
           type: "text",
           placeholder: "Bairro",
-          disabled: !!adress?.bairro,
-          value: adress?.bairro,
+          defaultValue: adress?.bairro,
         }}
       />
       <div className="grid grid-cols-4 gap-1">
@@ -105,8 +102,7 @@ function AdressStep({ steps, form }: AdressProps) {
           name="logradouro"
           containerClassName="col-span-3"
           inputProps={{
-            value: adress?.logradouro,
-            disabled: !!adress?.logradouro,
+            defaultValue: adress?.logradouro,
             type: "text",
             placeholder: "logradouro",
           }}
@@ -128,7 +124,7 @@ function AdressStep({ steps, form }: AdressProps) {
           <span className="label-text uppercase">Complemento</span>
         </label>
         <textarea
-          value={adress?.complemento}
+          defaultValue={adress?.complemento}
           placeholder="Complemento..."
           {...register("complemento")}
           className="w-full textarea textarea-bordered max-h-24"
