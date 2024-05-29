@@ -15,7 +15,8 @@ interface SelectInputProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   setError: UseFormSetError<T>;
   name: Path<T>;
-  inputProps: InputHTMLAttributes<HTMLSelectElement>
+  // selected: string | undefined;
+  inputProps?: InputHTMLAttributes<HTMLSelectElement>
 }
 
 export function SelectInput<T extends FieldValues>(props: SelectInputProps<T>) {
@@ -32,7 +33,7 @@ export function SelectInput<T extends FieldValues>(props: SelectInputProps<T>) {
       >
         <option className="text-slate-500">UF</option>
         {props.items.map((estado, i) => {
-          return <option key={i}>{estado}</option>;
+          return <option value={estado} key={i}>{estado}</option>;
         })}
       </select>
       <span className="text-error h-7 w-full text-xs pt-1">

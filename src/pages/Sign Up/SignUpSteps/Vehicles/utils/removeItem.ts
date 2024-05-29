@@ -5,8 +5,6 @@ export const removeItem: MouseEventHandler = (e: MouseEvent) => {
     const filhos = veiculosForm?.querySelectorAll(".veiculo");
     const veiculo = e.currentTarget.parentElement?.parentElement;
 
-    console.log(filhos?.length)
-
     if(filhos?.length === 1) return
 
     veiculo?.remove();

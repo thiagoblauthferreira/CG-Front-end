@@ -1,11 +1,12 @@
 import { FieldError, useForm } from "react-hook-form";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Estados } from "./utils/Estados";
 import { AdressInterface, AdressSchema } from "./utils/adress.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormFieldConstructor } from "../../../../components/FormField";
 import { SelectInput } from "../../../../components/SelectInput";
 import { handleCEP } from "./utils/handleCEP";
+import { zipCodeMask } from "./utils/validations";
 
 interface AdressProps {
   steps: {
@@ -26,15 +27,31 @@ function AdressStep({ steps, form }: AdressProps) {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
+    trigger,
+    watch,
   } = useForm<AdressInterface>({
     resolver: zodResolver(AdressSchema),
-    mode: "onTouched",
+    mode: "onSubmit",
   });
 
   const [adress, setAdress] = useState<Record<string, string> | null>(null);
 
   async function onSubmit(data: AdressInterface) {
     form.setValues({ endereco: data }, "submit");
+  }
+
+  const cepMask: string = watch("CEP");
+
+  useEffect(() => {
+    setValue("CEP", zipCodeMask(cepMask));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cepMask]);
+
+  if (adress) {
+    for (let info in adress) {
+      setValue(info as any, adress[info])
+    }
   }
 
   const FormField = FormFieldConstructor<AdressInterface>();
@@ -51,36 +68,35 @@ function AdressStep({ steps, form }: AdressProps) {
         name="CEP"
         inputProps={{
           type: "text",
-          onBlur: (e) => handleCEP(e, setAdress),
-          placeholder: "CEP",
+          placeholder: "xxxxx-xxx",
+          maxLength: 9,
+          onBlur: (e) => {
+            trigger("CEP");
+            handleCEP(e, setAdress);
+          },
         }}
       />
       <div className="grid grid-cols-4 gap-1">
         <FormField
-          name="cidade"
-          error={adress?.localidade ? undefined : errors?.cidade}
+          name="localidade"
+          error={adress?.localidade ? undefined : errors?.localidade}
           register={register}
           setError={setError}
           containerClassName="col-span-3"
           inputProps={{
             type: "text",
-            defaultValue: adress?.localidade,
             placeholder: "Cidade",
           }}
         />
         <SelectInput
           register={register}
           setError={setError}
-          name="UF"
+          name="uf"
           items={Estados}
           className="col-span-1"
           error={
-            adress?.uf ? undefined : (errors?.UF as FieldError | undefined)
+            adress?.uf ? undefined : (errors?.uf as FieldError | undefined)
           }
-          inputProps={{
-            value: adress?.uf,
-            disabled: !!adress?.uf
-          }}
         />
       </div>
       <FormField
@@ -91,7 +107,6 @@ function AdressStep({ steps, form }: AdressProps) {
         inputProps={{
           type: "text",
           placeholder: "Bairro",
-          defaultValue: adress?.bairro,
         }}
       />
       <div className="grid grid-cols-4 gap-1">
@@ -102,7 +117,6 @@ function AdressStep({ steps, form }: AdressProps) {
           name="logradouro"
           containerClassName="col-span-3"
           inputProps={{
-            defaultValue: adress?.logradouro,
             type: "text",
             placeholder: "logradouro",
           }}
@@ -124,7 +138,6 @@ function AdressStep({ steps, form }: AdressProps) {
           <span className="label-text uppercase">Complemento</span>
         </label>
         <textarea
-          defaultValue={adress?.complemento}
           placeholder="Complemento..."
           {...register("complemento")}
           className="w-full textarea textarea-bordered max-h-24"

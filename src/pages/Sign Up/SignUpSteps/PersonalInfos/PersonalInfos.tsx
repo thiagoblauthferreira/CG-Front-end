@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import {
   PersonalInfosInterface,
   PersonalInfosSchema,
@@ -7,6 +7,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormFieldConstructor } from "../../../../components/FormField";
 import { ApiHandler } from "../../../../utils/apis/api.handler";
+import { phoneMask } from "../Adress/utils/validations";
 
 interface PersonalInfosProps {
   steps: {
@@ -26,18 +27,27 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
+    watch
   } = useForm<PersonalInfosInterface>({
     resolver: zodResolver(PersonalInfosSchema),
     mode: "onTouched",
   });
 
   async function onSubmit(data: PersonalInfosInterface) {
-    console.log(await ApiHandler.register(data));
+    // console.log(await ApiHandler.register(data));
     form.setValues(data);
     steps.setCurrent(steps.current + 1);
   }
 
   const FormField = FormFieldConstructor<PersonalInfosInterface>();
+
+  const phone: string = watch("telefone")
+
+  useEffect(() => {
+    setValue("telefone", phoneMask(phone))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phone])
 
   return (
     <form
@@ -49,6 +59,7 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
         name="nome"
         register={register}
         setError={setError}
+        placeholder="Seu nome"
         error={errors?.nome}
         inputProps={{
           placeholder: "Seu nome",
@@ -100,7 +111,8 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
         error={errors?.telefone}
         inputProps={{
           type: "tel",
-          placeholder: "xxxxxxxxxxx",
+          placeholder: "(xx) xxxxx-xxxx",
+          maxLength: 15
         }}
       />
       <label className="cursor-pointer label">
