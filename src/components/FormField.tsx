@@ -7,13 +7,10 @@ import {
   UseFormSetError,
 } from "react-hook-form";
 
-interface FormFieldProps<T extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
+interface FormFieldProps<T extends FieldValues>{
   error: FieldError | undefined;
-  minlength?: number,
-  maxlength?: number,
   register: UseFormRegister<T>;
   setError: UseFormSetError<T>;
-  accept?: string;
   name: Path<T>;
   inputClassName?: string;
   containerClassName?: string;

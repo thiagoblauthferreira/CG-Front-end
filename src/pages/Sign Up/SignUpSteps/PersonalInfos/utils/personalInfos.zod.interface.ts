@@ -61,7 +61,7 @@ export const PersonalInfosSchema = z
       .min(14, { message: "Telefone Invalido" })
       .max(15, { message: "Telefone Invalido" }),
     isDonor: z.boolean(),
-    isCoordinator: z.preprocess(value => value === 'on', z.boolean())
+    isCoordinator: z.boolean()
   })
   .refine(
     ({ senha, confirma }) => {

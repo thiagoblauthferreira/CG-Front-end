@@ -59,7 +59,6 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
         name="nome"
         register={register}
         setError={setError}
-        placeholder="Seu nome"
         error={errors?.nome}
         inputProps={{
           placeholder: "Seu nome",
