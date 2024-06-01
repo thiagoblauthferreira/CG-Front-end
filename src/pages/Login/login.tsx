@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { LoginInterface, LoginSchema } from "./utils/login.zod.interface";
 import { FormFieldConstructor } from "../../components/FormField";
+import Cookies from "js-cookie";
 
 /**
  * caso alguma prop seja passada para
@@ -20,6 +21,7 @@ function LoginPointScreen(props: LoginComponentProps) {
     resolver: zodResolver(LoginSchema),
     mode: "onBlur",
   });
+  const navigate = useNavigate();
 
   /**
    * Adicione chamada de login da API
@@ -28,7 +30,8 @@ function LoginPointScreen(props: LoginComponentProps) {
    * redirecione para pagina de doador;
    */
   async function onSubmit(data: LoginInterface) {
-    console.log("SUCESSO", data);
+    Cookies.set("session", "sessao-valida", {sameSite: "none"})
+    navigate("/home")
   }
 
   const FormField = FormFieldConstructor<LoginInterface>();
