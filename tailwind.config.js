@@ -9,4 +9,18 @@ module.exports = {
   plugins: [
     require('daisyui'),
   ],
+  daisyui: {
+    themes: ["business", "corporate"]
+  }
 }
+
+/**
+ * bons temas dark
+ * 
+ * business <- gostei bastante *Henrique
+ * night
+ * sunset
+ * dim
+ * dracula
+ * dark <- estavamos usando
+ */
