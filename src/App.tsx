@@ -1,12 +1,16 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
-import LoginComponent from "./pages/Login/login";
+import LoginPointScreen from "./pages/Login/login";
+import SignUpScreen from "./pages/Sign Up/doador.signup";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginComponent />} />
-    </Routes>
+    <Router>
+      <Routes>
+        <Route element={<LoginPointScreen />} path="/login"></Route>
+        <Route element={<SignUpScreen />} path="/cadastro"></Route>
+      </Routes>
+    </Router>
   );
 }
 
