@@ -1,6 +1,6 @@
 {
   "name": "CG-Front-end",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^3.4.2",
