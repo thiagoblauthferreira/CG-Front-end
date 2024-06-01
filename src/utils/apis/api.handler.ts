@@ -1,5 +1,7 @@
+import { config } from "../../config";
+
 export class ApiHandler {
-    private static _apiURI = "http://localhost:8080" || "http://backend-develop.coletivogloma.com.br"
+    private static _apiURI = config.api.URI;
 
     static async register(user: any): Promise<boolean> {
         try {
