@@ -27,3 +27,5 @@ export const Estados = [
     "SE",
     "TO"
 ] as const
+
+export type EstadosEnum = (typeof Estados)[number]

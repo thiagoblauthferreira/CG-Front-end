@@ -1,12 +1,13 @@
 import z from 'zod';
-import { Estados } from './Estados';
+import { Estados, EstadosEnum } from './Estados';
+import { EnumType } from 'typescript';
 
 export type AdressInterface = {
     logradouro: string;
     numero: number;
     bairro: string;
     localidade: string;
-    uf: string[];
+    uf: EstadosEnum;
     CEP: string;
     complemento: string;
 }

@@ -38,7 +38,10 @@ function AdressStep({ steps, form }: AdressProps) {
   const [adress, setAdress] = useState<Record<string, string> | null>(null);
 
   async function onSubmit(data: AdressInterface) {
-    form.setValues({ endereco: data }, "submit");
+    form.setValues(
+      { endereco: { ...data, uf: data.uf.toLowerCase() } },
+      "submit"
+    );
   }
 
   const cepMask: string = watch("CEP");
@@ -50,7 +53,7 @@ function AdressStep({ steps, form }: AdressProps) {
 
   if (adress) {
     for (let info in adress) {
-      setValue(info as any, adress[info])
+      setValue(info as any, adress[info]);
     }
   }
 
