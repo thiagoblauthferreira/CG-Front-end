@@ -11,10 +11,11 @@ interface SelectInputProps<T extends FieldValues> {
   showLabel?: boolean;
   className?: string;
   items: readonly string[];
-  error: FieldError | undefined;
+  error?: FieldError | undefined;
   register: UseFormRegister<T>;
   setError: UseFormSetError<T>;
   name: Path<T>;
+  label?: string;
   // selected: string | undefined;
   inputProps?: InputHTMLAttributes<HTMLSelectElement>
 }
@@ -23,7 +24,7 @@ export function SelectInput<T extends FieldValues>(props: SelectInputProps<T>) {
   return (
     <div className={`form-control`}>
       <label className={`label ${props.showLabel === false && "hidden"}`}>
-        <span className="label-text uppercase">{props.name}</span>
+        <span className="label-text uppercase">{props.label}</span>
       </label>
       <select
         {...props.register(props.name)}
