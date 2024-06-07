@@ -17,14 +17,15 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_ACCESS_AWS }}
-          known_hosts: '18.204.69.210'
+          known_hosts: '54.236.152.236'
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@18.204.69.21 '
-            cd CG-back-end &&
+          ssh -o StrictHostKeyChecking=no ec2-user@54.236.152.236'
+            cd CG-Front-end &&
             git pull origin main &&
             docker compose down &&
-            docker rmi cg-back-end-nestjs:latest &&
-            docker compose --env-file compose.env up -d
+            npm run build &&
+            docker rmi cg-front-end-web:latest &&
+            docker compose up -d
           '
