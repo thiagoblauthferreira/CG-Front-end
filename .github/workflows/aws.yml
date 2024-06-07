@@ -26,10 +26,10 @@ jobs:
           ssh -o StrictHostKeyChecking=no ec2-user@54.236.152.236 '
             cd CG-Front-end &&
             git pull origin main &&
-            docker-compose down &&
-            docker rmi cg-front-end-web:latest &&
+            sudo docker-compose down &&
+            sudo docker rmi cg-front-end-web:latest &&
             rm -rf node_modules &&
             npm install &&
             NODE_OPTIONS=--max-old-space-size=512 npm run build &&
-            docker-compose up -d
+            sudo docker-compose up -d
           '
