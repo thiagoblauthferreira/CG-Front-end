@@ -25,7 +25,9 @@ jobs:
             cd CG-Front-end &&
             git pull origin main &&
             docker compose down &&
-            npm run build &&
             docker rmi cg-front-end-web:latest &&
+            rm -rf node_modules &&
+            npm install &&
+            NODE_OPTIONS=--max-old-space-size=512 npm run build &&
             docker compose up -d
           '
