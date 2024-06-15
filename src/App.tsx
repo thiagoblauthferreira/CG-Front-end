@@ -4,6 +4,7 @@ import LoginPointScreen from "./pages/Login/login";
 import SignUpScreen from "./pages/Sign Up/doador.signup";
 import { PrivateRoute } from "./components/ControledRoutes";
 import Cookies from "js-cookie";
+import { LandingTemporaria } from "./pages/LandingTemporaria/LandingTemporaria";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
     <Router>
       <Routes>
         <Route element={<LoginPointScreen />} path="/login"></Route>
+        <Route element={<LandingTemporaria />} path="/"></Route>
         <Route element={<SignUpScreen />} path="/cadastro"></Route>
         {/*Rotas privadas vão aqui dentro*/}
         <Route element={<PrivateRoute/>}> 
