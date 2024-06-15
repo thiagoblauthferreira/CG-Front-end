@@ -12,6 +12,7 @@ interface SignUpDoadorProps {}
 function SignUpScreen(props: SignUpDoadorProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [formValues, setFormValues] = useState({});
+  let requestError = false
 
   const steps = [PersonalInfosStep, AdressStep];
 
@@ -32,7 +33,11 @@ function SignUpScreen(props: SignUpDoadorProps) {
   async function submitForm(data: any) {
     const user = { ...formValues, ...data };
 
-    console.log(user)
+    const response = await ApiHandler.register(user);
+
+    console.log(response);
+
+    requestError = response
   }
 
   /**
@@ -85,6 +90,7 @@ function SignUpScreen(props: SignUpDoadorProps) {
                   </div>
                 );
               })}
+              <span className={`${!!requestError ? "": "hidden"} italic text-error text-center bold`}>{requestError}<a href="https://discord.com/invite/FARNSbkZKt" className="link text-blue-500 hover:text-blue-600 underline">suporte</a></span>
             </div>
           </div>
         </div>

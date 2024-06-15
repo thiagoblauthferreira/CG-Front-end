@@ -1,11 +1,11 @@
-import { config } from "../../config";
+import { config } from "../../config/config";
 
 export class ApiHandler {
-    private static _apiURI = config.api.URI;
+    private static _apiURI = config.api.URL;
 
-    static async register(user: any): Promise<boolean> {
+    static async register(user: any): Promise<any> {
         try {
-            return await fetch(`${this._apiURI}/auth/register`, {
+            return await fetch(`${this._apiURI}/api/auth/register`, {
                 method: "POST",
                 body: JSON.stringify(user),
                 headers: {
@@ -13,10 +13,10 @@ export class ApiHandler {
                 }
             }).then(res => {
                 if(res.ok) return true
-                return false
+                return res.json()
             })
         } catch (e) {
-            return false
+            return e
         }
     }
 
