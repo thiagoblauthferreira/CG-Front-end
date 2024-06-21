@@ -35,7 +35,6 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
   });
 
   async function onSubmit(data: PersonalInfosInterface) {
-    // console.log(await ApiHandler.register(data));
     form.setValues(data);
     steps.setCurrent(steps.current + 1);
   }

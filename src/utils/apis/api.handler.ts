@@ -12,28 +12,35 @@ export class ApiHandler {
                     "Content-Type": "application/json"
                 }
             }).then(res => {
-                if(res.ok) return true
-                return res.json()
+                if (res.ok) return res.json()
+                throw res.json();
             })
         } catch (e) {
             return e
         }
     }
 
-    static async login(user: any): Promise<boolean> {
-        try {
-            return await fetch(`${this._apiURI}/auth/login`, {
-                body: JSON.stringify(user),
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(res => {
-                if (res.ok) return true
-                return false
-            })
-        } catch (e) {
-            return false
-        }
+    static async login(user: any): Promise<any> {
+        return await fetch(`${this._apiURI}/api/auth/login`, {
+            body: JSON.stringify(user),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((res) => {
+            return res.json();
+        })
+    }
+
+    static async getUser(session: string): Promise<any> {
+        return await fetch(`${this._apiURI}/api/auth/me`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${session}`
+            }
+        }).then((res) => {
+            return res.json();
+        })
     }
 }

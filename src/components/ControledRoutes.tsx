@@ -1,13 +1,16 @@
 import Cookies from "js-cookie";
-import { Navigate, Route, RouteProps, Outlet } from "react-router-dom";
-import { validSession } from "../utils/auth/validSession";
+import { Navigate, Outlet } from "react-router-dom";
+import { ApiHandler } from "../utils/apis/api.handler";
+import { effect, signal } from "@preact/signals-react";
+import { LoadingScreen } from "../utils/screens/LoadingScreen";
+import { useEffect, useState } from "react";
+import { useSession } from "../utils/hooks/useSession";
 
 export function PrivateRoute() {
-  // const session = Cookies.get("session");
+  const { user, status } = useSession();
 
-  // if (!session || !validSession(session)) {
-  //   return <Navigate to={"/login"} />;
-  // }
+  if (status === "pending") return <LoadingScreen />;
+  if (status === "unauthorized") return <Navigate to={"/login"} />;
 
-  return <Outlet />;
-};
+  return <Outlet context={user.data} />;
+}

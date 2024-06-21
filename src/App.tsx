@@ -1,17 +1,13 @@
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
 import LoginPointScreen from "./pages/Login/login";
-import SignUpScreen from "./pages/Sign Up/doador.signup";
+import SignUpScreen from "./pages/Sign Up/signup";
 import { PrivateRoute } from "./components/ControledRoutes";
 import Cookies from "js-cookie";
 import { LandingTemporaria } from "./pages/LandingTemporaria/LandingTemporaria";
 import { Home } from "./pages/homeDoador/home";
 
 function App() {
-  function invalidateSession() {
-    Cookies.remove("session");
-  }
-
   return (
     <Router>
       <Routes>
