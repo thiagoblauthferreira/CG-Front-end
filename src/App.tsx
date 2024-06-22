@@ -1,11 +1,11 @@
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
-import LoginPointScreen from "./pages/Login/login";
-import SignUpScreen from "./pages/Sign Up/signup";
-import { PrivateRoute } from "./components/ControledRoutes";
+import LoginPointScreen from "./pages/auth/Login/login";
+import SignUpScreen from "./pages/auth/Sign Up/signup";
+import { PrivateRoute } from "./pages/private/ControledRoutes";
 import Cookies from "js-cookie";
 import { LandingTemporaria } from "./pages/LandingTemporaria/LandingTemporaria";
-import { Home } from "./pages/homeDoador/home";
+import { Home } from "./pages/private/homeDoador/home";
 
 function App() {
   return (

@@ -1,9 +1,9 @@
 import AdressStep from "./SignUpSteps/Adress/AdressStep";
 import { useState } from "react";
 import { PersonalInfosStep } from "./SignUpSteps/PersonalInfos/PersonalInfos";
-import { ApiHandler } from "../../utils/apis/api.handler";
-import { useSession } from "../../utils/hooks/useSession";
-import { LoadingScreen } from "../../utils/screens/LoadingScreen";
+import { ApiHandler } from "../../../utils/apis/api.handler";
+import { useSession } from "../../../utils/hooks/useSession";
+import { LoadingScreen } from "../../../utils/screens/LoadingScreen";
 import { Navigate } from "react-router-dom";
 
 /**

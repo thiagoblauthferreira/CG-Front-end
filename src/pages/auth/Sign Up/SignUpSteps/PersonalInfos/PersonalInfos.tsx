@@ -5,8 +5,8 @@ import {
   PersonalInfosSchema,
 } from "./utils/personalInfos.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormFieldConstructor } from "../../../../components/FormField";
-import { ApiHandler } from "../../../../utils/apis/api.handler";
+import { FormFieldConstructor } from "../../../../../components/FormField";
+import { ApiHandler } from "../../../../../utils/apis/api.handler";
 import { phoneMask } from "../Adress/utils/validations";
 
 interface PersonalInfosProps {

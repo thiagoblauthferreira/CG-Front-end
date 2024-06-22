@@ -2,11 +2,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { LoginInterface, LoginSchema } from "./utils/login.zod.interface";
-import { FormFieldConstructor } from "../../components/FormField";
+import { FormFieldConstructor } from "../../../components/FormField";
 import Cookies from "js-cookie";
-import { ApiHandler } from "../../utils/apis/api.handler";
-import { useSession } from "../../utils/hooks/useSession";
-import { LoadingScreen } from "../../utils/screens/LoadingScreen";
+import { ApiHandler } from "../../../utils/apis/api.handler";
+import { useSession } from "../../../utils/hooks/useSession";
+import { LoadingScreen } from "../../../utils/screens/LoadingScreen";
 
 /**
  * caso alguma prop seja passada para
