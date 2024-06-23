@@ -1,6 +1,14 @@
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
 export function NavComponent() {
   const tempOptions = new Array(12).fill(null);
   const userOptions = new Array(12).fill(null);
+
+  function logout() {
+    Cookies.remove("session");
+    window.location.reload();
+  }
 
   return (
     <div className="drawer">
@@ -49,10 +57,13 @@ export function NavComponent() {
                 tabIndex={0}
                 className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
               >
+                <li onClick={logout}>
+                  <Link to={"#"}>Sair</Link>
+                </li>
                 {userOptions.map((_, i) => {
                   return (
                     <li key={`option-${i}`}>
-                      <a href="#">option {i}</a>
+                      <Link to={"#"}>option {i}</Link>
                     </li>
                   );
                 })}

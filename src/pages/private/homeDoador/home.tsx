@@ -29,7 +29,7 @@ export function Home() {
           <div className="flex w-full">
             <div className="gap-10 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {new Array(12).fill(null).map((_, i) => {
-                return <CardComponent index={i}/>
+                return <CardComponent key={i}/>
               })}
             </div>
           </div>

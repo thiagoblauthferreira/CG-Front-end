@@ -1,4 +1,4 @@
-export function CardComponent({ index }: { index: number }) {
+export function CardComponent() {
   const necessidade = {
     titulo: "lugar",
     foto: "",
@@ -9,7 +9,6 @@ export function CardComponent({ index }: { index: number }) {
   return (
     <div
       className="max-w-xs bg-base-200 flex flex-col gap-3 mx-auto text-center"
-      key={`card-${index}`}
     >
       <div className="aspect-video z-0 relative">
         <div className="absolute h-full w-full backdrop-grayscale-[.45] z-10"></div>
