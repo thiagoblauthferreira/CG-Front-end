@@ -3,8 +3,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Estados } from "./utils/Estados";
 import { AdressInterface, AdressSchema } from "./utils/adress.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormFieldConstructor } from "../../../../components/FormField";
-import { SelectInput } from "../../../../components/SelectInput";
+import { FormFieldConstructor } from "../../../../../components/FormField";
+import { SelectInput } from "../../../../../components/SelectInput";
 import { handleCEP } from "./utils/handleCEP";
 import { zipCodeMask } from "./utils/validations";
 

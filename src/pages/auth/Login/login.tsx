@@ -1,8 +1,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { LoginInterface, LoginSchema } from "./utils/login.zod.interface";
-import { FormFieldConstructor } from "../../components/FormField";
+import { FormFieldConstructor } from "../../../components/FormField";
+import Cookies from "js-cookie";
+import { ApiHandler } from "../../../utils/apis/api.handler";
+import { useSession } from "../../../utils/hooks/useSession";
+import { LoadingScreen } from "../../../utils/screens/LoadingScreen";
 
 /**
  * caso alguma prop seja passada para
@@ -11,6 +15,8 @@ import { FormFieldConstructor } from "../../components/FormField";
 interface LoginComponentProps {}
 
 function LoginPointScreen(props: LoginComponentProps) {
+  const { user, status } = useSession();
+
   const {
     register,
     handleSubmit,
@@ -20,6 +26,7 @@ function LoginPointScreen(props: LoginComponentProps) {
     resolver: zodResolver(LoginSchema),
     mode: "onBlur",
   });
+  const navigate = useNavigate();
 
   /**
    * Adicione chamada de login da API
@@ -28,10 +35,24 @@ function LoginPointScreen(props: LoginComponentProps) {
    * redirecione para pagina de doador;
    */
   async function onSubmit(data: LoginInterface) {
-    console.log("SUCESSO", data);
+    const request = { email: data.email, password: data.senha };
+
+    const response = await ApiHandler.login(request);
+
+    if (!response.token) {
+      console.error("houve um erro na requisição");
+    }
+
+    Cookies.set("session", response.token);
+
+    navigate("/home");
   }
 
   const FormField = FormFieldConstructor<LoginInterface>();
+
+  if (status === "pending") return <LoadingScreen />;
+
+  if (status === "authorized") navigate("/home");
 
   return (
     <section className="login-section">

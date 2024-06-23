@@ -5,8 +5,8 @@ import {
   PersonalInfosSchema,
 } from "./utils/personalInfos.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormFieldConstructor } from "../../../../components/FormField";
-import { ApiHandler } from "../../../../utils/apis/api.handler";
+import { FormFieldConstructor } from "../../../../../components/FormField";
+import { ApiHandler } from "../../../../../utils/apis/api.handler";
 import { phoneMask } from "../Adress/utils/validations";
 
 interface PersonalInfosProps {
@@ -35,7 +35,6 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
   });
 
   async function onSubmit(data: PersonalInfosInterface) {
-    // console.log(await ApiHandler.register(data));
     form.setValues(data);
     steps.setCurrent(steps.current + 1);
   }
