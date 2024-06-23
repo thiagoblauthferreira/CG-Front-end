@@ -1,4 +1,4 @@
-import { ViaCEP } from "../../../../../utils/apis/viaCEP";
+import { ViaCEP } from "../../../../../../utils/apis/viaCEP";
 import { FocusEvent, SetStateAction } from "react";
 
 export async function handleCEP(e: FocusEvent<HTMLInputElement, Element>, setAdress: any) {
