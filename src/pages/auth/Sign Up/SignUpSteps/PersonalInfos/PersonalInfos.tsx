@@ -5,7 +5,7 @@ import {
   PersonalInfosSchema,
 } from "./utils/personalInfos.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormFieldConstructor } from "../../../../../components/FormField";
+import { FormFieldConstructor } from "../../../../../components/common/FormField";
 import { ApiHandler } from "../../../../../utils/apis/api.handler";
 import { phoneMask } from "../Adress/utils/validations";
 
@@ -28,7 +28,7 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
     formState: { errors },
     setError,
     setValue,
-    watch
+    watch,
   } = useForm<PersonalInfosInterface>({
     resolver: zodResolver(PersonalInfosSchema),
     mode: "onTouched",
@@ -41,18 +41,15 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
 
   const FormField = FormFieldConstructor<PersonalInfosInterface>();
 
-  const phone: string = watch("telefone")
+  const phone: string = watch("telefone");
 
   useEffect(() => {
-    setValue("telefone", phoneMask(phone))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phone])
+    setValue("telefone", phoneMask(phone));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phone]);
 
   return (
-    <form
-      className="flex flex-col justify-center"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="flex flex-col justify-center" onSubmit={handleSubmit(onSubmit)}>
       <h1 className="text-3xl uppercase pb-5 text-center bold">Informações</h1>
       <FormField
         name="nome"
@@ -110,7 +107,7 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
         inputProps={{
           type: "tel",
           placeholder: "(xx) xxxxx-xxxx",
-          maxLength: 15
+          maxLength: 15,
         }}
       />
       <label className="cursor-pointer label">

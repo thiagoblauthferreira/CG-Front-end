@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { LoginInterface, LoginSchema } from "./utils/login.zod.interface";
-import { FormFieldConstructor } from "../../../components/FormField";
+import { FormFieldConstructor } from "../../../components/common/FormField";
 import Cookies from "js-cookie";
 import { ApiHandler } from "../../../utils/apis/api.handler";
 import { useSession } from "../../../utils/hooks/useSession";
@@ -35,17 +35,23 @@ function LoginPointScreen(props: LoginComponentProps) {
    * redirecione para pagina de doador;
    */
   async function onSubmit(data: LoginInterface) {
-    const request = { email: data.email, password: data.senha };
+    try {
+      const request = { email: data.email, password: data.senha };
 
-    const response = await ApiHandler.login(request);
+      const response = await ApiHandler.login(request);
 
-    if (!response.token) {
-      console.error("houve um erro na requisição");
+      console.log(response);
+
+      if (!response.token) {
+        console.error("houve um erro na requisição");
+      }
+
+      Cookies.set("session", response.token);
+
+      navigate("/home");
+    } catch (error) {
+      console.error(error);
     }
-
-    Cookies.set("session", response.token);
-
-    navigate("/home");
   }
 
   const FormField = FormFieldConstructor<LoginInterface>();
@@ -92,10 +98,7 @@ function LoginPointScreen(props: LoginComponentProps) {
                 <button className="btn btn-primary">Login</button>
               </div>
               <label className="label">
-                <Link
-                  to={"/cadastro"}
-                  className="label-text-alt link link-hover"
-                >
+                <Link to={"/cadastro"} className="label-text-alt link link-hover">
                   Não tem uma conta?
                 </Link>
               </label>

@@ -3,8 +3,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Estados } from "./utils/Estados";
 import { AdressInterface, AdressSchema } from "./utils/adress.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormFieldConstructor } from "../../../../../components/FormField";
-import { SelectInput } from "../../../../../components/SelectInput";
+import { FormFieldConstructor } from "../../../../../components/common/FormField";
+import { SelectInput } from "../../../../../components/common/SelectInput";
 import { handleCEP } from "./utils/handleCEP";
 import { zipCodeMask } from "./utils/validations";
 
@@ -38,10 +38,7 @@ function AdressStep({ steps, form }: AdressProps) {
   const [adress, setAdress] = useState<Record<string, string> | null>(null);
 
   async function onSubmit(data: AdressInterface) {
-    form.setValues(
-      { endereco: { ...data, uf: data.uf.toLowerCase() } },
-      "submit"
-    );
+    form.setValues({ endereco: { ...data, uf: data.uf.toLowerCase() } }, "submit");
   }
 
   const cepMask: string = watch("CEP");
@@ -59,10 +56,7 @@ function AdressStep({ steps, form }: AdressProps) {
 
   const FormField = FormFieldConstructor<AdressInterface>();
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-center"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-center">
       <h1 className="text-3xl uppercase pb-5 text-center bold">Endereço</h1>
       <FormField
         error={errors?.CEP}
@@ -97,9 +91,7 @@ function AdressStep({ steps, form }: AdressProps) {
           name="uf"
           items={Estados}
           className="col-span-1"
-          error={
-            adress?.uf ? undefined : (errors?.uf as FieldError | undefined)
-          }
+          error={adress?.uf ? undefined : (errors?.uf as FieldError | undefined)}
         />
       </div>
       <FormField
@@ -146,9 +138,7 @@ function AdressStep({ steps, form }: AdressProps) {
           className="w-full textarea textarea-bordered max-h-24"
         />
       </div>
-      <button className="mx-auto mt-5 btn btn-primary w-2/3">
-        Cadastrar-se
-      </button>
+      <button className="mx-auto mt-5 btn btn-primary w-2/3">Cadastrar-se</button>
     </form>
   );
 }
