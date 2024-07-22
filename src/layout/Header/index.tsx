@@ -1,10 +1,13 @@
-import { Avatar } from "../../common";
+import { useAuthProvider } from "../../context/Auth";
+import { Avatar } from "../../components/common";
 
 interface IHeaderProps {
   openSidebar: () => void;
 }
 
 export function Header({ openSidebar }: IHeaderProps) {
+  const { currentUser } = useAuthProvider();
+
   return (
     <header
       className={`
