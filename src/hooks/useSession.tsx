@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ApiHandler } from "../apis/api.handler";
+import { ApiHandler } from "../utils/apis/api.handler";
 import Cookies from "js-cookie";
 
 export function useSession() {
@@ -11,8 +11,8 @@ export function useSession() {
     (async () => {
       if (session) {
         setUser(await ApiHandler.getUser(session));
-      };
-    })()
+      }
+    })();
   }, [session]);
 
   if (user?.status === 200) {
