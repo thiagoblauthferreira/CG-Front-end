@@ -1,5 +1,5 @@
 import { post } from "./cg-api.service";
 
-export function me() {
+export function getUser() {
   return post(`/auth/me`);
 }

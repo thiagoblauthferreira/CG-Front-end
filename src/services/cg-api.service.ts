@@ -21,7 +21,7 @@ export async function request(
   headers?: { [key: string]: string },
   options?: { [key: string]: any }
 ) {
-  const token = await getCookie("token");
+  const token = getCookie("token");
 
   const updatedHeader = {
     "Content-Type": "application/json",
