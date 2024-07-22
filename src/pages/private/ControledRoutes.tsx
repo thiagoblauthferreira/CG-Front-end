@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { LoadingScreen } from "../../utils/screens/LoadingScreen";
-import { useSession } from "../../utils/hooks/useSession";
+import { useSession } from "../../hooks/useSession";
 
 export function PrivateRoute() {
   const { user, status } = useSession();

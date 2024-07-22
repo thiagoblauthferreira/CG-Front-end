@@ -138,7 +138,9 @@ function AdressStep({ steps, form }: AdressProps) {
           className="w-full textarea textarea-bordered max-h-24"
         />
       </div>
-      <button className="mx-auto mt-5 btn btn-primary w-2/3">Cadastrar-se</button>
+      <button type="submit" className="mx-auto mt-5 btn btn-primary w-2/3">
+        Cadastrar-se
+      </button>
     </form>
   );
 }

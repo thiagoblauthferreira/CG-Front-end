@@ -5,7 +5,7 @@ import { LoginInterface, LoginSchema } from "./utils/login.zod.interface";
 import { FormFieldConstructor } from "../../../components/common/FormField";
 import Cookies from "js-cookie";
 import { ApiHandler } from "../../../utils/apis/api.handler";
-import { useSession } from "../../../utils/hooks/useSession";
+import { useSession } from "../../../hooks/useSession";
 import { LoadingScreen } from "../../../utils/screens/LoadingScreen";
 
 /**
