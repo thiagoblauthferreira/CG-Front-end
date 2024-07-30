@@ -2,32 +2,44 @@ import React from "react";
 import { IAuthProvider, IContextProvider } from "./interface";
 import { IUser } from "../../interfaces/user";
 import { getUser } from "../../services/user.service";
-import { getCookie } from "../../services/cookie.service";
+import { delCookie, getCookie } from "../../services/cookie.service";
 
 const AuthContext = React.createContext<IAuthProvider>({} as IAuthProvider);
 
 export function AuthProvider({ children }: IContextProvider) {
   const [currentUser, setCurrentUser] = React.useState<IUser | null>(null);
+  const [status, setStatus] = React.useState<string>("pending");
 
   const loadUser = async () => {
     try {
-      const token = getCookie("token")
-      if(!token) return 
-      
-      const resp = await getUser()
-      console.log(resp, "user")
-      setCurrentUser(resp.data)
+      const token = getCookie("token");
+      if (!token) return;
+
+      const resp = await getUser();
+
+      setCurrentUser(resp.data);
+      setStatus(resp.data.status);
     } catch (error) {
-      console.error(error)
+      setStatus("unauthorized");
+      console.error(error);
     }
-  }
+  };
+
+  const logout = async () => {
+    delCookie("token");
+    localStorage.clear();
+  };
 
   React.useEffect(() => {
-    loadUser()
-  },[])
+    loadUser();
+  }, []);
 
-  return <AuthContext.Provider value={{ currentUser }}>{children}</AuthContext.Provider>;
-};
+  return (
+    <AuthContext.Provider value={{ currentUser, logout, status }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
 
 export const useAuthProvider = () => {
   return React.useContext(AuthContext);

@@ -19,7 +19,7 @@ export function Button({
     <button
       {...props}
       className={`
-        btn btn-active !min-h-max h-[40px] rounded-xl
+        btn btn-active !min-h-max h-10 rounded-xl
         ${className}
       `}
     >

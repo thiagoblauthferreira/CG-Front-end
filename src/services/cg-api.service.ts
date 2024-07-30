@@ -1,5 +1,8 @@
-import { config } from "../config/config";
 import { getCookie } from "./cookie.service";
+
+type IMethodType = "POST" | "GET" | "PUT" | "DELETE" | "PATCH";
+
+const apiBase = process.env.API_URI || "http://localhost:8080";
 
 async function responseJson(response: Response) {
   if (!response.ok || response.status >= 400) {
@@ -16,7 +19,7 @@ function isUrl(url: string): boolean {
 
 export async function request(
   url: string,
-  method?: "POST" | "GET" | "PUT" | "DELETE" | "PATCH",
+  method?: IMethodType,
   body?: { [key: string]: any } | null,
   headers?: { [key: string]: string },
   options?: { [key: string]: any }
@@ -29,7 +32,7 @@ export async function request(
     ...(headers || {}),
   };
 
-  return await fetch(isUrl(url) ? url : `${config.api.URL}/api${url}`, {
+  return await fetch(isUrl(url) ? url : `${apiBase}/api${url}`, {
     method: method,
     headers: updatedHeader,
     body: body ? JSON.stringify(body) : null,

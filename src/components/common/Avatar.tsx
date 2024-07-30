@@ -8,7 +8,7 @@ export function Avatar({ src, className }: IAvatarProps) {
     <div className="avatar">
       <div
         className={`
-          size-[30px] rounded-full 
+          size-8 rounded-full 
           ${className}
         `}
       >

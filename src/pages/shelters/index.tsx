@@ -1,7 +1,29 @@
+import React from "react";
 import { CardPrimary } from "../../components/cards/CardPrimary";
 import { Button, Select } from "../../components/common";
+import { LoadingScreen } from "../../components/common/LoadingScreen";
 
 export default function SheltersScreen() {
+  const [requesting, setRequesting] = React.useState<boolean>(false);
+
+  const load = async () => {
+    try {
+      setRequesting(true);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setRequesting(false);
+    }
+  };
+
+  React.useEffect(() => {
+    load();
+  }, []);
+
+  if (requesting) {
+    return <LoadingScreen />;
+  }
+
   return (
     <div className="py-8">
       <div className="my-5">

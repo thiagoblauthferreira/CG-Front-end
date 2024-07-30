@@ -1,10 +1,10 @@
 import AdressStep from "./SignUpSteps/Adress/AdressStep";
 import { useState } from "react";
 import { PersonalInfosStep } from "./SignUpSteps/PersonalInfos/PersonalInfos";
-import { ApiHandler } from "../../../utils/apis/api.handler";
-import { useSession } from "../../../hooks/useSession";
-import { LoadingScreen } from "../../../utils/screens/LoadingScreen";
-import { Navigate } from "react-router-dom";
+// import { useSession } from "../../../hooks/useSession";
+// import { Navigate } from "react-router-dom";
+// import { LoadingScreen } from "../../../components/common/LoadingScreen";
+import { register } from "../../../services/auth.service";
 
 /**
  * caso alguma prop seja passada para
@@ -15,7 +15,7 @@ interface SignUpDoadorProps {}
 function SignUpScreen(props: SignUpDoadorProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [formValues, setFormValues] = useState({});
-  const { user, status } = useSession();
+  // const { user, status } = useSession();
   let requestError = false;
 
   const steps = [PersonalInfosStep, AdressStep];
@@ -39,7 +39,7 @@ function SignUpScreen(props: SignUpDoadorProps) {
 
     console.log(user);
 
-    const response = await ApiHandler.register(user);
+    const response = await register(user);
 
     requestError = response;
   }
@@ -50,9 +50,9 @@ function SignUpScreen(props: SignUpDoadorProps) {
    * para a tela de usuário
    */
 
-  if (status === "pending") return <LoadingScreen />;
+  // if (status === "pending") return <LoadingScreen />;
 
-  if (status === "authorized") return <Navigate to={"/home"} />;
+  // if (status === "authorized") return <Navigate to={"/home"} />;
 
   return (
     <section className="signup-section">

@@ -6,14 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormFieldConstructor } from "../../../../../components/common/FormField";
 import { SelectInput } from "../../../../../components/common/SelectInput";
 import { handleCEP } from "./utils/handleCEP";
-import { zipCodeMask } from "./utils/validations";
+import { zipCodeMask } from "../../../../../utils/masks";
 
 interface AdressProps {
   steps: {
     setCurrent: Dispatch<SetStateAction<number>>;
     current: number;
   };
-
   form: {
     setValues: Function;
     values: any;

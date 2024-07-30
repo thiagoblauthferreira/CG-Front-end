@@ -1,52 +1,39 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { LoginInterface, LoginSchema } from "./utils/login.zod.interface";
+import { Link, useNavigate } from "react-router-dom";
 import { FormFieldConstructor } from "../../../components/common/FormField";
-import Cookies from "js-cookie";
-import { ApiHandler } from "../../../utils/apis/api.handler";
-import { useSession } from "../../../hooks/useSession";
-import { LoadingScreen } from "../../../utils/screens/LoadingScreen";
+import { LoginSchema } from "../../../validators/login/login.validator";
+import { login } from "../../../services/auth.service";
+import { setCookie } from "../../../services/cookie.service";
+import { ILogin } from "../../../interfaces/auth";
 
-/**
- * caso alguma prop seja passada para
- * o formulário adicione-a aqui
- */
 interface LoginComponentProps {}
 
 function LoginPointScreen(props: LoginComponentProps) {
-  const { user, status } = useSession();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<LoginInterface>({
+  } = useForm<ILogin>({
     resolver: zodResolver(LoginSchema),
     mode: "onBlur",
   });
   const navigate = useNavigate();
 
-  /**
-   * Adicione chamada de login da API
-   * retorne erro se erro;
-   * salve token nos cookies se ok
-   * redirecione para pagina de doador;
-   */
-  async function onSubmit(data: LoginInterface) {
+  async function onSubmit(data: ILogin) {
     try {
-      const request = { email: data.email, password: data.senha };
+      const request = { email: data.email, password: data.password };
 
-      const response = await ApiHandler.login(request);
+      const response = await login(request);
 
       console.log(response);
 
-      if (!response.token) {
-        console.error("houve um erro na requisição");
-      }
+      // if (!response.token) {
+      //   console.error("houve um erro na requisição");
+      // }
 
-      Cookies.set("session", response.token);
+      setCookie("token", response.token, 7);
 
       navigate("/home");
     } catch (error) {
@@ -54,11 +41,7 @@ function LoginPointScreen(props: LoginComponentProps) {
     }
   }
 
-  const FormField = FormFieldConstructor<LoginInterface>();
-
-  if (status === "pending") return <LoadingScreen />;
-
-  if (status === "authorized") navigate("/home");
+  const FormField = FormFieldConstructor<ILogin>();
 
   return (
     <section className="login-section">
@@ -80,10 +63,10 @@ function LoginPointScreen(props: LoginComponentProps) {
                 }}
               />
               <FormField
-                name="senha"
+                name="password"
                 register={register}
                 setError={setError}
-                error={errors.senha}
+                error={errors.password}
                 inputProps={{
                   type: "password",
                   placeholder: "Sua senha",
@@ -98,7 +81,7 @@ function LoginPointScreen(props: LoginComponentProps) {
                 <button className="btn btn-primary">Login</button>
               </div>
               <label className="label">
-                <Link to={"/cadastro"} className="label-text-alt link link-hover">
+                <Link to={"/register"} className="label-text-alt link link-hover">
                   Não tem uma conta?
                 </Link>
               </label>

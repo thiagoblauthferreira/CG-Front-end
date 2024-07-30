@@ -105,8 +105,13 @@ export function Table({
                   <tr key={`table-tbody-${row[rowKey]}`} className="odd:bg-gray-300">
                     {columns.map((column, index) => {
                       return (
-                        <td key={`table-tbody-td-${column.dataIndex || index}-${index}`}>
-                          <div className="inline-flex">
+                        <td
+                          key={`table-tbody-td-${column.dataIndex || index}-${index}`}
+                          className={`
+                            align-middle
+                          `}
+                        >
+                          <div className="flex justify-center">
                             {column.render(
                               column.dataIndex ? row[column.dataIndex] : row
                             )}

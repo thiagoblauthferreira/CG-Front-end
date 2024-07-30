@@ -6,8 +6,7 @@ import {
 } from "./utils/personalInfos.zod.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormFieldConstructor } from "../../../../../components/common/FormField";
-import { ApiHandler } from "../../../../../utils/apis/api.handler";
-import { phoneMask } from "../Adress/utils/validations";
+import { phoneMask } from "../../../../../utils/masks";
 
 interface PersonalInfosProps {
   steps: {

@@ -1,4 +1,7 @@
+import React from "react";
 import { Button } from "../../components/common";
+import { ModalLogout } from "../../components/modals/Logout";
+import { sidebarData } from "../../utils/layout/SidebarData";
 
 interface ISidebarProps {
   open: boolean;
@@ -6,6 +9,8 @@ interface ISidebarProps {
 }
 
 export function Sidebar({ open, close }: ISidebarProps) {
+  const [openModalLogout, setOpenModalLogout] = React.useState<boolean>(false);
+
   return (
     <aside
       className={`
@@ -17,22 +22,45 @@ export function Sidebar({ open, close }: ISidebarProps) {
     >
       <div
         className={`
-          h-full overflow-hidden 
+          h-full overflow-hidden flex flex-col
           w-full sm:w-[375px] p-4 transition ease 
-          duration-[0.4s] bg-gray-300
+          duration-[0.4s] bg-white relative
           ${open ? "translate-x-0" : "translate-x-full"}
         `}
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="flex flex-col relative h-full">
-          <Button text="Nova necessidade" className="bg-black text-white" />
-          <Button text="Nova necessidade" className="bg-black text-white" />
-          <Button text="Nova necessidade" className="bg-black text-white" />
-          <Button text="Nova necessidade" className="bg-black text-white" />
-          <Button text="Nova necessidade" className="bg-black text-white" />
-          <Button text="Nova necessidade" className="bg-black text-white" />
+        <div className="flex justify-center items-center min-h-20">LOGO</div>
+
+        <div className="overflow-y-auto my-2 mb-14 not-scroll-bar">
+          <ul
+            className={`
+              flex flex-col gap-2
+            `}
+          >
+            {sidebarData().map((menu) => {
+              return (
+                <li key={`sidebar-menu-${menu.id}`}>
+                  <Button
+                    text={menu.text}
+                    prefix={menu.icon}
+                    className="bg-black w-full text-white"
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <div className="absolute bottom-0 left-0 w-full p-4">
+          <Button
+            text={"Sair"}
+            className="bg-black w-full text-white"
+            onClick={() => setOpenModalLogout(true)}
+          />
         </div>
       </div>
+
+      <ModalLogout open={openModalLogout} close={() => setOpenModalLogout(false)} />
     </aside>
   );
 }

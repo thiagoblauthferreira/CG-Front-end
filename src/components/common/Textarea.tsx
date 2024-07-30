@@ -17,7 +17,7 @@ export function Textarea({ label, ...props }: IInputProps) {
         {...props}
         className={`
           input input-bordered w-full max-w-xs
-          rounded-xl min-h-[40px] min-w-full 
+          rounded-xl min-h-10 min-w-full 
           bg-transparent
           ${props.className}
         `}

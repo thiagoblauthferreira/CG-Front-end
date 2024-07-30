@@ -1,6 +1,10 @@
 import { IColumn, ITableProps, Table } from "../common";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 export interface ITableProductsProps extends Omit<ITableProps, "columns"> {}
+
+const btnStyleDefault =
+  "p-2 rounded-md border border-solid text-base cursor-pointer transition-all hover:opacity-80";
 
 export function TableProducts({ dataSource, ...props }: ITableProductsProps) {
   const columns: IColumn[] = [
@@ -45,8 +49,12 @@ export function TableProducts({ dataSource, ...props }: ITableProductsProps) {
       render: () => {
         return (
           <div className="flex gap-2">
-            <p>asd</p>
-            <p>asd</p>
+            <div className={`border-blue-600 ${btnStyleDefault}`}>
+              <FiEdit className={`text-blue-600`} />
+            </div>
+            <div className={`border-red-600 ${btnStyleDefault}`}>
+              <FiTrash2 className={`text-red-600`} />
+            </div>
           </div>
         );
       },

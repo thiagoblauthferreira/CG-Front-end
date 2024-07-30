@@ -24,7 +24,7 @@ export function Select({ label, options, ...props }: ISelectProps) {
         {...props}
         className={`
           select select-bordered w-full max-w-xs
-          rounded-xl min-h-max h-[40px] min-w-full
+          rounded-xl min-h-max h-10 min-w-full
           bg-transparent
           ${props.className}
         `}

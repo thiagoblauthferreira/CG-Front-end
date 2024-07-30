@@ -1,12 +1,50 @@
 import React from "react";
-import { Button, Select, Modal, Input, Textarea } from "../../../components/common";
-import { TableProducts } from "../../../components/tables/table-products";
-import { useParams } from "react-router-dom";
+import { Button, Select, Modal, Input, Textarea } from "../../components/common";
+import { TableProducts } from "../../components/tables/table-products";
+import { useNavigate, useParams } from "react-router-dom";
+import { LoadingScreen } from "../../components/common/LoadingScreen";
+import { listProductsByDistribuitionPoint } from "../../services/distribuition-points.service";
+import { IProduct } from "../../interfaces/products";
+
+interface IProducts {
+  data: IProduct[];
+  total: number;
+}
+
+const initialData = {
+  data: [],
+  total: 0,
+};
 
 function ProductsScreen() {
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [requesting, setRequesting] = React.useState<boolean>(false);
+  const [products, setProducts] = React.useState<IProducts>(initialData);
+
+  const load = async () => {
+    try {
+      setRequesting(true);
+      const resp = await listProductsByDistribuitionPoint(id || "");
+
+      setProducts(resp);
+    } catch (error) {
+      console.error(error);
+      navigate("/distribuition-points");
+    } finally {
+      setRequesting(false);
+    }
+  };
+
+  React.useEffect(() => {
+    load();
+  }, []);
+
+  if (requesting) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="py-8">

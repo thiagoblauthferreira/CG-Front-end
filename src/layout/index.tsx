@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "./Footer";
+import { LoadingScreen } from "../components/common/LoadingScreen";
 
 export function Layout() {
   const [openSidebar, setOpenSidebar] = React.useState<boolean>(false);
@@ -30,6 +31,8 @@ export function Layout() {
       </main>
 
       <Footer />
+
+      <LoadingScreen />
     </div>
   );
 }

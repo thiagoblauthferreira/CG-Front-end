@@ -18,7 +18,7 @@ export function Input({ label, ...props }: IInputProps) {
         type="text"
         className={`
           input input-bordered w-full max-w-xs
-          rounded-xl h-[40px] min-w-full
+          rounded-xl h-10 min-w-full
           bg-transparent
           ${props.className}
         `}

@@ -1,18 +1,10 @@
 import React from "react";
 import { CardPrimary } from "../../components/cards/CardPrimary";
 import { Button, Select } from "../../components/common";
-import { useNavigate } from "react-router-dom";
-import { BsChevronRight } from "react-icons/bs";
 import { LoadingScreen } from "../../components/common/LoadingScreen";
 
-export default function DistribuitionPointsScreen() {
-  const navigate = useNavigate();
-
+export default function HomeScreen() {
   const [requesting, setRequesting] = React.useState<boolean>(false);
-
-  const handleRedirect = (id: string) => {
-    navigate(`/distribuition-points/${id}`);
-  };
 
   const load = async () => {
     try {
@@ -90,14 +82,12 @@ export default function DistribuitionPointsScreen() {
 
           <div
             className={`
-              absolute bottom-0 right-0 cursor-pointer
-              m-4 bg-slate-200 rounded-md p-2
-              transition-colors
-              hover:bg-slate-300 active:bg-slate-200
+              absolute bottom-0 right-0
+              m-4 bg-slate-300 rounded-md px-2
+              cursor-pointer 
             `}
-            onClick={() => handleRedirect("teste")}
           >
-            <BsChevronRight />
+            teste
           </div>
         </CardPrimary>
         <CardPrimary image="" title="Teste">

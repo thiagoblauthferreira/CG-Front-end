@@ -24,7 +24,7 @@ export function Modal({
     <div
       className={`
         fixed z-10 inset-0 top-0 left-0 w-screen h-screen
-        flex justify-center items-center transition-colors
+        flex justify-center items-center transition-colors p-4
         ${open ? "visible bg-gray-100/30 backdrop-blur-sm" : "invisible"}
       `}
       onClick={close}
