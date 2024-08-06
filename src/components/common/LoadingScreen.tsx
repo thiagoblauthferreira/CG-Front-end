@@ -1,4 +1,5 @@
 import React from "react";
+import { Loading } from "./Loading";
 
 export function LoadingScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -21,7 +22,7 @@ export function LoadingScreen() {
         ${isLoading ? "visible opacity-100" : "invisible opacity-0"}
       `}
     >
-      <span className="text-accent loading loading-infinity loading-lg"></span>
+      <Loading />
     </section>
   );
 }

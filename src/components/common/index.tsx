@@ -7,3 +7,6 @@ export * from "./Select";
 export * from "./Table";
 export * from "./Textarea";
 export * from "./Modal";
+export * from "./Loading";
+export * from "./LoadingScreen";
+export * from "./Tabs";

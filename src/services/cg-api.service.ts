@@ -2,6 +2,13 @@ import { getCookie } from "./cookie.service";
 
 type IMethodType = "POST" | "GET" | "PUT" | "DELETE" | "PATCH";
 
+interface IMethod {
+  data?: Record<string, any>;
+  params?: Record<string, any>;
+  headers?: Record<string, string>;
+  options?: Record<string, any>;
+}
+
 const apiBase = process.env.API_URI || "http://localhost:8080";
 
 async function responseJson(response: Response) {
@@ -40,7 +47,7 @@ export async function request(
   }).then(responseJson);
 }
 
-export function buildUrl(baseUrl: string, params?: { [key: string]: any }): string {
+function buildUrl(baseUrl: string, params?: { [key: string]: any }): string {
   if (!params) {
     return baseUrl;
   }
@@ -56,49 +63,34 @@ export function buildUrl(baseUrl: string, params?: { [key: string]: any }): stri
     })
     .join("&");
 
-  return `${baseUrl}?${queryString}`;
+  return `${baseUrl}${queryString ? `?${queryString}` : ""}`;
 }
 
 export async function get(
   url: string,
-  headers?: { [key: string]: string },
-  options?: { [key: string]: any }
+  { params, headers, options }: Omit<IMethod, "data"> = {}
 ) {
-  return await request(url, "GET", null, headers, options);
+  return await request(buildUrl(url, params), "GET", null, headers, options);
 }
 
 export async function post(
   url: string,
-  data?: { [key: string]: any },
-  headers?: { [key: string]: string },
-  options?: { [key: string]: any }
+  { data, params, headers, options }: IMethod = {}
 ) {
-  return await request(url, "POST", data, headers, options);
+  return await request(buildUrl(url, params), "POST", data, headers, options);
 }
 
-export async function put(
-  url: string,
-  data?: { [key: string]: any },
-  headers?: { [key: string]: string },
-  options?: { [key: string]: any }
-) {
-  return await request(url, "PUT", data, headers, options);
+export async function put(url: string, { data, params, headers, options }: IMethod = {}) {
+  return await request(buildUrl(url, params), "PUT", data, headers, options);
 }
 
 export async function patch(
   url: string,
-  data?: { [key: string]: any },
-  headers?: { [key: string]: string },
-  options?: { [key: string]: any }
+  { data, params, headers, options }: IMethod = {}
 ) {
-  return await request(url, "PATCH", data, headers, options);
+  return await request(buildUrl(url, params), "PATCH", data, headers, options);
 }
 
-export async function del(
-  url: string,
-  data?: { [key: string]: any },
-  headers?: { [key: string]: string },
-  options?: { [key: string]: any }
-) {
-  return await request(url, "DELETE", data, headers, options);
+export async function del(url: string, { data, params, headers, options }: IMethod = {}) {
+  return await request(buildUrl(url, params), "DELETE", data, headers, options);
 }

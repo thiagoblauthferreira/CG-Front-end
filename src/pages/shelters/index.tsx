@@ -2,23 +2,44 @@ import React from "react";
 import { CardPrimary } from "../../components/cards/CardPrimary";
 import { Button, Select } from "../../components/common";
 import { LoadingScreen } from "../../components/common/LoadingScreen";
+import { IShelter } from "../../interfaces/shelter";
+import { listShelters } from "../../services/shelter.service";
+import useInView from "../../hooks/useInView";
+
+const limit = 10;
 
 export default function SheltersScreen() {
+  const { ref, inView } = useInView();
+
   const [requesting, setRequesting] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [shelters, setShelters] = React.useState<IShelter[]>([]);
+
+  const page = React.useRef<number>(0);
 
   const load = async () => {
     try {
-      setRequesting(true);
+      const currentPage = page.current;
+
+      const resp = await listShelters({
+        limit: limit,
+        offset: currentPage * limit,
+      });
+      setShelters((currentData) => [...currentData, ...resp]);
+      setLoading(resp.length > 0);
+      page.current++;
     } catch (error) {
-      console.error(error);
+      setLoading(false);
     } finally {
       setRequesting(false);
     }
   };
 
   React.useEffect(() => {
-    load();
-  }, []);
+    if (inView) {
+      load();
+    }
+  }, [inView]);
 
   if (requesting) {
     return <LoadingScreen />;
@@ -53,18 +74,12 @@ export default function SheltersScreen() {
             ]}
           />
 
-          <div
+          <Button
+            text="Filtrar"
             className={`
-              flex justify-end
-            `}
-          >
-            <Button
-              text="Filtrar"
-              className={`
                 bg-black text-white w-full
               `}
-            />
-          </div>
+          />
         </div>
       </div>
 
@@ -90,42 +105,20 @@ export default function SheltersScreen() {
             teste
           </div>
         </CardPrimary>
-        <CardPrimary image="" title="Teste">
-          <div>
-            <p>teste</p>
-          </div>
-        </CardPrimary>
-        <CardPrimary image="" title="Teste">
-          <div>
-            <p>teste</p>
-          </div>
-        </CardPrimary>
-        <CardPrimary image="" title="Teste">
-          <div>
-            <p>teste</p>
-          </div>
-        </CardPrimary>
-        <CardPrimary image="" title="Teste">
-          <div>
-            <p>teste</p>
-          </div>
-        </CardPrimary>
-        <CardPrimary image="" title="Teste">
-          <div>
-            <p>teste</p>
-          </div>
-        </CardPrimary>
-        <CardPrimary image="" title="Teste">
-          <div>
-            <p>teste</p>
-          </div>
-        </CardPrimary>
-        <CardPrimary image="" title="Teste">
-          <div>
-            <p>teste</p>
-          </div>
-        </CardPrimary>
       </div>
+
+      {!shelters ||
+        (!shelters.length && !loading && (
+          <div className="rounded-lg border border-solid border-gray-600 p-2 text-center">
+            <p className="B8 text-gray-1">""</p>
+          </div>
+        ))}
+
+      {loading && (
+        <div className="relative h-[100px]" ref={ref}>
+          {/* <Loading classIcon="!size-[40px]" /> */}
+        </div>
+      )}
     </div>
   );
 }

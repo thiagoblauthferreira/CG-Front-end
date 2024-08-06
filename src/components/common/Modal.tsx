@@ -23,16 +23,16 @@ export function Modal({
   return (
     <div
       className={`
-        fixed z-10 inset-0 top-0 left-0 w-screen h-screen
-        flex justify-center items-center transition-colors p-4
+        fixed z-10 inset-0 top-0 left-0 flex
+        w-screen h-screen transition-colors p-4
         ${open ? "visible bg-gray-100/30 backdrop-blur-sm" : "invisible"}
       `}
       onClick={close}
     >
       <div
         className={`
-          overflow-hidden relative
-          bg-white rounded-lg shadow transition-all
+          overflow-hidden relative max-w-lg w-full
+          bg-white rounded-lg shadow transition-all m-auto
           ${open ? "scale-100 opacity-100" : "scale-125 opacity-0"}
           ${className}
         `}
@@ -51,9 +51,9 @@ export function Modal({
             <BsXLg />
           </div>
         )}
-        {header && <div className="border-b border-solid border-gray-500">{header}</div>}
-        {children}
-        {footer && <div className="border-t border-solid border-gray-500">{footer}</div>}
+        {header && <div className="border-b border-solid border-black">{header}</div>}
+        <div className="overflow-y-auto">{children}</div>
+        {footer && <div className="border-t border-solid border-black">{footer}</div>}
       </div>
     </div>
   );

@@ -3,16 +3,15 @@ import { IProduct } from "./products";
 import { IUser } from "./user";
 
 export interface IDistribuitionPointCreate {
-  id: string;
-  phone: string;
   name: string;
+  phone: string;
   description?: string;
   address: IAddress;
 }
 
 export interface IDistribuitionPointUpdate {
-  phone: string;
   name: string;
+  phone: string;
   description?: string;
   address: IAddress;
 }

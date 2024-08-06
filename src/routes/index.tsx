@@ -20,13 +20,11 @@ export function RoutesPage() {
           <Route element={<SignUpScreen />} path="/register"></Route>
         </Route>
 
-        <Route element={<PrivateRoute />}>
-          <Route element={<Layout />}>
-            <Route path="/home" element={<HomeScreen />} />
-            <Route path="/shelters" element={<SheltersScreen />} />
-            <Route path="/distribuition-points" element={<DistribuitionPointsScreen />} />
-            <Route path="/distribuition-points/:id" element={<ProductsScreen />} />
-          </Route>
+        <Route element={<Layout />}>
+          <Route path="/home" element={<HomeScreen />} />
+          <Route path="/shelters" element={<SheltersScreen />} />
+          <Route path="/distribuition-points" element={<DistribuitionPointsScreen />} />
+          <Route path="/distribuition-points/:id" element={<ProductsScreen />} />
         </Route>
       </Routes>
     </Router>

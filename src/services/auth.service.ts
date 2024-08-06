@@ -2,10 +2,10 @@ import { post } from "./cg-api.service";
 import { IUserCreate } from "../interfaces/user";
 import { ILogin } from "../interfaces/auth";
 
-export function login(payload: ILogin) {
-  return post(`/auth/login`, payload);
+export function login(data: ILogin) {
+  return post(`/auth/login`, { data });
 }
 
-export function register(payload: IUserCreate) {
-  return post(`/auth/register`, payload);
+export function register(data: IUserCreate) {
+  return post(`/auth/register`, { data });
 }

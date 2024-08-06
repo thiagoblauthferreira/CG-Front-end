@@ -1,30 +1,34 @@
 import { del, get, patch, post } from "./cg-api.service";
 import { IShelterCreate, IShelterUpdate } from "../interfaces/shelter";
 
-export function listShelters() {
-  return get(`/shelter`);
+export function listShelters({ params, headers }: any = {}) {
+  return get(`/shelter`, { params, headers });
 }
 
 export function listOneShelter(shelterId: string) {
   return get(`/shelter/${shelterId}`);
 }
 
-export function createShelter(payload: IShelterCreate) {
-  return post("/shelter", payload);
+export function createShelter(data: IShelterCreate) {
+  return post("/shelter", { data });
 }
 
 export function deleteShelter(shelterId: string) {
   return del(`/shelter/${shelterId}`);
 }
 
-export function updateShelter(shelterId: string, payload: IShelterUpdate) {
-  return patch(`/shelter/${shelterId}`, payload);
+export function updateShelter(shelterId: string, data: IShelterUpdate) {
+  return patch(`/shelter/${shelterId}`, { data });
 }
 
-export function addCoordinator(shelterId: string, payload: any) {
-  return patch(`/shelter/${shelterId}/coordinator`, { action: "add", ...payload });
+export function addCoordinator(shelterId: string, data: any) {
+  return patch(`/shelter/${shelterId}/coordinator`, {
+    data: { action: "add", ...data },
+  });
 }
 
-export function removeCoordinator(shelterId: string, payload: any) {
-  return patch(`/shelter/${shelterId}/coordinator`, { action: "remove", ...payload });
+export function removeCoordinator(shelterId: string, data: any) {
+  return patch(`/shelter/${shelterId}/coordinator`, {
+    data: { action: "remove", ...data },
+  });
 }

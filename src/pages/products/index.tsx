@@ -6,7 +6,7 @@ import { LoadingScreen } from "../../components/common/LoadingScreen";
 import { listProductsByDistribuitionPoint } from "../../services/distribuition-points.service";
 import { IProduct } from "../../interfaces/products";
 
-interface IProducts {
+interface IProductsInitialData {
   data: IProduct[];
   total: number;
 }
@@ -22,12 +22,14 @@ function ProductsScreen() {
 
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [requesting, setRequesting] = React.useState<boolean>(false);
-  const [products, setProducts] = React.useState<IProducts>(initialData);
+  const [products, setProducts] = React.useState<IProductsInitialData>(initialData);
 
   const load = async () => {
     try {
       setRequesting(true);
       const resp = await listProductsByDistribuitionPoint(id || "");
+
+      console.log(resp);
 
       setProducts(resp);
     } catch (error) {
@@ -68,17 +70,11 @@ function ProductsScreen() {
             ]}
           />
 
-          <div
-            className={`
-              flex justify-end col-end-5
-            `}
-          >
-            <Button
-              text="Nova necessidade"
-              className="bg-black text-white"
-              onClick={() => setOpenModal(true)}
-            />
-          </div>
+          <Button
+            text="Nova necessidade"
+            className="bg-black text-white w-full"
+            onClick={() => setOpenModal(true)}
+          />
         </div>
       </div>
 

@@ -9,14 +9,14 @@ export function listOneProduct(productId: string) {
   return get(`/products/${productId}`);
 }
 
-export function createProduct(payload: IProductCreate) {
-  return post("/products", payload);
+export function createProduct(data: IProductCreate) {
+  return post("/products", { data });
 }
 
 export function deleteProduct(productId: string) {
   return del(`/products/${productId}`);
 }
 
-export function updateProduct(productId: string, payload: IProductUpdate) {
-  return patch(`/products/${productId}`, payload);
+export function updateProduct(productId: string, data: IProductUpdate) {
+  return patch(`/products/${productId}`, { data });
 }
