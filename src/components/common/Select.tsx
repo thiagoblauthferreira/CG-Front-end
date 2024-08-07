@@ -2,7 +2,7 @@ import React, { SelectHTMLAttributes } from "react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { getNestedValue } from "../../utils";
 
-interface IOption {
+export interface IOption {
   label: string;
   value: string;
   disabeld?: boolean;

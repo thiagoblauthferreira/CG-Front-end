@@ -24,6 +24,7 @@ export function Search({ className, options, onFilter }: ISearch) {
         return (
           <Input
             {...registered}
+            placeholder="Pesquisar"
             onChange={(event) => {
               handleFilter(event, organizedKey);
             }}

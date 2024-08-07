@@ -3,7 +3,6 @@ import { typeRoles, typeStatus } from "./auth";
 import { IShelter } from "./shelter";
 
 export interface IUserCreate {
-  id?: string;
   name: string;
   email: string;
   username: string;
@@ -13,7 +12,6 @@ export interface IUserCreate {
   birthDate?: Date;
   isDonor?: boolean;
   isCoordinator?: boolean;
-  roles?: typeRoles[];
   hasVehicle?: boolean;
   vehicleType?: string;
   color?: string;
@@ -33,7 +31,7 @@ export interface IUser {
   birthDate: Date;
   isDonor: boolean;
   isCoordinator: boolean;
-  roles: string[];
+  roles: typeRoles[];
   hasVehicle?: boolean;
   vehicleType?: string;
   status: typeStatus;

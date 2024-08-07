@@ -1,6 +1,6 @@
 import React from "react";
 import { CardPrimary } from "../../components/cards/CardPrimary";
-import { Button, Select, LoadingScreen, Loading } from "../../components/common";
+import { Button, LoadingScreen, Loading } from "../../components/common";
 import { useNavigate } from "react-router-dom";
 import { BsChevronRight } from "react-icons/bs";
 import useInView from "../../hooks/useInView";
@@ -12,15 +12,14 @@ import {
   IDistribuitionPoint,
   IDistribuitionPointCreate,
 } from "../../interfaces/distriuition-points";
-import { useForm } from "react-hook-form";
-import { ModalDistribuitionPoint } from "../../components/modals/CreateDistribuitionPoint/index";
+import { ModalDistribuitionPoint } from "../../components/modals/DistribuitionPoint/index";
+import { Search } from "../../components/search";
 
 const limit = 10;
 
 export default function DistribuitionPointsScreen() {
   const navigate = useNavigate();
   const { ref, inView } = useInView();
-  const { register, watch } = useForm<any>({});
 
   const page = React.useRef<number>(0);
   const filter = React.useRef({});
@@ -38,14 +37,8 @@ export default function DistribuitionPointsScreen() {
     navigate(`/distribuition-points/${id}`);
   };
 
-  const handleFilter = async (event: any, key: string) => {
-    register(key).onChange(event);
-    const data = {
-      teste1: watch("teste1"),
-      teste2: watch("teste2"),
-      teste3: watch("teste3"),
-    };
-    filter.current = { ...filter.current, ...data };
+  const handleFilter = async (data: any) => {
+    filter.current = data;
 
     try {
       setRequesting(true);
@@ -61,7 +54,7 @@ export default function DistribuitionPointsScreen() {
     }
   };
 
-  const hanldeDistribuitionPoint = async (data: IDistribuitionPointCreate) => {
+  const handleDistribuitionPoint = async (data: IDistribuitionPointCreate) => {
     try {
       setRequesting(true);
       console.log(data);
@@ -104,66 +97,45 @@ export default function DistribuitionPointsScreen() {
     }
   }, [inView]);
 
-  if (loading) {
-    return (
-      <div ref={ref}>
-        <LoadingScreen />
-      </div>
-    );
-  }
-
   return (
     <div className="py-8">
+      <LoadingScreen ref={ref} loading={loading} />
       <div className="my-5">
-        <p className="font-semibold">Filtrar por</p>
+        <p className="font-semibold mb-2">Filtrar por</p>
         <div
           className={`
-            grid grid-cols-1 gap-3
-            sm:grid-cols-2 xl:grid-cols-4
+            flex flex-col gap-4 md:flex-row
           `}
         >
-          <Select
-            {...register("teste1")}
-            onChange={(event) => {
-              handleFilter(event, "teste1");
-            }}
+          <Search
+            className="grid gap-4 grid-cols-1 md:grid-cols-3 w-full"
+            onFilter={handleFilter}
             options={[
-              { label: "teste1", value: "teste1" },
-              { label: "teste2", value: "teste2" },
-              { label: "teste3", value: "teste3" },
-            ]}
-          />
-          <Select
-            {...register("teste2")}
-            onChange={(event) => {
-              handleFilter(event, "teste2");
-            }}
-            options={[
-              { label: "teste1", value: "teste1" },
-              { label: "teste2", value: "teste2" },
-              { label: "teste3", value: "teste3" },
-            ]}
-          />
-          <Select
-            {...register("teste3")}
-            onChange={(event) => {
-              handleFilter(event, "teste3");
-            }}
-            options={[
-              { label: "teste1", value: "teste1" },
-              { label: "teste2", value: "teste2" },
-              { label: "teste3", value: "teste3" },
+              {
+                optionKey: "teste1",
+                type: "select",
+                options: [{ label: "All", value: "" }],
+              },
+              {
+                optionKey: "teste2",
+                type: "select",
+                options: [{ label: "All", value: "" }],
+              },
+              {
+                optionKey: "teste3",
+                type: "select",
+                options: [{ label: "All", value: "" }],
+              },
             ]}
           />
 
           <Button
             text="Novo ponto de distribuição"
-            className="bg-black text-white w-full"
+            className="bg-black text-white"
             onClick={() => setOpenModal(true)}
           />
         </div>
       </div>
-
       {requesting ? (
         <div className="flex justify-center items-center h-[100px]" ref={ref}>
           <Loading />
@@ -213,11 +185,10 @@ export default function DistribuitionPointsScreen() {
           )}
         </>
       )}
-
       <ModalDistribuitionPoint
         open={openModal}
         close={() => setOpenModal(false)}
-        onSubmit={hanldeDistribuitionPoint}
+        onSubmit={handleDistribuitionPoint}
       />
     </div>
   );

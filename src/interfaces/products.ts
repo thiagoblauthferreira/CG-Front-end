@@ -3,7 +3,6 @@ import { IUser } from "./user";
 
 export type ProductType = "perishable" | "not_perishable";
 export interface IProductCreate {
-  id: string;
   name: string;
   type: ProductType;
   quantity: number;

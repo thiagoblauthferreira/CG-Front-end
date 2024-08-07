@@ -2,7 +2,6 @@ import { IAddress } from "./address";
 import { IUser } from "./user";
 
 export interface IShelterCreate {
-  id: string;
   name: string;
   phone: string;
   description?: string;
