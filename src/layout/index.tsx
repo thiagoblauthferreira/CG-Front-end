@@ -9,7 +9,7 @@ export function Layout() {
   const [openSidebar, setOpenSidebar] = React.useState<boolean>(false);
 
   return (
-    <div className={`relative`}>
+    <div className={`relative overflow-y-auto not-scroll-bar h-svh`}>
       <Header openSidebar={() => setOpenSidebar(true)} />
 
       <Sidebar open={openSidebar} close={() => setOpenSidebar(false)} />
@@ -23,7 +23,7 @@ export function Layout() {
         <div
           className={`
             m-auto max-w-7xl w-full h-full
-            mt-[100px] mb-10
+            mt-[100px]
           `}
         >
           <Outlet />
