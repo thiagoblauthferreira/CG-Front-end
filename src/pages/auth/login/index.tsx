@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import { FormFieldConstructor } from "../../../components/common/FormField";
-import { LoginSchema } from "../../../validators/login/login.validator";
+import { LoginSchema } from "../../../validators/login.validator";
 import { login } from "../../../services/auth.service";
 import { setCookie } from "../../../services/cookie.service";
 import { ILogin } from "../../../interfaces/auth";

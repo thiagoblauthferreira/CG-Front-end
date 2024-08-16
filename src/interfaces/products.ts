@@ -1,3 +1,4 @@
+import { IParamsDefault } from "./default";
 import { IDistribuitionPoint } from "./distriuition-points";
 import { IUser } from "./user";
 
@@ -31,4 +32,8 @@ export interface IProduct {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
+}
+
+export interface ISearchProducts extends IParamsDefault {
+  distribuitionPointId?: string;
 }

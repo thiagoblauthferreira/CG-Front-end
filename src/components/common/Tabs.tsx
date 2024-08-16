@@ -34,9 +34,10 @@ export function Tabs({ tabs, tabDeafult, className, classNameTabs }: ITabsProps)
                 key={`btn-key-tab-${tab.key}-${index}`}
                 className={`
                   B7 cursor-pointer snap-start flex justify-center 
-                  px-4 py-2 text-gray-600 text-nowrap border-b-2 
+                  px-4 py-2 text-gray-400 text-nowrap border-b-2 
                   border-solid border-transparent transition-all w-max
-                  ${tabState === tab.key ? "!text-black !font-bold !border-black" : ""} 
+                  font-bold
+                  ${tabState === tab.key ? "!text-black !border-black" : ""} 
                   ${
                     tab.disabled
                       ? "cursor-not-allowed"

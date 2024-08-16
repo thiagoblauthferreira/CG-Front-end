@@ -1,14 +1,25 @@
 import { get, post } from "./cg-api.service";
-import { IDistribuitionPointCreate } from "../interfaces/distriuition-points";
+import {
+  IDistribuitionPointCreate,
+  IDistribuitionPointUpdate,
+  ISearchDistribuitionPoint,
+} from "../interfaces/distriuition-points";
+
+export function listOneDistribuitionPoint(distribuitionPointId: string) {
+  return get(`/distribuitionPoint/${distribuitionPointId}`);
+}
 
 export function createDistribuitionPoints(data: IDistribuitionPointCreate) {
   return post(`/distribuitionPoint`, { data });
 }
 
-export function listDistribuitionPoints(params: any) {
-  return get(`/distribuitionPoint`, { params });
+export function updateDistribuitionPoints(
+  distribuitionPointId: string,
+  data: IDistribuitionPointUpdate
+) {
+  return post(`/distribuitionPoint${distribuitionPointId}`, { data });
 }
 
-export function listProductsByDistribuitionPoint(distribuitionPointId: string) {
-  return get(`/distribuitionPoint/${distribuitionPointId}/products`);
+export function listDistribuitionPoints(params: ISearchDistribuitionPoint) {
+  return get(`/distribuitionPoint`, { params });
 }

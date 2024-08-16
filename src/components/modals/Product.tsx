@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Button, Input, Modal, Select, Textarea } from "../common";
 import { IProductCreate } from "../../interfaces/products";
-import { createProductSchema } from "../../validators/product/createProduct";
+import { createProductSchema } from "../../validators/product.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface IModalProduct {

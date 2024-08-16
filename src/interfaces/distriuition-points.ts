@@ -1,4 +1,5 @@
 import { IAddress } from "./address";
+import { IParamsDefault } from "./default";
 import { IProduct } from "./products";
 import { IUser } from "./user";
 
@@ -28,3 +29,5 @@ export interface IDistribuitionPoint {
   updatedAt: Date;
   deletedAt?: Date;
 }
+
+export interface ISearchDistribuitionPoint extends IParamsDefault {}

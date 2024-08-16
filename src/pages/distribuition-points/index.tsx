@@ -1,6 +1,6 @@
 import React from "react";
 import { CardPrimary } from "../../components/cards/CardPrimary";
-import { Button, LoadingScreen, Loading } from "../../components/common";
+import { Button, LoadingScreen, Loading, Skeleton } from "../../components/common";
 import { useNavigate } from "react-router-dom";
 import { BsChevronRight } from "react-icons/bs";
 import useInView from "../../hooks/useInView";
@@ -11,21 +11,25 @@ import {
 import {
   IDistribuitionPoint,
   IDistribuitionPointCreate,
+  ISearchDistribuitionPoint,
 } from "../../interfaces/distriuition-points";
 import { ModalDistribuitionPoint } from "../../components/modals/DistribuitionPoint/index";
 import { Search } from "../../components/search";
+import { useAuthProvider } from "../../context/Auth";
 
 const limit = 10;
 
 export default function DistribuitionPointsScreen() {
   const navigate = useNavigate();
+  const { currentUser } = useAuthProvider();
   const { ref, inView } = useInView();
 
   const page = React.useRef<number>(0);
-  const filter = React.useRef({});
+  const filter = React.useRef<ISearchDistribuitionPoint>({});
 
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [requesting, setRequesting] = React.useState<boolean>(false);
+  const [requestingCreate, setRequestingCreate] = React.useState<boolean>(false);
   const [infinitScroll, setInfinitScroll] = React.useState<boolean>(true);
   const [loading, setLoading] = React.useState<boolean>(true);
 
@@ -37,7 +41,7 @@ export default function DistribuitionPointsScreen() {
     navigate(`/distribuition-points/${id}`);
   };
 
-  const handleFilter = async (data: any) => {
+  const handleFilter = async (data: ISearchDistribuitionPoint) => {
     filter.current = data;
 
     try {
@@ -54,16 +58,21 @@ export default function DistribuitionPointsScreen() {
     }
   };
 
-  const handleDistribuitionPoint = async (data: IDistribuitionPointCreate) => {
+  const handleCreateDistribuitionPoint = async (data: IDistribuitionPointCreate) => {
+    console.log(data);
+
     try {
-      setRequesting(true);
-      console.log(data);
-      // const resp = await createDistribuitionPoints(data);
-      // console.log(resp);
+      setRequestingCreate(true);
+
+      const respDistribuitionPoint = await createDistribuitionPoints(data);
+
+      setDistribuitionPoints((currentDistribuitionPoints) => {
+        return [respDistribuitionPoint, ...currentDistribuitionPoints];
+      });
     } catch (error) {
       console.error(error);
     } finally {
-      setRequesting(false);
+      setRequestingCreate(false);
     }
   };
 
@@ -100,6 +109,7 @@ export default function DistribuitionPointsScreen() {
   return (
     <div className="py-8">
       <LoadingScreen ref={ref} loading={loading} />
+
       <div className="my-5">
         <p className="font-semibold mb-2">Filtrar por</p>
         <div
@@ -136,8 +146,9 @@ export default function DistribuitionPointsScreen() {
           />
         </div>
       </div>
+
       {requesting ? (
-        <div className="flex justify-center items-center h-[100px]" ref={ref}>
+        <div className="flex justify-center items-center h-[100px]">
           <Loading />
         </div>
       ) : (
@@ -148,6 +159,21 @@ export default function DistribuitionPointsScreen() {
               sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
             `}
           >
+            {requestingCreate && (
+              <div
+                className={`
+                  card card-compact bg-base-100 shadow-xl
+                  rounded-lg w-full overflow-hidden
+                `}
+              >
+                <Skeleton className="w-full h-44 rounded-none" />
+                <div className={`card-body`}>
+                  <Skeleton className="card-title w-32 h-6" />
+                  <Skeleton className="card-title w-28 h-4" />
+                </div>
+              </div>
+            )}
+
             {distribuitionPoints.map((distribuitionPoint) => {
               return (
                 <CardPrimary image="" title={distribuitionPoint.name}>
@@ -185,10 +211,11 @@ export default function DistribuitionPointsScreen() {
           )}
         </>
       )}
+
       <ModalDistribuitionPoint
         open={openModal}
         close={() => setOpenModal(false)}
-        onSubmit={handleDistribuitionPoint}
+        onSubmit={handleCreateDistribuitionPoint}
       />
     </div>
   );

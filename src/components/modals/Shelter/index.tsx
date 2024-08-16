@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TabShelter } from "./Tabs/Shelter";
 import { TabAddress } from "./Tabs/Address";
 import { IShelterCreate } from "../../../interfaces/shelter";
-import { createShelterSchema } from "../../../validators/shelter/createShelter";
+import { shelterSchema } from "../../../validators";
 
 interface IShelter {
   close: () => void;
@@ -18,7 +18,7 @@ export function ModalShelter({ close, open, onSubmit }: IShelter) {
     handleSubmit,
     formState: { errors },
   } = useForm<IShelterCreate>({
-    resolver: zodResolver(createShelterSchema),
+    resolver: zodResolver(shelterSchema),
   });
 
   return (

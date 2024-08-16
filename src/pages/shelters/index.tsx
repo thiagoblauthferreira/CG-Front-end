@@ -1,6 +1,6 @@
 import React from "react";
 import { CardPrimary } from "../../components/cards/CardPrimary";
-import { Button, Loading } from "../../components/common";
+import { Button, Loading, Skeleton } from "../../components/common";
 import { LoadingScreen } from "../../components/common/LoadingScreen";
 import { IShelter, IShelterCreate } from "../../interfaces/shelter";
 import { createShelter, listShelters } from "../../services/shelter.service";
@@ -9,6 +9,7 @@ import { BsChevronRight } from "react-icons/bs";
 import { Search } from "../../components/search";
 import { useNavigate } from "react-router-dom";
 import { ModalShelter } from "../../components/modals/Shelter";
+import { ISearchProducts } from "../../interfaces/products";
 
 const limit = 10;
 
@@ -17,11 +18,12 @@ export default function SheltersScreen() {
   const { ref, inView } = useInView();
 
   const page = React.useRef<number>(0);
-  const filter = React.useRef({});
+  const filter = React.useRef<ISearchProducts>({});
 
-  const [requesting, setRequesting] = React.useState<boolean>(false);
-  const [infinitScroll, setInfinitScroll] = React.useState<boolean>(true);
   const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [requesting, setRequesting] = React.useState<boolean>(false);
+  const [requestingCreate, setRequestingCreate] = React.useState<boolean>(false);
+  const [infinitScroll, setInfinitScroll] = React.useState<boolean>(true);
   const [loading, setLoading] = React.useState<boolean>(true);
 
   const [shelters, setShelters] = React.useState<IShelter[]>([]);
@@ -30,7 +32,7 @@ export default function SheltersScreen() {
     navigate(`/shelters/${id}`);
   };
 
-  const handleFilter = async (data: any) => {
+  const handleFilter = async (data: ISearchProducts) => {
     filter.current = data;
 
     try {
@@ -48,15 +50,16 @@ export default function SheltersScreen() {
   };
 
   const handleShelter = async (data: IShelterCreate) => {
+    console.log(data);
+
     try {
-      setRequesting(true);
-      console.log(data);
+      setRequestingCreate(true);
       // const resp = await createShelter(data);
       // console.log(resp);
     } catch (error) {
       console.error(error);
     } finally {
-      setRequesting(false);
+      setRequestingCreate(false);
     }
   };
 
@@ -93,6 +96,7 @@ export default function SheltersScreen() {
   return (
     <div className="py-8">
       <LoadingScreen ref={ref} loading={loading} />
+
       <div className="my-5">
         <p className="font-semibold mb-2">Filtrar por</p>
         <div
@@ -129,8 +133,9 @@ export default function SheltersScreen() {
           />
         </div>
       </div>
+
       {requesting ? (
-        <div className="flex justify-center items-center h-[100px]" ref={ref}>
+        <div className="flex justify-center items-center h-[100px]">
           <Loading />
         </div>
       ) : (
@@ -141,6 +146,21 @@ export default function SheltersScreen() {
               sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
             `}
           >
+            {requestingCreate && (
+              <div
+                className={`
+                  card card-compact bg-base-100 shadow-xl
+                  rounded-lg w-full overflow-hidden
+                `}
+              >
+                <Skeleton className="w-full h-44 rounded-none" />
+                <div className={`card-body`}>
+                  <Skeleton className="card-title w-32 h-6" />
+                  <Skeleton className="card-title w-28 h-4" />
+                </div>
+              </div>
+            )}
+
             {shelters.map((shelter) => {
               return (
                 <CardPrimary image="" title={shelter.name}>
@@ -178,6 +198,7 @@ export default function SheltersScreen() {
           )}
         </>
       )}
+
       <ModalShelter
         open={openModal}
         close={() => setOpenModal(false)}
