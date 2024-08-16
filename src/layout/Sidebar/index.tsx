@@ -5,6 +5,7 @@ import { sidebarData } from "../../utils/layout/SidebarData";
 import { BsChevronLeft } from "react-icons/bs";
 import { useAuthProvider } from "../../context/Auth";
 import { useNavigate } from "react-router-dom";
+import logo from "../../assets/img/logo.png";
 
 interface ISidebarProps {
   open: boolean;
@@ -41,7 +42,14 @@ export function Sidebar({ open, close }: ISidebarProps) {
             className="absolute left-0 top-1/2 -translate-y-1/2 text-lg cursor-pointer"
             onClick={close}
           />
-          LOGO
+          <div className="inline-flex gap-3">
+            <div className={`flex justify-center h-full size-12`}>
+              <img alt="logo" src={logo} className="w-full object-contain" />
+            </div>
+            <p className="hidden self-center text-2xl font-semibold text-green-600 sm:flex">
+              Coletivo Gloma
+            </p>
+          </div>
         </div>
 
         <div className="overflow-y-auto my-2 mb-14 not-scroll-bar">
@@ -62,7 +70,7 @@ export function Sidebar({ open, close }: ISidebarProps) {
                   <Button
                     text={menu.text}
                     prefix={menu.icon}
-                    className="bg-black w-full text-white"
+                    className="bg-black w-full text-white justify-start"
                     onClick={() => {
                       navigate(menu.route || "");
                       close();
@@ -77,7 +85,7 @@ export function Sidebar({ open, close }: ISidebarProps) {
         <div className="absolute bottom-0 left-0 w-full p-4">
           <Button
             text={"Sair"}
-            className="bg-black w-full text-white"
+            className="bg-black w-full text-white justify-start"
             onClick={() => setOpenModalLogout(true)}
           />
         </div>

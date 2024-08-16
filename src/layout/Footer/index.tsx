@@ -1,4 +1,5 @@
 import { BsFacebook, BsTwitterX, BsInstagram } from "react-icons/bs";
+import logo from "../../assets/img/logo.png";
 
 interface ILinksProps {
   title: string;
@@ -46,14 +47,17 @@ export function Footer() {
           `}
         >
           <div className="lg:w-1/3">
-            {/* eslint-disable jsx-a11y/anchor-is-valid */}
             <a
               rel="noopener noreferrer"
-              href="#"
+              href="/home"
               className="flex justify-center space-x-3 lg:justify-start"
             >
-              <div className="size-16 rounded-full bg-slate-600"></div>
-              <span className="self-center text-2xl font-semibold">Coletivo Gloma</span>
+              <div className={`size-16`}>
+                <img alt="logo" src={logo} className="w-full object-contain" />
+              </div>
+              <p className="self-center text-2xl font-semibold text-green-600">
+                Coletivo Gloma
+              </p>
             </a>
           </div>
 
@@ -69,7 +73,7 @@ export function Footer() {
             />
 
             <div className="space-y-3">
-              <div className="uppercase dark:text-gray-900">Mídias sociais</div>
+              <p className="uppercase dark:text-gray-900">Mídias sociais</p>
               <div className="flex justify-start space-x-4">
                 {/* eslint-disable jsx-a11y/anchor-is-valid */}
                 <a
@@ -98,9 +102,9 @@ export function Footer() {
             </div>
           </div>
         </div>
-        <div className="py-6 text-sm text-center dark:text-gray-600">
+        <p className="py-6 text-sm text-center dark:text-gray-600">
           © 1968 Company Co. All rights reserved.
-        </div>
+        </p>
       </div>
     </footer>
   );
