@@ -1,4 +1,6 @@
 import { BsFacebook, BsTwitterX, BsInstagram } from "react-icons/bs";
+import { Link } from "../../components/common";
+
 import logo from "../../assets/img/logo.png";
 
 interface IFooterProps {
@@ -21,13 +23,7 @@ function Links({ links, title }: ILinksProps) {
         {links.map((link) => {
           return (
             <li>
-              <a
-                rel="noopener noreferrer"
-                href={link.url}
-                className="transition-all hover:opacity-80"
-              >
-                {link.text}
-              </a>
+              <Link href={link.url}>{link.text}</Link>
             </li>
           );
         })}
@@ -52,10 +48,9 @@ export function Footer({ className }: IFooterProps) {
           `}
         >
           <div className="lg:w-1/3">
-            <a
-              rel="noopener noreferrer"
+            <Link
               href="/home"
-              className="flex justify-center space-x-3 lg:justify-start"
+              className="flex justify-center space-x-3 lg:justify-start hover:opacity-100"
             >
               <div className={`size-16`}>
                 <img alt="logo" src={logo} className="w-full object-contain" />
@@ -63,7 +58,7 @@ export function Footer({ className }: IFooterProps) {
               <p className="self-center text-2xl font-semibold text-green-600">
                 Coletivo Gloma
               </p>
-            </a>
+            </Link>
           </div>
 
           <div className="grid grid-cols-2 text-sm gap-x-3 gap-y-8 lg:w-2/3">
@@ -81,28 +76,15 @@ export function Footer({ className }: IFooterProps) {
               <p className="uppercase dark:text-gray-900">Mídias sociais</p>
               <div className="flex justify-start space-x-4">
                 {/* eslint-disable jsx-a11y/anchor-is-valid */}
-                <a
-                  rel="noopener noreferrer"
-                  href="#"
-                  className="transition-all hover:opacity-80"
-                >
+                <Link href="#">
                   <BsFacebook size={18} />
-                </a>
-
-                <a
-                  rel="noopener noreferrer"
-                  href="#"
-                  className="transition-all hover:opacity-80"
-                >
+                </Link>
+                <Link href="#">
                   <BsTwitterX size={18} />
-                </a>
-                <a
-                  rel="noopener noreferrer"
-                  href="#"
-                  className="transition-all hover:opacity-80"
-                >
+                </Link>
+                <Link href="#">
                   <BsInstagram size={18} />
-                </a>
+                </Link>
               </div>
             </div>
           </div>

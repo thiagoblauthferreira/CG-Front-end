@@ -12,3 +12,4 @@ export * from "./LoadingScreen";
 export * from "./Tabs";
 export * from "./Collapse";
 export * from "./Skeleton";
+export * from "./Link";
