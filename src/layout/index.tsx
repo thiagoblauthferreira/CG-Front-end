@@ -9,28 +9,18 @@ export function Layout() {
   const [openSidebar, setOpenSidebar] = React.useState<boolean>(false);
 
   return (
-    <div className={`relative overflow-y-auto not-scroll-bar h-svh`}>
+    <div className="relative flex flex-col min-h-screen">
       <Header openSidebar={() => setOpenSidebar(true)} />
 
       <Sidebar open={openSidebar} close={() => setOpenSidebar(false)} />
 
-      <main
-        className={`
-          bg-base-100 overflow-x-hidden 
-          px-4
-        `}
-      >
-        <div
-          className={`
-            m-auto max-w-7xl w-full h-full
-            mt-[100px]
-          `}
-        >
+      <main className="flex-1 overflow-x-hidden px-4">
+        <div className="m-auto max-w-7xl w-full mt-[100px]">
           <Outlet />
         </div>
       </main>
 
-      <Footer />
+      <Footer className="mt-auto" />
 
       <LoadingScreen />
     </div>

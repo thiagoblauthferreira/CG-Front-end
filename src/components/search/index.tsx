@@ -3,7 +3,7 @@ import { IObjectFilter, IOptionFilter, ISearch } from "./interface";
 import { Input, Select } from "../common";
 import { useForm } from "react-hook-form";
 
-export function Search({ className, options, onFilter }: ISearch) {
+export function Search({ className, options, disabled, onFilter }: ISearch) {
   const { register, watch } = useForm<any>({});
 
   const filterRef = React.useRef<IObjectFilter>({});
@@ -15,7 +15,7 @@ export function Search({ className, options, onFilter }: ISearch) {
     onFilter(filterRef.current);
   };
 
-  const Option = ({ optionKey, type, options }: IOptionFilter) => {
+  const Option = ({ optionKey, type, disabled, options }: IOptionFilter) => {
     const organizedKey = optionKey.replace(/\s+/g, "_");
     const registered = register(organizedKey);
 
@@ -24,6 +24,7 @@ export function Search({ className, options, onFilter }: ISearch) {
         return (
           <Input
             {...registered}
+            disabled={disabled}
             placeholder="Pesquisar"
             onChange={(event) => {
               handleFilter(event, organizedKey);
@@ -35,6 +36,7 @@ export function Search({ className, options, onFilter }: ISearch) {
         return (
           <Select
             {...registered}
+            disabled={disabled}
             onChange={(event) => {
               handleFilter(event, organizedKey);
             }}
@@ -55,7 +57,11 @@ export function Search({ className, options, onFilter }: ISearch) {
     >
       {options.map((option) => {
         return (
-          <Option key={`search-filter-${option.optionKey}-${option.type}`} {...option} />
+          <Option
+            key={`search-filter-${option.optionKey}-${option.type}`}
+            disabled={disabled}
+            {...option}
+          />
         );
       })}
     </div>

@@ -1,6 +1,10 @@
 import { BsFacebook, BsTwitterX, BsInstagram } from "react-icons/bs";
 import logo from "../../assets/img/logo.png";
 
+interface IFooterProps {
+  className?: string;
+}
+
 interface ILinksProps {
   title: string;
   links: {
@@ -32,11 +36,12 @@ function Links({ links, title }: ILinksProps) {
   );
 }
 
-export function Footer() {
+export function Footer({ className }: IFooterProps) {
   return (
     <footer
       className={`
         flex w-full bg-slate-300 drop-shadow px-5
+        ${className}
       `}
     >
       <div className={`m-auto max-w-7xl w-full divide-y divide-black`}>

@@ -1,10 +1,11 @@
 import React from "react";
 import { Button } from "../../components/common";
-import { ModalLogout } from "../../components/modals/Logout";
+import { ModalLogout } from "../../components/modals";
 import { sidebarData } from "../../utils/layout/SidebarData";
 import { BsChevronLeft } from "react-icons/bs";
 import { useAuthProvider } from "../../context/Auth";
 import { useNavigate } from "react-router-dom";
+
 import logo from "../../assets/img/logo.png";
 
 interface ISidebarProps {

@@ -8,7 +8,7 @@ import useInView from "../../hooks/useInView";
 import { BsChevronRight } from "react-icons/bs";
 import { Search } from "../../components/search";
 import { useNavigate } from "react-router-dom";
-import { ModalShelter } from "../../components/modals/Shelter";
+import { ModalShelter } from "../../components/modals";
 import { ISearchProducts } from "../../interfaces/products";
 
 const limit = 10;
@@ -54,8 +54,8 @@ export default function SheltersScreen() {
 
     try {
       setRequestingCreate(true);
-      // const resp = await createShelter(data);
-      // console.log(resp);
+      const resp = await createShelter(data);
+      console.log(resp);
     } catch (error) {
       console.error(error);
     } finally {

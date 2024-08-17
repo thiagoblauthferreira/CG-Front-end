@@ -1,21 +1,41 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input, Modal, Select, Textarea } from "../common";
-import { IProductCreate } from "../../interfaces/products";
-import { createProductSchema } from "../../validators/product.validator";
+import { IProduct, IProductCreate } from "../../interfaces/products";
+import { productSchema } from "../../validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface IModalProduct {
   close: () => void;
   open: boolean;
   onSubmit: (data: IProductCreate) => void;
+  modalType?: "create" | "update";
+  product?: IProduct;
 }
 
-export function ModalProduct({ close, open, onSubmit }: IModalProduct) {
+export function ModalProduct({
+  close,
+  open,
+  onSubmit,
+  modalType = "create",
+  product,
+}: IModalProduct) {
   const {
+    setValue,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IProductCreate>({ resolver: zodResolver(createProductSchema) });
+  } = useForm<IProductCreate>({ resolver: zodResolver(productSchema) });
+
+  React.useEffect(() => {
+    if (product && modalType === "update") {
+      for (const k in product) {
+        const key = k as keyof IProduct;
+
+        setValue(key as any, product[key]);
+      }
+    }
+  }, [product, modalType]);
 
   return (
     <Modal
@@ -23,7 +43,9 @@ export function ModalProduct({ close, open, onSubmit }: IModalProduct) {
       close={close}
       header={
         <div className="p-4">
-          <p className="font-semibold text-lg">Criar produto</p>
+          <p className="font-semibold text-lg">
+            {modalType === "create" ? "Criar" : "Atualizar"} produto
+          </p>
         </div>
       }
     >

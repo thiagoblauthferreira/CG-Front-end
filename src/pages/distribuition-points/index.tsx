@@ -13,7 +13,7 @@ import {
   IDistribuitionPointCreate,
   ISearchDistribuitionPoint,
 } from "../../interfaces/distriuition-points";
-import { ModalDistribuitionPoint } from "../../components/modals/DistribuitionPoint/index";
+import { ModalDistribuitionPoint } from "../../components/modals";
 import { Search } from "../../components/search";
 import { useAuthProvider } from "../../context/Auth";
 
@@ -118,7 +118,7 @@ export default function DistribuitionPointsScreen() {
           `}
         >
           <Search
-            className="grid gap-4 grid-cols-1 md:grid-cols-3 w-full"
+            className="gap-4 w-full"
             onFilter={handleFilter}
             options={[
               {

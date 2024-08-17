@@ -15,14 +15,18 @@ export interface IProductsInitialData {
 
 export interface IDistribuitionPointProvider {
   setOpenModalProduct: (event: boolean) => void;
+  setOpenModalUpdateProduct: (event: boolean) => void;
   handleFilter: (data: any) => void;
   handleCreateProduct: (data: IProductCreate) => void;
   handleUpdateProduct: (productId: string, data: IProductUpdate) => void;
   handleDeleteProduct: (productId: string) => void;
+  handleProduct: (productId: string) => Promise<IProduct>;
   handleUpdateDistribuitionPoint: (data: IDistribuitionPointUpdate) => void;
   openModalProduct: boolean;
+  openModalUpdateProduct: boolean;
   products: IProductsInitialData;
   distribuitionPoint?: IDistribuitionPoint;
+  requesting: boolean;
 }
 
 export interface IContextProvider {

@@ -18,7 +18,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   createProduct,
   deleteProduct,
+  listOneProduct,
   listProducts,
+  updateProduct,
 } from "../../../../services/products.service";
 
 const DistribuitionPointContext = React.createContext<IDistribuitionPointProvider>(
@@ -37,25 +39,13 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
   const filter = React.useRef({});
 
   const [openModalProduct, setOpenModalProduct] = React.useState<boolean>(false);
+  const [openModalUpdateProduct, setOpenModalUpdateProduct] =
+    React.useState<boolean>(false);
   const [requesting, setRequesting] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [products, setProducts] = React.useState<IProductsInitialData>(initialData);
   const [distribuitionPoint, setDistribuitionPoint] =
     React.useState<IDistribuitionPoint>();
-
-  const handleUpdateDistribuitionPoint = async (data: IDistribuitionPointUpdate) => {
-    console.log(data);
-    if (requesting) return;
-
-    try {
-      setRequesting(true);
-      await updateDistribuitionPoints(id, data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setRequesting(false);
-    }
-  };
 
   const handleFilter = async (data: any) => {
     if (requesting) return;
@@ -67,6 +57,20 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
       const resp = await listProducts(data);
       setProducts(resp);
       console.log(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setRequesting(false);
+    }
+  };
+
+  const handleUpdateDistribuitionPoint = async (data: IDistribuitionPointUpdate) => {
+    console.log(data);
+    if (requesting) return;
+
+    try {
+      setRequesting(true);
+      await updateDistribuitionPoints(id, data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -91,6 +95,7 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
           total: currentProducts.total + 1,
         };
       });
+      setOpenModalProduct(false);
     } catch (error) {
       console.error(error);
     } finally {
@@ -107,7 +112,7 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
     try {
       setRequesting(true);
 
-      const respProduct = await createProduct(newData);
+      const respProduct = await updateProduct(productId, newData);
 
       setProducts((currentProducts) => {
         const productsData = currentProducts.data;
@@ -123,6 +128,7 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
           data: filteredProducts,
         };
       });
+      setOpenModalProduct(false);
     } catch (error) {
       console.error(error);
     } finally {
@@ -145,6 +151,22 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
         );
         return { data: filteredProducts, total: currentProducts.total - 1 };
       });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setRequesting(false);
+    }
+  };
+
+  const handleProduct = async (productId: string) => {
+    if (requesting) return;
+
+    try {
+      setRequesting(true);
+
+      const respProduct = await listOneProduct(productId);
+
+      return respProduct;
     } catch (error) {
       console.error(error);
     } finally {
@@ -184,13 +206,17 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
       value={{
         handleFilter,
         setOpenModalProduct,
+        setOpenModalUpdateProduct,
         handleCreateProduct,
         handleUpdateProduct,
         handleDeleteProduct,
+        handleProduct,
         handleUpdateDistribuitionPoint,
         products,
         openModalProduct,
+        openModalUpdateProduct,
         distribuitionPoint,
+        requesting,
       }}
     >
       {children}

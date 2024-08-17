@@ -1,17 +1,34 @@
+import React from "react";
 import { Button } from "../../common";
-import { ModalProduct } from "../../modals/Product";
+import { ModalProduct } from "../../modals";
 import { Search } from "../../search";
 import { TableProducts } from "../../tables/table-products";
 import { useDistribuitionPointProvider } from "./context";
+import { IProduct } from "../../../interfaces/products";
 
 export function TabProducts() {
   const {
     handleFilter,
     handleCreateProduct,
+    handleDeleteProduct,
+    handleUpdateProduct,
     setOpenModalProduct,
+    handleProduct,
+    setOpenModalUpdateProduct,
     products,
     openModalProduct,
+    openModalUpdateProduct,
+    requesting,
   } = useDistribuitionPointProvider();
+
+  const [product, setProduct] = React.useState<IProduct>();
+
+  const onUpdateProduct = async (productId: string) => {
+    const product = await handleProduct(productId);
+
+    setProduct(product);
+    setOpenModalUpdateProduct(true);
+  };
 
   return (
     <div>
@@ -23,8 +40,9 @@ export function TabProducts() {
           `}
         >
           <Search
-            className="grid gap-4 grid-cols-1 md:grid-cols-3 w-full"
+            className="gap-4 w-full"
             onFilter={handleFilter}
+            disabled={requesting}
             options={[
               {
                 optionKey: "teste1",
@@ -59,6 +77,7 @@ export function TabProducts() {
           <Button
             text="Nova necessidade"
             className="bg-black text-white"
+            disabled={requesting}
             onClick={() => setOpenModalProduct(true)}
           />
         </div>
@@ -68,6 +87,9 @@ export function TabProducts() {
         <TableProducts
           total={products.total}
           dataSource={products.data}
+          handleDeleteProduct={handleDeleteProduct}
+          handleUpdateProduct={onUpdateProduct}
+          requesting={requesting}
           textNotFound="Nenhum produto encontrado"
         />
       </div>
@@ -76,6 +98,14 @@ export function TabProducts() {
         open={openModalProduct}
         close={() => setOpenModalProduct(false)}
         onSubmit={handleCreateProduct}
+      />
+
+      <ModalProduct
+        open={openModalUpdateProduct}
+        close={() => setOpenModalUpdateProduct(false)}
+        onSubmit={(data) => handleUpdateProduct("", data)}
+        modalType="update"
+        product={product}
       />
     </div>
   );
