@@ -1,5 +1,5 @@
 import { useAuthProvider } from "../../context/Auth";
-import { Avatar, Link } from "../../components/common";
+import { Avatar, Image, Link } from "../../components/common";
 import logo from "../../assets/img/logo.png";
 
 interface IHeaderProps {
@@ -24,7 +24,7 @@ export function Header({ openSidebar }: IHeaderProps) {
         <div className="grid grid-cols-2 h-full">
           <Link href="/home" className="inline-flex gap-3 hover:opacity-100">
             <div className={`flex justify-center h-full size-12`}>
-              <img alt="logo" src={logo} className="w-full object-contain" />
+              <Image alt="logo" src={logo} className="w-full object-contain" />
             </div>
             <p className="hidden self-center text-2xl font-semibold text-green-600 sm:flex">
               Coletivo Gloma

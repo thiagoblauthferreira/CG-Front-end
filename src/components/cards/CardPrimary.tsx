@@ -1,3 +1,5 @@
+import { Image } from "../common";
+
 interface ICardPrimaryProps {
   image: string;
   title: string;
@@ -18,14 +20,7 @@ export function CardPrimary({ children, image, title, className }: ICardPrimaryP
       `}
     >
       <figure className="max-h-44">
-        <img
-          className="w-full object-contain"
-          src={
-            image ||
-            "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          }
-          alt="card-image"
-        />
+        <Image className="w-full object-contain" src={image} alt="card-image" />
       </figure>
       <div
         className={`

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../../components/common";
+import { Button, Image } from "../../components/common";
 import { ModalLogout } from "../../components/modals";
 import { sidebarData } from "../../utils/layout/SidebarData";
 import { BsChevronLeft } from "react-icons/bs";
@@ -45,7 +45,7 @@ export function Sidebar({ open, close }: ISidebarProps) {
           />
           <div className="inline-flex gap-3">
             <div className={`flex justify-center h-full size-12`}>
-              <img alt="logo" src={logo} className="w-full object-contain" />
+              <Image alt="logo" src={logo} className="w-full object-contain" />
             </div>
             <p className="hidden self-center text-2xl font-semibold text-green-600 sm:flex">
               Coletivo Gloma

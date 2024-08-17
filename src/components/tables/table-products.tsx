@@ -1,5 +1,4 @@
 import { ITable } from "../../interfaces/default";
-import { IProduct } from "../../interfaces/products";
 import { IColumn, Table } from "../common";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 
@@ -48,15 +47,15 @@ export function TableProducts({
     },
     {
       title: "Ação",
-      dataIndex: "",
-      render: (product: IProduct) => {
+      dataIndex: "id",
+      render: (productId: string) => {
         return (
           <div className="flex gap-2">
             <div
               className={`border-blue-600 ${btnStyleDefault} ${
                 props.requesting ? "border-gray-400 bg-gray-400" : "hover:opacity-80"
               }`}
-              onClick={() => !props.requesting && handleUpdateProduct(product.id)}
+              onClick={() => !props.requesting && handleUpdateProduct(productId)}
             >
               <FiEdit
                 className={`text-blue-600 ${props.requesting ? "text-gray-100" : ""}`}
@@ -66,7 +65,7 @@ export function TableProducts({
               className={`border-red-600 ${btnStyleDefault} ${
                 props.requesting ? "border-gray-400 bg-gray-400" : "hover:opacity-80"
               }`}
-              onClick={() => !props.requesting && handleDeleteProduct(product.id)}
+              onClick={() => !props.requesting && handleDeleteProduct(productId)}
             >
               <FiTrash2
                 className={`text-red-600 ${props.requesting ? "text-gray-100" : ""}`}

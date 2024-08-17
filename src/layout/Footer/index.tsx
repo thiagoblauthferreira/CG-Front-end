@@ -1,5 +1,5 @@
 import { BsFacebook, BsTwitterX, BsInstagram } from "react-icons/bs";
-import { Link } from "../../components/common";
+import { Image, Link } from "../../components/common";
 
 import logo from "../../assets/img/logo.png";
 
@@ -53,7 +53,7 @@ export function Footer({ className }: IFooterProps) {
               className="flex justify-center space-x-3 lg:justify-start hover:opacity-100"
             >
               <div className={`size-16`}>
-                <img alt="logo" src={logo} className="w-full object-contain" />
+                <Image alt="logo" src={logo} className="w-full object-contain" />
               </div>
               <p className="self-center text-2xl font-semibold text-green-600">
                 Coletivo Gloma

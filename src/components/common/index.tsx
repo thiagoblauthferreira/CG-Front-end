@@ -13,3 +13,4 @@ export * from "./Tabs";
 export * from "./Collapse";
 export * from "./Skeleton";
 export * from "./Link";
+export * from "./Image";
