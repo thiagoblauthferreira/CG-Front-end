@@ -12,7 +12,6 @@ import CoordinatorsScreen from "../pages/shelters/id";
 import DistribuitionPointsScreen from "../pages/distribuition-points";
 import ProductsScreen from "../pages/distribuition-points/id";
 import { PrivateRoleRoute } from "./Auth/PrivateRoleRoute";
-import ProfileScreen from "../pages/profile";
 
 export function RoutesPage() {
   return (
@@ -24,7 +23,6 @@ export function RoutesPage() {
         </Route>
 
         <Route element={<PrivateRoute />}>
-        <Route element={<ProfileScreen />} path="/profile"></Route>
         </Route>
 
         <Route element={<Layout />}>
