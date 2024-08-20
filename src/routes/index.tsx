@@ -22,7 +22,8 @@ export function RoutesPage() {
           <Route element={<SignUpScreen />} path="/register"></Route>
         </Route>
 
-        <Route element={<PrivateRoute />}></Route>
+        <Route element={<PrivateRoute />}>
+        </Route>
 
         <Route element={<Layout />}>
           <Route element={<PrivateRoleRoute roles={["coordinator"]} />}></Route>

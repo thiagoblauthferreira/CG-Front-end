@@ -34,16 +34,19 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
   });
 
   async function onSubmit(data: PersonalInfosInterface) {
-    form.setValues(data);
+    const adjustedData = { ...data,
+      username: data.email
+     };
+    form.setValues(adjustedData);
     steps.setCurrent(steps.current + 1);
   }
 
   const FormField = FormFieldConstructor<PersonalInfosInterface>();
 
-  const phone: string = watch("telefone");
+  const phone: string = watch("phone");
 
   useEffect(() => {
-    setValue("telefone", phoneMask(phone));
+    setValue("phone", phoneMask(phone));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phone]);
 
@@ -51,10 +54,10 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
     <form className="flex flex-col justify-center" onSubmit={handleSubmit(onSubmit)}>
       <h1 className="text-3xl uppercase pb-5 text-center bold">Informações</h1>
       <FormField
-        name="nome"
+        name="name"
         register={register}
         setError={setError}
-        error={errors?.nome}
+        error={errors?.name}
         inputProps={{
           placeholder: "Seu nome",
         }}
@@ -70,39 +73,39 @@ export function PersonalInfosStep({ steps, form }: PersonalInfosProps) {
         }}
       />
       <FormField
-        name="senha"
+        name="password"
         register={register}
         setError={setError}
-        error={errors?.senha}
+        error={errors?.password}
         inputProps={{
           type: "password",
           placeholder: "Sua senha",
         }}
       />
       <FormField
-        name="confirma"
+        name="confirm"
         register={register}
         setError={setError}
-        error={errors?.confirma}
+        error={errors?.confirm}
         inputProps={{
           placeholder: "Confirme sua senha",
           type: "password",
         }}
       />
       <FormField
-        name="nascimento"
+        name="birthDate"
         register={register}
         setError={setError}
-        error={errors?.nascimento}
+        error={errors?.birthDate}
         inputProps={{
           type: "date",
         }}
       />
       <FormField
-        name="telefone"
+        name="phone"
         register={register}
         setError={setError}
-        error={errors?.telefone}
+        error={errors?.phone}
         inputProps={{
           type: "tel",
           placeholder: "(xx) xxxxx-xxxx",

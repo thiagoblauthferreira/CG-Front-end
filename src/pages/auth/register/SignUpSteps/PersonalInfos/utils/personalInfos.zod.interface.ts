@@ -2,12 +2,12 @@ import moment from "moment";
 import z from "zod";
 
 export type PersonalInfosInterface = {
-  nome: string;
+  name: string;
   email: string;
-  senha: string;
-  confirma: string;
-  nascimento: string;
-  telefone: string;
+  password: string;
+  confirm: string;
+  birthDate: string;
+  phone: string;
   isDonor: boolean;
   isCoordinator: boolean;
 };
@@ -34,18 +34,18 @@ function isYearInRange(dateString: string) {
 
 export const PersonalInfosSchema = z
   .object({
-    nome: z.string().min(1, { message: "Nome vazio" }),
+    name: z.string().min(1, { message: "Nome vazio" }),
     email: z
       .string()
       .min(1, { message: "Email vazio" })
       .email({ message: "Email inválido" }),
-    senha: z
+    password: z
       .string()
       .min(1, { message: "Senha vazia" })
       .min(8, { message: "Sua senha deve conter no mínimo 8 caracteres" })
       .max(50, { message: "Sua senha deve conter no máximo 50 caracteres" }),
-    confirma: z.string().min(1, { message: "Confirmação vazia" }),
-    nascimento: z
+    confirm: z.string().min(1, { message: "Confirmação vazia" }),
+    birthDate: z
       .string()
       .min(1, { message: "Data vazia ou incompleta" })
       .pipe(
@@ -55,7 +55,7 @@ export const PersonalInfosSchema = z
           .refine((data) => isYearInRange(data), { message: "Data inválida" })
       )
       .refine((data) => isAdult(data), { message: "Você deve ser adulto" }),
-    telefone: z
+    phone: z
       .string()
       .min(1, { message: "Telefone vazio" })
       .min(14, { message: "Telefone Invalido" })
@@ -64,12 +64,12 @@ export const PersonalInfosSchema = z
     isCoordinator: z.boolean()
   })
   .refine(
-    ({ senha, confirma }) => {
-      return senha === confirma;
+    ({ password, confirm }) => {
+      return password === confirm;
     },
     {
       message: "As senhas não coincidem",
-      path: ["confirma"],
+      path: ["confirm"],
     }
   );
 
