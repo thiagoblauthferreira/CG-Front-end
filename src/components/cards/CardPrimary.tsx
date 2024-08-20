@@ -1,7 +1,9 @@
+import { Image } from "../common";
+
 interface ICardPrimaryProps {
   image: string;
   title: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: {
     cardContent?: string;
     cardBody?: string;
@@ -17,14 +19,8 @@ export function CardPrimary({ children, image, title, className }: ICardPrimaryP
         ${className?.cardContent || ""}
       `}
     >
-      <figure>
-        <img
-          src={
-            image ||
-            "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          }
-          alt="card-image"
-        />
+      <figure className="max-h-44">
+        <Image className="w-full object-contain" src={image} alt="card-image" />
       </figure>
       <div
         className={`

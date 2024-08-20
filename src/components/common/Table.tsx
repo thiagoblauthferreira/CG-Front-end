@@ -20,6 +20,7 @@ export interface ITableProps {
   limit?: number;
   total?: number;
   onPaginate?: (pagination: IPaginate) => void;
+  textNotFound?: string;
 }
 
 const styleBtnPaginate = "join-item btn min-h-max h-full bg-black text-white";
@@ -31,6 +32,7 @@ export function Table({
   requesting = false,
   limit = 10,
   total = 0,
+  textNotFound,
   onPaginate,
 }: ITableProps) {
   const defaultPage = {
@@ -127,8 +129,10 @@ export function Table({
         </table>
 
         {dataSource.length <= 0 && (
-          <div className="text-nowrap p-2 px-3 text-center">
-            <p className="S7">Nenhum valor encontrado</p>
+          <div className="text-nowrap p-2 py-3 text-center">
+            <p className="font-semibold text-gray-400">
+              {textNotFound ? textNotFound : "Nenhum valor encontrado"}
+            </p>
           </div>
         )}
       </div>

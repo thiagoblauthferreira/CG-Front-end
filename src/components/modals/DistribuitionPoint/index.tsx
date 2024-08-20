@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Button, Modal, Tabs } from "../../common";
-import { createDistributionPointSchema } from "../../../validators/distribuition-point/createDistribuitionPoint.validator";
+import { distributionPointSchema } from "../../../validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TabDistribuitionPoint } from "./Tabs/DistribuitionPoint";
 import { TabAddress } from "./Tabs/Address";
@@ -18,7 +18,7 @@ export function ModalDistribuitionPoint({ close, open, onSubmit }: IDistribuitio
     handleSubmit,
     formState: { errors },
   } = useForm<IDistribuitionPointCreate>({
-    resolver: zodResolver(createDistributionPointSchema),
+    resolver: zodResolver(distributionPointSchema),
   });
 
   return (
@@ -42,7 +42,7 @@ export function ModalDistribuitionPoint({ close, open, onSubmit }: IDistribuitio
               },
               {
                 key: "tab_two",
-                label: "Endreço",
+                label: "Endereço",
                 children: <TabAddress register={register} errors={errors} />,
               },
             ]}

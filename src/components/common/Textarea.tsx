@@ -6,15 +6,21 @@ interface ITextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   errors?: any;
   register?: UseFormRegister<FieldValues>;
+  containerClassName?: string;
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, ITextareaProps>(
-  ({ label, errors, required, ...props }, ref) => {
+  ({ label, errors, required, containerClassName = "", ...props }, ref) => {
     const error =
       (props.name && errors && getNestedValue(errors, props.name)?.message) || "";
 
     return (
-      <div className="flex flex-col gap-1">
+      <div
+        className={`
+          flex flex-col gap-1
+          ${containerClassName}
+        `}
+      >
         {label && (
           <label className={`font-bold`} htmlFor={props.id || ""}>
             {label}

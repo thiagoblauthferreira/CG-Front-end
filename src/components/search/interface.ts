@@ -11,10 +11,12 @@ export interface IOptionFilter {
   optionKey: Path<FieldValues>;
   type: IOptionType;
   options?: IOption[];
+  disabled?: boolean;
 }
 
 export interface ISearch {
   className?: string;
   options: IOptionFilter[];
   onFilter: (data: IObjectFilter) => void;
+  disabled?: boolean;
 }

@@ -1,8 +1,8 @@
 import { del, get, patch, post } from "./cg-api.service";
-import { IProductCreate, IProductUpdate } from "../interfaces/products";
+import { IProductCreate, IProductUpdate, ISearchProducts } from "../interfaces/products";
 
-export function listProducts() {
-  return get(`/products`);
+export function listProducts(params: ISearchProducts) {
+  return get(`/products`, { params });
 }
 
 export function listOneProduct(productId: string) {
