@@ -34,12 +34,30 @@ function AdressStep({ steps, form }: AdressProps) {
     mode: "onSubmit",
   });
 
+  /* O problema era o tipo de dados que estavam diferente do requisitado.
+  Ocorre que, o problema é o campo cep que está no backend todo como cep, mas
+  no frontend como CEP, sem falar nos outros campos que estavam em português
+  quando pedimos em inglês, estes campos foram alterados sem problemas, o problema foi o cep que alterar 
+  para o minúsculo quebrava todo o front.
+  Então procurei uma solução para que mexesse minimamente no código, sem prejudicar ambas as partes.
+  */
   const [adress, setAdress] = useState<Record<string, string> | null>(null);
 
   async function onSubmit(data: AdressInterface) {
-    form.setValues({ endereco: { ...data, uf: data.uf.toLowerCase() } }, "submit");
-  }
+    const adjustedData = { ...data, estado: data.uf.toLowerCase(),
+      cep: data.CEP.toLowerCase(),
+      municipio: data.localidade,
+      pais: 'Brazil' 
+     };
 
+    if ('CEP' in adjustedData) {
+      delete (adjustedData as any).CEP;
+    }
+     form.setValues({ address: adjustedData }, "submit");
+    /*form.setValues({ endereco: { ...data, uf: data.uf.toLowerCase(), 
+      cep: data.CEP
+     } }, "submit");*/
+  }  
   const cepMask: string = watch("CEP");
 
   useEffect(() => {

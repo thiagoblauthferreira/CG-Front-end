@@ -16,7 +16,7 @@ import { PrivateRoleRoute } from "./Auth/PrivateRoleRoute";
 export function RoutesPage() {
   return (
     <Router>
-      <Routes>
+       <Routes>
         <Route element={<AuthRoute />}>
           <Route element={<LoginPointScreen />} path="/"></Route>
           <Route element={<SignUpScreen />} path="/register"></Route>
@@ -24,10 +24,6 @@ export function RoutesPage() {
 
         <Route element={<PrivateRoute />}>
           <Route element={<Layout />}>
-            <Route element={<PrivateRoleRoute roles={["coordinator"]} />}></Route>
-            <Route element={<PrivateRoleRoute roles={["donor"]} />}></Route>
-
-            <Route path="/home" element={<HomeScreen />} />
             <Route path="/shelters" element={<SheltersScreen />} />
             <Route path="/shelters/:id" element={<CoordinatorsScreen />} />
             <Route path="/distribuition-points" element={<DistribuitionPointsScreen />} />

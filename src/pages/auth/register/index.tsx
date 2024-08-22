@@ -37,8 +37,6 @@ function SignUpScreen(props: SignUpDoadorProps) {
   async function submitForm(data: any) {
     const user = { ...formValues, ...data };
 
-    console.log(user);
-
     const response = await register(user);
 
     requestError = response;
