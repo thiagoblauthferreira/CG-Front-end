@@ -2,10 +2,10 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuthProvider } from "../../context/Auth";
 
 export function PrivateRoute() {
-  const { status } = useAuthProvider();
+  const { status, currentUser } = useAuthProvider();
 
   // if (status === "pending") return <LoadingScreen />;
-  if (status === "unauthorized") return <Navigate to={"/"} />;
+  // if (!currentUser) return <Navigate to={"/"} />;
 
   return <Outlet />;
 }

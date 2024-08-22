@@ -16,6 +16,8 @@ import {
 import { ModalDistribuitionPoint } from "../../components/modals";
 import { Search } from "../../components/search";
 import { useAuthProvider } from "../../context/Auth";
+import { toast } from "react-toastify";
+import { toastMessage } from "../../helpers/toast-message";
 
 const limit = 10;
 
@@ -53,14 +55,13 @@ export default function DistribuitionPointsScreen() {
       setDistribuitionPoints(respData);
     } catch (error) {
       console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
     } finally {
       setRequesting(false);
     }
   };
 
   const handleCreateDistribuitionPoint = async (data: IDistribuitionPointCreate) => {
-    console.log(data);
-
     try {
       setRequestingCreate(true);
 
@@ -69,8 +70,11 @@ export default function DistribuitionPointsScreen() {
       setDistribuitionPoints((currentDistribuitionPoints) => {
         return [respDistribuitionPoint, ...currentDistribuitionPoints];
       });
+
+      toast.success("Ponto de distribuição criado");
     } catch (error) {
       console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
     } finally {
       setRequestingCreate(false);
     }
@@ -86,7 +90,6 @@ export default function DistribuitionPointsScreen() {
         ...filter.current,
       });
 
-      console.log(resp);
       const respData = resp.data;
       const respTotal = resp.total;
       setDistribuitionPoints((currentData) => [...currentData, ...respData]);
@@ -176,7 +179,11 @@ export default function DistribuitionPointsScreen() {
 
             {distribuitionPoints.map((distribuitionPoint) => {
               return (
-                <CardPrimary image="" title={distribuitionPoint.name}>
+                <CardPrimary
+                  key={distribuitionPoint.id}
+                  image=""
+                  title={distribuitionPoint.name}
+                >
                   <div>
                     <p>{distribuitionPoint.description}</p>
                   </div>

@@ -1,6 +1,7 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input, Textarea } from "../../../common";
 import { IDistribuitionPointCreate } from "../../../../interfaces/distriuition-points";
+import { phoneMask } from "../../../../utils/masks";
 
 interface ITabDistribuitionPoint {
   register: UseFormRegister<IDistribuitionPointCreate>;
@@ -24,7 +25,13 @@ export function TabDistribuitionPoint({ register, errors }: ITabDistribuitionPoi
       <Input
         label="Telefone: "
         placeholder="(xx) x-xxxx-xxx"
-        {...register("phone")}
+        {...register("phone", {
+          onChange: (e) => {
+            const value = e.target.value;
+            e.target.value = phoneMask(value);
+            return e;
+          },
+        })}
         errors={errors}
       />
       <Textarea

@@ -2,21 +2,21 @@ import { del, get, patch, post } from "./cg-api.service";
 import { IProductCreate, IProductUpdate, ISearchProducts } from "../interfaces/products";
 
 export function listProducts(params: ISearchProducts) {
-  return get(`/products`, { params });
+  return get(`/product`, { params });
 }
 
 export function listOneProduct(productId: string) {
-  return get(`/products/${productId}`);
+  return get(`/product/${productId}`);
 }
 
 export function createProduct(data: IProductCreate) {
-  return post("/products", { data });
+  return post("/product", { data });
 }
 
 export function deleteProduct(productId: string) {
-  return del(`/products/${productId}`);
+  return del(`/product/${productId}`);
 }
 
 export function updateProduct(productId: string, data: IProductUpdate) {
-  return patch(`/products/${productId}`, { data });
+  return patch(`/product/${productId}`, { data });
 }

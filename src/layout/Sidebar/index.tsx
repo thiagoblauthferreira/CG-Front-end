@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Image } from "../../components/common";
-import { ModalLogout } from "../../components/modals";
+import { ModalConfirmAction } from "../../components/modals";
 import { sidebarData } from "../../utils/layout/SidebarData";
 import { BsChevronLeft } from "react-icons/bs";
 import { useAuthProvider } from "../../context/Auth";
@@ -16,7 +16,7 @@ interface ISidebarProps {
 export function Sidebar({ open, close }: ISidebarProps) {
   const navigate = useNavigate();
 
-  const { currentUser } = useAuthProvider();
+  const { currentUser, logout } = useAuthProvider();
 
   const [openModalLogout, setOpenModalLogout] = React.useState<boolean>(false);
 
@@ -92,7 +92,12 @@ export function Sidebar({ open, close }: ISidebarProps) {
         </div>
       </div>
 
-      <ModalLogout open={openModalLogout} close={() => setOpenModalLogout(false)} />
+      <ModalConfirmAction
+        title="Você tem certeza que deseja sair agora?"
+        open={openModalLogout}
+        close={() => setOpenModalLogout(false)}
+        onSubmit={logout}
+      />
     </aside>
   );
 }

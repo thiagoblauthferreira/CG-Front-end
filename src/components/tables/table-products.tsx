@@ -1,5 +1,6 @@
 import { ITable } from "../../interfaces/default";
-import { IColumn, Table } from "../common";
+import { Table } from "../common";
+import { IColumn } from "../common/Table/interface";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 export interface ITableProductsProps extends ITable {

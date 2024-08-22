@@ -35,7 +35,7 @@ function LoginPointScreen(props: LoginComponentProps) {
 
       setCookie("token", response.token, 7);
 
-      navigate("/home");
+      navigate("/shelters");
     } catch (error) {
       console.error(error);
     }

@@ -13,9 +13,17 @@ const apiBase = process.env.API_URI || "http://localhost:8080";
 
 async function responseJson(response: Response) {
   if (!response.ok || response.status >= 400) {
-    throw await response.clone().json();
+    const errorText = await response.text();
+    try {
+      const errorJson = JSON.parse(errorText);
+      throw errorJson;
+    } catch (e) {
+      throw { message: errorText, status: response.status };
+    }
   }
-  return response.json();
+
+  const text = await response.text();
+  return text ? JSON.parse(text) : {};
 }
 
 function isUrl(url: string): boolean {
@@ -35,7 +43,7 @@ export async function request(
 
   const updatedHeader = {
     "Content-Type": "application/json",
-    Authorization: token,
+    Authorization: `Bearer ${token}`,
     ...(headers || {}),
   };
 
