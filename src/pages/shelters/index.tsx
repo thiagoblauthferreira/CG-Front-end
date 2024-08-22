@@ -4,17 +4,21 @@ import { Button, Loading, Skeleton } from "../../components/common";
 import { LoadingScreen } from "../../components/common/LoadingScreen";
 import { IShelter, IShelterCreate } from "../../interfaces/shelter";
 import { createShelter, listShelters } from "../../services/shelter.service";
-import useInView from "../../hooks/useInView";
 import { BsChevronRight } from "react-icons/bs";
 import { Search } from "../../components/search";
+import useInView from "../../hooks/useInView";
 import { useNavigate } from "react-router-dom";
+import { useAuthProvider } from "../../context/Auth";
 import { ModalShelter } from "../../components/modals";
 import { ISearchProducts } from "../../interfaces/products";
+import { toast } from "react-toastify";
+import { toastMessage } from "../../helpers/toast-message";
 
 const limit = 10;
 
 export default function SheltersScreen() {
   const navigate = useNavigate();
+  const { currentUser } = useAuthProvider();
   const { ref, inView } = useInView();
 
   const page = React.useRef<number>(0);
@@ -49,15 +53,20 @@ export default function SheltersScreen() {
     }
   };
 
-  const handleShelter = async (data: IShelterCreate) => {
-    console.log(data);
-
+  const handleCreateShelter = async (data: IShelterCreate) => {
     try {
       setRequestingCreate(true);
-      const resp = await createShelter(data);
-      console.log(resp);
+
+      const respShelter = await createShelter(data);
+
+      setShelters((currentshelter) => {
+        return [respShelter, ...currentshelter];
+      });
+
+      toast.success("Ponto de distribuição criado");
     } catch (error) {
       console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
     } finally {
       setRequestingCreate(false);
     }
@@ -201,7 +210,7 @@ export default function SheltersScreen() {
       <ModalShelter
         open={openModal}
         close={() => setOpenModal(false)}
-        onSubmit={handleShelter}
+        onSubmit={handleCreateShelter}
       />
     </div>
   );

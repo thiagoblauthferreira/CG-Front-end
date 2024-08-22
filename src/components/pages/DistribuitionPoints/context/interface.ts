@@ -1,6 +1,6 @@
 import {
   IDistribuitionPoint,
-  IDistribuitionPointUpdate,
+  IDistribuitionPointCreate,
 } from "../../../../interfaces/distriuition-points";
 import {
   IProduct,
@@ -24,7 +24,7 @@ export interface IDistribuitionPointProvider {
   handleUpdateProduct: (productId: string, data: IProductUpdate) => void;
   handleDeleteProduct: (productId: string) => void;
   handleProduct: (productId: string) => Promise<IProduct>;
-  handleUpdateDistribuitionPoint: (data: IDistribuitionPointUpdate) => void;
+  handleUpdateDistribuitionPoint: (data: IDistribuitionPointCreate) => void;
   openModalProduct: boolean;
   openModalUpdateProduct: boolean;
   openModalConfirmActionProduct: boolean;

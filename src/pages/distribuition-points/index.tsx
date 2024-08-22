@@ -177,10 +177,10 @@ export default function DistribuitionPointsScreen() {
               </div>
             )}
 
-            {distribuitionPoints.map((distribuitionPoint) => {
+            {distribuitionPoints.map((distribuitionPoint, index) => {
               return (
                 <CardPrimary
-                  key={distribuitionPoint.id}
+                  key={`${distribuitionPoint.id}-${index}`}
                   image=""
                   title={distribuitionPoint.name}
                 >

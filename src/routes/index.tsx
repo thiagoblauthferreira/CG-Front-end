@@ -6,7 +6,6 @@ import { Layout } from "../layout";
 
 import LoginPointScreen from "../pages/auth/login";
 import SignUpScreen from "../pages/auth/register";
-import HomeScreen from "../pages/home";
 import SheltersScreen from "../pages/shelters";
 import CoordinatorsScreen from "../pages/shelters/id";
 import DistribuitionPointsScreen from "../pages/distribuition-points";
@@ -27,7 +26,6 @@ export function RoutesPage() {
             <Route element={<PrivateRoleRoute roles={["coordinator"]} />}></Route>
             <Route element={<PrivateRoleRoute roles={["donor"]} />}></Route>
 
-            <Route path="/home" element={<HomeScreen />} />
             <Route path="/shelters" element={<SheltersScreen />} />
             <Route path="/shelters/:id" element={<CoordinatorsScreen />} />
             <Route path="/distribuition-points" element={<DistribuitionPointsScreen />} />

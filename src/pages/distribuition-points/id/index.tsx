@@ -13,7 +13,6 @@ import { IDistribuitionPoint } from "../../../interfaces/distriuition-points";
 import { IProductsInitialData } from "../../../components/pages/DistribuitionPoints/context/interface";
 import { listProducts } from "../../../services/products.service";
 import { toast } from "react-toastify";
-import { toastMessage } from "../../../helpers/toast-message";
 
 const initialData = {
   data: [],
@@ -45,7 +44,7 @@ function ProductsScreen() {
       setInitialProducts(respProducts);
     } catch (error) {
       console.error(error);
-      toast.success(toastMessage.PAGE_NOT_FOUND);
+      toast.warn("Ponto de distribuição não encontrado");
       navigation("/distribuition-points");
     } finally {
       setLoading(false);

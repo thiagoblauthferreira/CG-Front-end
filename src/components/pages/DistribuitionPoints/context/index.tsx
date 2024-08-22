@@ -19,14 +19,14 @@ import { toast } from "react-toastify";
 import { toastMessage } from "../../../../helpers/toast-message";
 import { IPaginate } from "../../../common/Table/interface";
 
-const DistribuitionPointContext = React.createContext<IDistribuitionPointProvider>(
-  {} as IDistribuitionPointProvider
-);
-
 const initialData = {
   data: [],
   total: 0,
 };
+
+const DistribuitionPointContext = React.createContext<IDistribuitionPointProvider>(
+  {} as IDistribuitionPointProvider
+);
 
 export function DistribuitionPointProvider({
   children,
@@ -44,6 +44,7 @@ export function DistribuitionPointProvider({
     React.useState<boolean>(false);
 
   const [requesting, setRequesting] = React.useState<boolean>(false);
+
   const [products, setProducts] = React.useState<IProductsInitialData>(initialData);
 
   const handleFilter = async (filter: any) => {

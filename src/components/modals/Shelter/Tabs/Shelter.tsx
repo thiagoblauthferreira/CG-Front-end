@@ -1,6 +1,7 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input, Textarea } from "../../../common";
 import { IShelterCreate } from "../../../../interfaces/shelter";
+import { phoneMask } from "../../../../utils/masks";
 
 interface ITabShelter {
   register: UseFormRegister<IShelterCreate>;
@@ -24,7 +25,13 @@ export function TabShelter({ register, errors }: ITabShelter) {
       <Input
         label="Telefone: "
         placeholder="(xx) x-xxxx-xxx"
-        {...register("phone")}
+        {...register("phone", {
+          onChange: (e) => {
+            const value = e.target.value;
+            e.target.value = phoneMask(value);
+            return e;
+          },
+        })}
         errors={errors}
       />
       <Textarea
