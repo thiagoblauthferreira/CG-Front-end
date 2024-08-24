@@ -7,4 +7,5 @@ export interface IParamsDefault {
   offset?: number | string;
   sortBy?: string;
   sort?: string;
+  search?: string;
 }

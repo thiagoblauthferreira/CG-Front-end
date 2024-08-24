@@ -1,11 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthProvider } from "../../context/Auth";
+import { getCookie } from "../../services/cookie.service";
 
 export function PrivateRoute() {
-  const { status, currentUser } = useAuthProvider();
+  const { currentUser } = useAuthProvider();
 
-  // if (status === "pending") return <LoadingScreen />;
-  // if (!currentUser) return <Navigate to={"/"} />;
+  const token = getCookie("token");
+
+  if (!token && !currentUser) return <Navigate to={"/"} />;
 
   return <Outlet />;
 }

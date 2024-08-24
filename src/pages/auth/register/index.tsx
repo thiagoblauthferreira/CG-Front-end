@@ -5,6 +5,7 @@ import { PersonalInfosStep } from "./SignUpSteps/PersonalInfos/PersonalInfos";
 // import { Navigate } from "react-router-dom";
 // import { LoadingScreen } from "../../../components/common/LoadingScreen";
 import { register } from "../../../services/auth.service";
+import { LoadingScreen } from "../../../components/common";
 
 /**
  * caso alguma prop seja passada para
@@ -37,25 +38,15 @@ function SignUpScreen(props: SignUpDoadorProps) {
   async function submitForm(data: any) {
     const user = { ...formValues, ...data };
 
-    console.log(user);
-
     const response = await register(user);
 
     requestError = response;
   }
 
-  /**
-   * Checa se a sessão está ativa,
-   * se estiver redirecione o usuário
-   * para a tela de usuário
-   */
-
-  // if (status === "pending") return <LoadingScreen />;
-
-  // if (status === "authorized") return <Navigate to={"/home"} />;
-
   return (
     <section className="signup-section">
+      <LoadingScreen />
+
       <div className="hero min-h-screen bg-base-200 py-10">
         <div className="hero-content w-3/4 flex flex-col">
           <div className="text-center">

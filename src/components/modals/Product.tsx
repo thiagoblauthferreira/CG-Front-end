@@ -50,7 +50,7 @@ export function ModalProduct({
       header={
         <div className="p-4">
           <p className="font-semibold text-lg">
-            {modalType === "create" ? "Criar" : "Atualizar"} produto
+            {modalType === "create" ? "Doar" : "Atualizar"} produto
           </p>
         </div>
       }
@@ -106,7 +106,7 @@ export function ModalProduct({
 
           <Button
             type="submit"
-            text="Cadastrar produto"
+            text={`${modalType === "create" ? "Doar" : "Atualizar"} produto`}
             className="w-full mt-4 bg-black text-white"
           />
         </form>

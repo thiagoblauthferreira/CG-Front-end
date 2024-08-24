@@ -1,17 +1,25 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IDistribuitionPointCreate } from "../../../../interfaces/distriuition-points";
 import { distributionPointSchema } from "../../../../validators";
 import { useDistribuitionPointProvider } from "../context";
 import { Button, Collapse, Input, Textarea } from "../../../common";
+import { ModalConfirmAction } from "../../../modals";
 
 const defaultStyleBtnCollapse =
   "py-4 border-b border-solid border-black font-bold text-base";
 
 export function TabDistribuitionPointSettings() {
-  const { distribuitionPoint, handleUpdateDistribuitionPoint } =
-    useDistribuitionPointProvider();
+  const { id = "" } = useParams();
+  const {
+    distribuitionPoint,
+    openModalConfirmActionDP,
+    handleDeleteDistribuitionPoint,
+    handleUpdateDistribuitionPoint,
+    setOpenModalConfirmActionDP,
+  } = useDistribuitionPointProvider();
 
   const {
     register,
@@ -140,12 +148,33 @@ export function TabDistribuitionPointSettings() {
           </div>
         </Collapse>
 
-        <Button
-          type="submit"
-          text="Atualizar ponto de distribuição"
-          className="w-full mt-4 bg-black text-white"
-        />
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+          <Button
+            type="submit"
+            text="Atualizar ponto de distribuição"
+            className="w-full mt-4 bg-black text-white col-span-1 md:col-span-2"
+          />
+
+          <Button
+            type="button"
+            text="Excluir ponto de distribuição"
+            className="w-full mt-4 bg-red-500 text-white"
+            onClick={() => setOpenModalConfirmActionDP(true)}
+          />
+        </div>
       </div>
+
+      <ModalConfirmAction
+        title="Tem certeza que deseja excluir esse ponto de distribuição?"
+        open={openModalConfirmActionDP}
+        close={() => setOpenModalConfirmActionDP(false)}
+        onSubmit={() => handleDeleteDistribuitionPoint(id)}
+      >
+        <p className="mt-4 text-base font-medium text-center">
+          Ao confirmar esta ação, todas as referências de produtos neste ponto de
+          distribuição serão perdidas.
+        </p>
+      </ModalConfirmAction>
     </form>
   );
 }

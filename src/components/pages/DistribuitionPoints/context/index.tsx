@@ -4,10 +4,13 @@ import {
   IDistribuitionPointProvider,
   IProductsInitialData,
 } from "./interface";
-import { updateDistribuitionPoints } from "../../../../services/distribuition-points.service";
+import {
+  deleteDistribuitionPoint,
+  updateDistribuitionPoints,
+} from "../../../../services/distribuition-points.service";
 import { IProductCreate, IProductUpdate } from "../../../../interfaces/products";
 import { IDistribuitionPointUpdate } from "../../../../interfaces/distriuition-points";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   createProduct,
   deleteProduct,
@@ -34,11 +37,14 @@ export function DistribuitionPointProvider({
   initialProducts,
 }: IContextProvider) {
   const { id = "" } = useParams();
+  const navigation = useNavigate();
 
   const filteredRef = React.useRef({});
 
   const [openModalProduct, setOpenModalProduct] = React.useState<boolean>(false);
   const [openModalConfirmActionProduct, setOpenModalConfirmActionProduct] =
+    React.useState<boolean>(false);
+  const [openModalConfirmActionDP, setOpenModalConfirmActionDP] =
     React.useState<boolean>(false);
   const [openModalUpdateProduct, setOpenModalUpdateProduct] =
     React.useState<boolean>(false);
@@ -48,11 +54,6 @@ export function DistribuitionPointProvider({
   const [products, setProducts] = React.useState<IProductsInitialData>(initialData);
 
   const handleFilter = async (filter: any) => {
-    if (requesting) {
-      toast.warn(toastMessage.REQUESTING);
-      return;
-    }
-
     filteredRef.current = filter;
 
     try {
@@ -82,25 +83,6 @@ export function DistribuitionPointProvider({
       setProducts(resp);
     } catch (error) {
       console.error(error);
-    } finally {
-      setRequesting(false);
-    }
-  };
-
-  const handleUpdateDistribuitionPoint = async (data: IDistribuitionPointUpdate) => {
-    if (requesting) {
-      toast.warn(toastMessage.REQUESTING);
-      return;
-    }
-
-    try {
-      setRequesting(true);
-      await updateDistribuitionPoints(id, data);
-
-      toast.success("Ponto de distribuição atualizado");
-    } catch (error) {
-      console.error(error);
-      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
     } finally {
       setRequesting(false);
     }
@@ -214,6 +196,48 @@ export function DistribuitionPointProvider({
     }
   };
 
+  const handleUpdateDistribuitionPoint = async (data: IDistribuitionPointUpdate) => {
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
+
+    try {
+      setRequesting(true);
+      await updateDistribuitionPoints(id, data);
+
+      toast.success("Ponto de distribuição atualizado");
+    } catch (error) {
+      console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
+    } finally {
+      setRequesting(false);
+    }
+  };
+
+  const handleDeleteDistribuitionPoint = async (distribuitionPointId: string) => {
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
+
+    try {
+      setRequesting(true);
+
+      await deleteDistribuitionPoint(distribuitionPointId);
+
+      setOpenModalConfirmActionDP(false);
+
+      toast.success("Ponto de distribuição deletado");
+      navigation("/");
+    } catch (error) {
+      console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
+    } finally {
+      setRequesting(false);
+    }
+  };
+
   React.useEffect(() => {
     setProducts(initialProducts);
   }, [initialProducts]);
@@ -226,15 +250,18 @@ export function DistribuitionPointProvider({
         setOpenModalProduct,
         setOpenModalUpdateProduct,
         setOpenModalConfirmActionProduct,
+        setOpenModalConfirmActionDP,
         handleCreateProduct,
         handleUpdateProduct,
         handleDeleteProduct,
         handleProduct,
         handleUpdateDistribuitionPoint,
+        handleDeleteDistribuitionPoint,
         products,
         openModalProduct,
         openModalUpdateProduct,
         openModalConfirmActionProduct,
+        openModalConfirmActionDP,
         distribuitionPoint,
         requesting,
       }}

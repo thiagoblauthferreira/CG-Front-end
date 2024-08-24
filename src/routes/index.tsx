@@ -9,27 +9,26 @@ import SignUpScreen from "../pages/auth/register";
 import SheltersScreen from "../pages/shelters";
 import CoordinatorsScreen from "../pages/shelters/id";
 import DistribuitionPointsScreen from "../pages/distribuition-points";
-import ProductsScreen from "../pages/distribuition-points/id";
-import { PrivateRoleRoute } from "./Auth/PrivateRoleRoute";
+import DistribuitionPointScreen from "../pages/distribuition-points/id";
 
 export function RoutesPage() {
   return (
     <Router>
       <Routes>
         <Route element={<AuthRoute />}>
-          <Route element={<LoginPointScreen />} path="/"></Route>
-          <Route element={<SignUpScreen />} path="/register"></Route>
+          <Route element={<LoginPointScreen />} path="/auth/login"></Route>
+          <Route element={<SignUpScreen />} path="/auth/register"></Route>
         </Route>
 
-        <Route element={<PrivateRoute />}>
-          <Route element={<Layout />}>
-            <Route element={<PrivateRoleRoute roles={["coordinator"]} />}></Route>
-            <Route element={<PrivateRoleRoute roles={["donor"]} />}></Route>
-
+        <Route element={<Layout />}>
+          <Route path="/" element={<DistribuitionPointsScreen />} />
+          <Route
+            path="/distribuition-points/:id"
+            element={<DistribuitionPointScreen />}
+          />
+          <Route element={<PrivateRoute />}>
             <Route path="/shelters" element={<SheltersScreen />} />
             <Route path="/shelters/:id" element={<CoordinatorsScreen />} />
-            <Route path="/distribuition-points" element={<DistribuitionPointsScreen />} />
-            <Route path="/distribuition-points/:id" element={<ProductsScreen />} />
           </Route>
         </Route>
       </Routes>

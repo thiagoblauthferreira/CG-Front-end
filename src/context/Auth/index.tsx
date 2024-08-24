@@ -10,11 +10,14 @@ export function AuthProvider({ children }: IContextProvider) {
   const [currentUser, setCurrentUser] = React.useState<IUser | null>(null);
   const [status, setStatus] = React.useState<string>("pending");
 
-  const loadUser = async () => {
-    try {
-      const token = getCookie("token");
-      if (!token) return;
+  const logout = async () => {
+    delCookie("token");
+    localStorage.clear();
+    window.location.replace("/auth/login");
+  };
 
+  const loginUser = async () => {
+    try {
       const resp = await getUser();
 
       setCurrentUser(resp.data);
@@ -25,18 +28,19 @@ export function AuthProvider({ children }: IContextProvider) {
     }
   };
 
-  const logout = async () => {
-    delCookie("token");
-    localStorage.clear();
-    window.location.replace("/");
+  const load = async () => {
+    const token = getCookie("token");
+    if (!token) return;
+
+    loginUser();
   };
 
   React.useEffect(() => {
-    loadUser();
+    load();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, logout, status }}>
+    <AuthContext.Provider value={{ currentUser, status, loginUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

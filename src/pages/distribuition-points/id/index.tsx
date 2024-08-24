@@ -19,7 +19,7 @@ const initialData = {
   total: 0,
 };
 
-function ProductsScreen() {
+function DistribuitionPointScreen() {
   const navigation = useNavigate();
   const { id = "" } = useParams();
   const { currentUser } = useAuthProvider();
@@ -45,7 +45,7 @@ function ProductsScreen() {
     } catch (error) {
       console.error(error);
       toast.warn("Ponto de distribuição não encontrado");
-      navigation("/distribuition-points");
+      navigation("/");
     } finally {
       setLoading(false);
     }
@@ -89,4 +89,4 @@ function ProductsScreen() {
   );
 }
 
-export default ProductsScreen;
+export default DistribuitionPointScreen;

@@ -1,8 +1,8 @@
 import { del, get, patch, post } from "./cg-api.service";
-import { IShelterCreate, IShelterUpdate } from "../interfaces/shelter";
+import { ISearchShelter, IShelterCreate, IShelterUpdate } from "../interfaces/shelter";
 
-export function listShelters(params: any) {
-  return get(`/shelter`, params);
+export function listShelters(params: ISearchShelter) {
+  return get(`/shelter`, { params });
 }
 
 export function listOneShelter(shelterId: string) {

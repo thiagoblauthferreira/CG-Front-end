@@ -49,7 +49,7 @@ export function Footer({ className }: IFooterProps) {
         >
           <div className="lg:w-1/3">
             <Link
-              href="/home"
+              href="/"
               className="flex justify-center space-x-3 lg:justify-start hover:opacity-100"
             >
               <div className={`size-16`}>

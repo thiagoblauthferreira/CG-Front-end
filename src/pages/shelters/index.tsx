@@ -1,8 +1,8 @@
 import React from "react";
 import { CardPrimary } from "../../components/cards/CardPrimary";
-import { Button, Loading, Skeleton } from "../../components/common";
+import { Button, Loading, Skeleton, Tooltip } from "../../components/common";
 import { LoadingScreen } from "../../components/common/LoadingScreen";
-import { IShelter, IShelterCreate } from "../../interfaces/shelter";
+import { ISearchShelter, IShelter, IShelterCreate } from "../../interfaces/shelter";
 import { createShelter, listShelters } from "../../services/shelter.service";
 import { BsChevronRight } from "react-icons/bs";
 import { Search } from "../../components/search";
@@ -14,12 +14,15 @@ import { ISearchProducts } from "../../interfaces/products";
 import { toast } from "react-toastify";
 import { toastMessage } from "../../helpers/toast-message";
 
-const limit = 10;
+const limit = 12;
 
 export default function SheltersScreen() {
   const navigate = useNavigate();
   const { currentUser } = useAuthProvider();
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({
+    rootMargin: "-10px",
+    threshold: 1,
+  });
 
   const page = React.useRef<number>(0);
   const filter = React.useRef<ISearchProducts>({});
@@ -36,16 +39,24 @@ export default function SheltersScreen() {
     navigate(`/shelters/${id}`);
   };
 
-  const handleFilter = async (data: ISearchProducts) => {
+  const handleFilter = async (data: ISearchShelter) => {
+    page.current = 0;
     filter.current = data;
 
     try {
       setRequesting(true);
 
-      const resp = await listShelters({ params: filter.current });
-
+      const resp = await listShelters({
+        limit: limit,
+        offset: page.current * limit,
+        ...filter.current,
+      });
       const respData = resp.data;
+      const respTotal = resp.total;
+
       setShelters(respData);
+      setInfinitScroll(respTotal > limit ? respData.length > 0 : false);
+      page.current++;
     } catch (error) {
       console.error(error);
     } finally {
@@ -96,6 +107,7 @@ export default function SheltersScreen() {
   };
 
   React.useEffect(() => {
+    console.log(inView, "inView");
     if (inView) {
       load();
     }
@@ -117,9 +129,8 @@ export default function SheltersScreen() {
             onFilter={handleFilter}
             options={[
               {
-                optionKey: "teste1",
-                type: "select",
-                options: [{ label: "All", value: "" }],
+                optionKey: "search",
+                type: "input",
               },
               {
                 optionKey: "teste2",
@@ -134,11 +145,14 @@ export default function SheltersScreen() {
             ]}
           />
 
-          <Button
-            text="Novo abrigo"
-            className="bg-black text-white"
-            onClick={() => setOpenModal(true)}
-          />
+          {(currentUser?.roles.includes("coordinator") ||
+            currentUser?.roles.includes("admin")) && (
+            <Button
+              text="Novo abrigo"
+              className="bg-black text-white"
+              onClick={() => setOpenModal(true)}
+            />
+          )}
         </div>
       </div>
 
@@ -173,20 +187,23 @@ export default function SheltersScreen() {
               return (
                 <CardPrimary key={shelter.id} image="" title={shelter.name}>
                   <div>
-                    <p>{shelter.description}</p>
+                    <p>
+                      <strong>Tel:</strong> {shelter.phone}
+                    </p>
+                    <Tooltip text={shelter.description}>
+                      <p>{shelter.description}</p>
+                    </Tooltip>
                   </div>
 
-                  <div
+                  <Button
                     className={`
-                      absolute bottom-0 right-0 cursor-pointer
-                      m-4 bg-slate-200 rounded-md p-2
-                      transition-colors
-                      hover:bg-slate-300 active:bg-slate-200
+                      absolute bottom-0 right-0
+                      m-4 bg-slate-200 !rounded-md p-2 h-max
+                      border-none
                     `}
                     onClick={() => handleRedirect(shelter.id)}
-                  >
-                    <BsChevronRight />
-                  </div>
+                    text="Ver mais"
+                  />
                 </CardPrimary>
               );
             })}
