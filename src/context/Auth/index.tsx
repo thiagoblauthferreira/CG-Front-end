@@ -28,6 +28,7 @@ export function AuthProvider({ children }: IContextProvider) {
   const logout = async () => {
     delCookie("token");
     localStorage.clear();
+    window.location.replace("/");
   };
 
   React.useEffect(() => {

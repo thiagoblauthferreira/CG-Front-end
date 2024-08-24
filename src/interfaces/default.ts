@@ -1,4 +1,4 @@
-import { ITableProps } from "../components/common";
+import { ITableProps } from "../components/common/Table/interface";
 
 export interface ITable extends Omit<ITableProps, "columns"> {}
 

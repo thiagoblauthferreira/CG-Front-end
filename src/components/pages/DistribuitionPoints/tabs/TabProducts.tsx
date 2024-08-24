@@ -1,33 +1,40 @@
 import React from "react";
-import { Button } from "../../common";
-import { ModalProduct } from "../../modals";
-import { Search } from "../../search";
-import { TableProducts } from "../../tables/table-products";
-import { useDistribuitionPointProvider } from "./context";
-import { IProduct } from "../../../interfaces/products";
+import { Button } from "../../../common";
+import { ModalConfirmAction, ModalProduct } from "../../../modals";
+import { Search } from "../../../search";
+import { TableProducts } from "../../../tables/table-products";
+import { useDistribuitionPointProvider } from "../context";
+import { IProduct } from "../../../../interfaces/products";
 
 export function TabProducts() {
   const {
     handleFilter,
+    handleProducts,
     handleCreateProduct,
     handleDeleteProduct,
     handleUpdateProduct,
     setOpenModalProduct,
     handleProduct,
     setOpenModalUpdateProduct,
+    setOpenModalConfirmActionProduct,
     products,
     openModalProduct,
     openModalUpdateProduct,
+    openModalConfirmActionProduct,
     requesting,
   } = useDistribuitionPointProvider();
 
   const [product, setProduct] = React.useState<IProduct>();
 
-  const onUpdateProduct = async (productId: string) => {
+  const onProduct = async (productId: string, action: "delete" | "update") => {
     const product = await handleProduct(productId);
-
     setProduct(product);
-    setOpenModalUpdateProduct(true);
+
+    if (action === "update") {
+      setOpenModalUpdateProduct(true);
+    } else {
+      setOpenModalConfirmActionProduct(true);
+    }
   };
 
   return (
@@ -87,8 +94,9 @@ export function TabProducts() {
         <TableProducts
           total={products.total}
           dataSource={products.data}
-          handleDeleteProduct={handleDeleteProduct}
-          handleUpdateProduct={onUpdateProduct}
+          handleDeleteProduct={(productId) => onProduct(productId, "delete")}
+          handleUpdateProduct={(productId) => onProduct(productId, "update")}
+          onPaginate={handleProducts}
           requesting={requesting}
           textNotFound="Nenhum produto encontrado"
         />
@@ -103,9 +111,16 @@ export function TabProducts() {
       <ModalProduct
         open={openModalUpdateProduct}
         close={() => setOpenModalUpdateProduct(false)}
-        onSubmit={(data) => handleUpdateProduct("", data)}
+        onSubmit={(data) => handleUpdateProduct(product?.id || "", data)}
         modalType="update"
         product={product}
+      />
+
+      <ModalConfirmAction
+        title="Tem certeza que deseja remover esse produto?"
+        open={openModalConfirmActionProduct}
+        close={() => setOpenModalConfirmActionProduct(false)}
+        onSubmit={() => handleDeleteProduct(product?.id || "")}
       />
     </div>
   );

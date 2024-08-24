@@ -4,17 +4,10 @@ import {
   IDistribuitionPointProvider,
   IProductsInitialData,
 } from "./interface";
-import { LoadingScreen } from "../../../common";
-import {
-  listOneDistribuitionPoint,
-  updateDistribuitionPoints,
-} from "../../../../services/distribuition-points.service";
+import { updateDistribuitionPoints } from "../../../../services/distribuition-points.service";
 import { IProductCreate, IProductUpdate } from "../../../../interfaces/products";
-import {
-  IDistribuitionPoint,
-  IDistribuitionPointUpdate,
-} from "../../../../interfaces/distriuition-points";
-import { useNavigate, useParams } from "react-router-dom";
+import { IDistribuitionPointUpdate } from "../../../../interfaces/distriuition-points";
+import { useParams } from "react-router-dom";
 import {
   createProduct,
   deleteProduct,
@@ -22,6 +15,9 @@ import {
   listProducts,
   updateProduct,
 } from "../../../../services/products.service";
+import { toast } from "react-toastify";
+import { toastMessage } from "../../../../helpers/toast-message";
+import { IPaginate } from "../../../common/Table/interface";
 
 const DistribuitionPointContext = React.createContext<IDistribuitionPointProvider>(
   {} as IDistribuitionPointProvider
@@ -32,31 +28,57 @@ const initialData = {
   total: 0,
 };
 
-export function DistribuitionPointProvider({ children }: IContextProvider) {
-  const navigate = useNavigate();
+export function DistribuitionPointProvider({
+  children,
+  distribuitionPoint,
+  initialProducts,
+}: IContextProvider) {
   const { id = "" } = useParams();
 
-  const filter = React.useRef({});
+  const filteredRef = React.useRef({});
 
   const [openModalProduct, setOpenModalProduct] = React.useState<boolean>(false);
+  const [openModalConfirmActionProduct, setOpenModalConfirmActionProduct] =
+    React.useState<boolean>(false);
   const [openModalUpdateProduct, setOpenModalUpdateProduct] =
     React.useState<boolean>(false);
+
   const [requesting, setRequesting] = React.useState<boolean>(false);
-  const [loading, setLoading] = React.useState<boolean>(true);
   const [products, setProducts] = React.useState<IProductsInitialData>(initialData);
-  const [distribuitionPoint, setDistribuitionPoint] =
-    React.useState<IDistribuitionPoint>();
 
-  const handleFilter = async (data: any) => {
-    if (requesting) return;
+  const handleFilter = async (filter: any) => {
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
 
-    filter.current = data;
+    filteredRef.current = filter;
 
     try {
       setRequesting(true);
-      const resp = await listProducts(data);
+      const resp = await listProducts(filteredRef.current);
       setProducts(resp);
-      console.log(data);
+    } catch (error) {
+      console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
+    } finally {
+      setRequesting(false);
+    }
+  };
+
+  const handleProducts = async (pagination?: IPaginate) => {
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
+
+    filteredRef.current = { ...filteredRef.current, ...pagination };
+
+    try {
+      setRequesting(true);
+
+      const resp = await listProducts(filteredRef.current);
+      setProducts(resp);
     } catch (error) {
       console.error(error);
     } finally {
@@ -65,24 +87,32 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
   };
 
   const handleUpdateDistribuitionPoint = async (data: IDistribuitionPointUpdate) => {
-    console.log(data);
-    if (requesting) return;
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
 
     try {
       setRequesting(true);
       await updateDistribuitionPoints(id, data);
+
+      toast.success("Ponto de distribuição atualizado");
     } catch (error) {
       console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
     } finally {
       setRequesting(false);
     }
   };
 
   const handleCreateProduct = async (data: IProductCreate) => {
-    if (requesting) return;
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
 
     const newData = { ...data, distribuitionPointId: id };
-    console.log(newData);
+    newData.quantity = Number(data.quantity);
 
     try {
       setRequesting(true);
@@ -96,18 +126,24 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
         };
       });
       setOpenModalProduct(false);
+
+      toast.success("Novo produto criado ao ponto de distribuição");
     } catch (error) {
       console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
     } finally {
       setRequesting(false);
     }
   };
 
   const handleUpdateProduct = async (productId: string, data: IProductUpdate) => {
-    if (requesting) return;
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
 
     const newData = { ...data, distribuitionPointId: id };
-    console.log(newData);
+    newData.quantity = Number(data.quantity);
 
     try {
       setRequesting(true);
@@ -129,84 +165,66 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
         };
       });
       setOpenModalProduct(false);
+
+      toast.success("Produto atualizado");
     } catch (error) {
       console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
     } finally {
       setRequesting(false);
     }
   };
 
   const handleDeleteProduct = async (productId: string) => {
-    if (requesting) return;
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
 
     try {
       setRequesting(true);
 
       await deleteProduct(productId);
+      handleProducts();
 
-      setProducts((currentProducts) => {
-        const productsData = currentProducts.data;
-        const filteredProducts = productsData.filter(
-          (product) => product.id !== productId
-        );
-        return { data: filteredProducts, total: currentProducts.total - 1 };
-      });
+      setOpenModalConfirmActionProduct(false);
+
+      toast.success("Produto deletado");
     } catch (error) {
       console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
     } finally {
       setRequesting(false);
     }
   };
 
   const handleProduct = async (productId: string) => {
-    if (requesting) return;
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
 
     try {
-      setRequesting(true);
-
       const respProduct = await listOneProduct(productId);
 
       return respProduct;
     } catch (error) {
       console.error(error);
-    } finally {
-      setRequesting(false);
-    }
-  };
-
-  const load = async () => {
-    try {
-      setLoading(true);
-
-      const [respProducts, respDistribuitionPoint] = await Promise.all([
-        listProducts({ distribuitionPointId: id }),
-        listOneDistribuitionPoint(id || ""),
-      ]);
-
-      setProducts(respProducts);
-      setDistribuitionPoint(respDistribuitionPoint);
-    } catch (error) {
-      console.error(error);
-      // navigate("/distribuition-points");
-    } finally {
-      setLoading(false);
     }
   };
 
   React.useEffect(() => {
-    load();
-  }, []);
-
-  if (loading) {
-    return <LoadingScreen />;
-  }
+    setProducts(initialProducts);
+  }, [initialProducts]);
 
   return (
     <DistribuitionPointContext.Provider
       value={{
         handleFilter,
+        handleProducts,
         setOpenModalProduct,
         setOpenModalUpdateProduct,
+        setOpenModalConfirmActionProduct,
         handleCreateProduct,
         handleUpdateProduct,
         handleDeleteProduct,
@@ -215,6 +233,7 @@ export function DistribuitionPointProvider({ children }: IContextProvider) {
         products,
         openModalProduct,
         openModalUpdateProduct,
+        openModalConfirmActionProduct,
         distribuitionPoint,
         requesting,
       }}

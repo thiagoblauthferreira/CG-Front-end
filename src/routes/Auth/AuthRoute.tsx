@@ -2,10 +2,10 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuthProvider } from "../../context/Auth";
 
 export function AuthRoute() {
-  const { status } = useAuthProvider();
+  const { status, currentUser } = useAuthProvider();
 
   // if (status === "pending") return <LoadingScreen />;
-  if (status === "authorized") return <Navigate to={"/home"} />;
+  // if (currentUser) return <Navigate to={"/shelters"} />;
 
   return <Outlet />;
 }

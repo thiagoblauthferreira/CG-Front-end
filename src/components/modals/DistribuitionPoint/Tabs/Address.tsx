@@ -1,6 +1,7 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { IDistribuitionPointCreate } from "../../../../interfaces/distriuition-points";
 import { Input } from "../../../common";
+import { zipCodeMask } from "../../../../utils/masks";
 
 interface ITabAddress {
   register: UseFormRegister<IDistribuitionPointCreate>;
@@ -11,14 +12,20 @@ export function TabAddress({ register, errors }: ITabAddress) {
   return (
     <div
       className={`
-        grid grid-flow-row auto-rows-max
-        gap-2
+        grid grid-cols-1 gap-2 gap-x-4
+        md:grid-cols-2
       `}
     >
       <Input
         label="CEP: "
         placeholder="Digite o CEP"
-        {...register("address.cep")}
+        {...register("address.cep", {
+          onChange: (e) => {
+            const value = e.target.value;
+            e.target.value = zipCodeMask(value);
+            return e;
+          },
+        })}
         errors={errors}
       />
       <Input

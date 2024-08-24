@@ -4,7 +4,7 @@ export * from "./Avatar";
 export * from "./Input";
 export * from "./Button";
 export * from "./Select";
-export * from "./Table";
+export * from "./Table/index";
 export * from "./Textarea";
 export * from "./Modal";
 export * from "./Loading";

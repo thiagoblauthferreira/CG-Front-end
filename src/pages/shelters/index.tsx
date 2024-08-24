@@ -73,7 +73,6 @@ export default function SheltersScreen() {
         ...filter.current,
       });
 
-      console.log(resp);
       const respData = resp.data;
       const respTotal = resp.total;
       setShelters((currentData) => [...currentData, ...respData]);
@@ -163,7 +162,7 @@ export default function SheltersScreen() {
 
             {shelters.map((shelter) => {
               return (
-                <CardPrimary image="" title={shelter.name}>
+                <CardPrimary key={shelter.id} image="" title={shelter.name}>
                   <div>
                     <p>{shelter.description}</p>
                   </div>

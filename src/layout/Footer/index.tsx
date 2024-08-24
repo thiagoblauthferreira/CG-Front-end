@@ -20,9 +20,9 @@ function Links({ links, title }: ILinksProps) {
     <div className="space-y-3">
       <h3 className="uppercase dark:text-gray-900">{title}</h3>
       <ul className="space-y-1">
-        {links.map((link) => {
+        {links.map((link, index) => {
           return (
-            <li>
+            <li key={`links-${link}-${index}`}>
               <Link href={link.url}>{link.text}</Link>
             </li>
           );

@@ -1,10 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IDistribuitionPointCreate } from "../../../interfaces/distriuition-points";
-import { distributionPointSchema } from "../../../validators";
-import { Button, Collapse, Input, Textarea } from "../../common";
-import { useDistribuitionPointProvider } from "./context";
+import { IDistribuitionPointCreate } from "../../../../interfaces/distriuition-points";
+import { distributionPointSchema } from "../../../../validators";
+import { useDistribuitionPointProvider } from "../context";
+import { Button, Collapse, Input, Textarea } from "../../../common";
 
 const defaultStyleBtnCollapse =
   "py-4 border-b border-solid border-black font-bold text-base";

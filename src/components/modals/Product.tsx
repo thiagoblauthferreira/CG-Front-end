@@ -25,7 +25,13 @@ export function ModalProduct({
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IProductCreate>({ resolver: zodResolver(productSchema) });
+
+  const onFinish = (data: IProductCreate) => {
+    onSubmit(data);
+    reset();
+  };
 
   React.useEffect(() => {
     if (product && modalType === "update") {
@@ -55,7 +61,7 @@ export function ModalProduct({
             grid grid-flow-row auto-rows-max
             gap-2
           `}
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onFinish)}
         >
           <Input
             label="Nome: "
@@ -98,7 +104,11 @@ export function ModalProduct({
             errors={errors}
           />
 
-          <Button text="Cadastrar produto" className="w-full mt-4 bg-black text-white" />
+          <Button
+            type="submit"
+            text="Cadastrar produto"
+            className="w-full mt-4 bg-black text-white"
+          />
         </form>
       </div>
     </Modal>

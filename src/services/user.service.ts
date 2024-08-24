@@ -1,5 +1,5 @@
-import { post } from "./cg-api.service";
+import { get } from "./cg-api.service";
 
-export function getUser({ params, data, headers }: any = {}) {
-  return post(`/auth/me`, { params, data, headers });
+export function getUser({ params, headers }: any = {}) {
+  return get(`/auth/me`, { params, headers });
 }

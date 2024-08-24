@@ -1,15 +1,22 @@
+import React from "react";
 import { Button, Modal } from "../common";
-import { useAuthProvider } from "../../context/Auth";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
-interface ILogout {
+interface IModalConfirmActionProps {
   close: () => void;
+  onSubmit: () => void;
   open: boolean;
+  title: string;
+  children?: React.ReactNode;
 }
 
-export function ModalLogout({ close, open }: ILogout) {
-  const { logout } = useAuthProvider();
-
+export function ModalConfirmAction({
+  close,
+  onSubmit,
+  open,
+  title,
+  children,
+}: IModalConfirmActionProps) {
   return (
     <Modal
       className="max-w-[343px] md:max-w-[400px] w-full p-3"
@@ -24,16 +31,16 @@ export function ModalLogout({ close, open }: ILogout) {
           className="text-red-600 mt-4"
         />
         <div className="w-full mb-2">
-          <p className="text-2xl font-medium text-center">
-            Você tem certeza que deseja sair agora?
-          </p>
+          <p className="text-2xl font-medium text-center">{title}</p>
+
+          {children}
         </div>
         <div className="grid grid-rows-2 gap-2 mt-2 w-full">
           <Button text={"Cancelar"} className="w-full bg uppercase" onClick={close} />
           <Button
             text={"Confirmar"}
             className="w-full bg-black text-white uppercase"
-            onClick={logout}
+            onClick={onSubmit}
           />
         </div>
       </div>
