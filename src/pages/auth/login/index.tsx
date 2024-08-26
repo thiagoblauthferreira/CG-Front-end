@@ -1,3 +1,4 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,6 +7,10 @@ import { LoginSchema } from "../../../validators/login.validator";
 import { login } from "../../../services/auth.service";
 import { setCookie } from "../../../services/cookie.service";
 import { ILogin } from "../../../interfaces/auth";
+import { useAuthProvider } from "../../../context/Auth";
+import { LoadingScreen } from "../../../components/common";
+import { toast } from "react-toastify";
+import { toastMessage } from "../../../helpers/toast-message";
 
 interface LoginComponentProps {}
 
@@ -20,24 +25,32 @@ function LoginPointScreen(props: LoginComponentProps) {
     mode: "onBlur",
   });
   const navigate = useNavigate();
+  const { loginUser } = useAuthProvider();
+
+  const [requesting, setRequesting] = React.useState<boolean>(false);
 
   async function onSubmit(data: ILogin) {
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
+
     try {
-      const request = { email: data.email, password: data.password };
+      setRequesting(true);
 
-      const response = await login(request);
-
-      console.log(response);
-
-      // if (!response.token) {
-      //   console.error("houve um erro na requisição");
-      // }
+      const response = await login(data);
 
       setCookie("token", response.token, 7);
 
-      navigate("/shelters");
-    } catch (error) {
+      loginUser();
+      toast.success("Login feito com sucesso");
+
+      navigate("/");
+    } catch (error: any) {
       console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
+    } finally {
+      setRequesting(false);
     }
   }
 
@@ -45,6 +58,7 @@ function LoginPointScreen(props: LoginComponentProps) {
 
   return (
     <section className="login-section">
+      <LoadingScreen />
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex flex-col">
           <div className="text-center">

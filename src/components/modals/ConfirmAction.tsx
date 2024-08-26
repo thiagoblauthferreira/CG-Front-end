@@ -36,8 +36,14 @@ export function ModalConfirmAction({
           {children}
         </div>
         <div className="grid grid-rows-2 gap-2 mt-2 w-full">
-          <Button text={"Cancelar"} className="w-full bg uppercase" onClick={close} />
           <Button
+            type="button"
+            text={"Cancelar"}
+            className="w-full bg uppercase"
+            onClick={close}
+          />
+          <Button
+            type="button"
             text={"Confirmar"}
             className="w-full bg-black text-white uppercase"
             onClick={onSubmit}

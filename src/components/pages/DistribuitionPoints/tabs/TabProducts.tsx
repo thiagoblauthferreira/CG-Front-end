@@ -1,10 +1,12 @@
 import React from "react";
-import { Button } from "../../../common";
+import { Alert, Button } from "../../../common";
 import { ModalConfirmAction, ModalProduct } from "../../../modals";
 import { Search } from "../../../search";
 import { TableProducts } from "../../../tables/table-products";
 import { useDistribuitionPointProvider } from "../context";
+import { useAuthProvider } from "../../../../context/Auth";
 import { IProduct } from "../../../../interfaces/products";
+import { IoWarningOutline } from "react-icons/io5";
 
 export function TabProducts() {
   const {
@@ -23,6 +25,7 @@ export function TabProducts() {
     openModalConfirmActionProduct,
     requesting,
   } = useDistribuitionPointProvider();
+  const { currentUser } = useAuthProvider();
 
   const [product, setProduct] = React.useState<IProduct>();
 
@@ -49,45 +52,40 @@ export function TabProducts() {
           <Search
             className="gap-4 w-full"
             onFilter={handleFilter}
-            disabled={requesting}
             options={[
               {
-                optionKey: "teste1",
-                type: "select",
-                options: [
-                  { label: "teste1", value: "teste1" },
-                  { label: "teste2", value: "teste2" },
-                  { label: "teste3", value: "teste3" },
-                ],
+                optionKey: "search",
+                type: "input",
               },
               {
-                optionKey: "teste2",
+                optionKey: "type",
                 type: "select",
                 options: [
-                  { label: "teste1", value: "teste1" },
-                  { label: "teste2", value: "teste2" },
-                  { label: "teste3", value: "teste3" },
-                ],
-              },
-              {
-                optionKey: "teste 3",
-                type: "select",
-                options: [
-                  { label: "teste1", value: "teste1" },
-                  { label: "teste2", value: "teste2" },
-                  { label: "teste3", value: "teste3" },
+                  { label: "Todos", value: "" },
+                  { label: "Perecível", value: "perishable" },
+                  { label: "Não perecível", value: "not_perishable" },
                 ],
               },
             ]}
           />
 
-          <Button
-            text="Nova necessidade"
-            className="bg-black text-white"
-            disabled={requesting}
-            onClick={() => setOpenModalProduct(true)}
-          />
+          {currentUser && (
+            <Button
+              text="Doar produto"
+              className="bg-black text-white"
+              disabled={requesting}
+              onClick={() => setOpenModalProduct(true)}
+            />
+          )}
         </div>
+
+        {!currentUser && (
+          <Alert icon={<IoWarningOutline />} type="alert-warning" className="mt-4">
+            <p>
+              Para fazer doações neste ponto de distribuição, você precisa estar logado.
+            </p>
+          </Alert>
+        )}
       </div>
 
       <div>

@@ -1,4 +1,6 @@
+import { useAuthProvider } from "../../context/Auth";
 import { ITable } from "../../interfaces/default";
+import { IProduct } from "../../interfaces/products";
 import { Table } from "../common";
 import { IColumn } from "../common/Table/interface";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
@@ -9,7 +11,7 @@ export interface ITableProductsProps extends ITable {
 }
 
 const btnStyleDefault =
-  "p-2 rounded-md border border-solid text-base cursor-pointer transition-all";
+  "p-2 rounded-md border border-solid text-base cursor-pointer transition-all hover:opacity-80";
 
 export function TableProducts({
   handleDeleteProduct,
@@ -17,6 +19,8 @@ export function TableProducts({
   dataSource,
   ...props
 }: ITableProductsProps) {
+  const { currentUser } = useAuthProvider();
+
   const columns: IColumn[] = [
     {
       title: "Nome",
@@ -48,30 +52,52 @@ export function TableProducts({
     },
     {
       title: "Ação",
-      dataIndex: "id",
-      render: (productId: string) => {
+      dataIndex: "",
+      render: (product: IProduct) => {
         return (
           <div className="flex gap-2">
-            <div
-              className={`border-blue-600 ${btnStyleDefault} ${
-                props.requesting ? "border-gray-400 bg-gray-400" : "hover:opacity-80"
-              }`}
-              onClick={() => !props.requesting && handleUpdateProduct(productId)}
+            <button
+              className={`
+                border-blue-600 
+                ${btnStyleDefault} 
+                disabled:border-gray-400 disabled:bg-gray-400 disabled:opacity-100 disabled:cursor-auto
+              `}
+              onClick={() =>
+                !props.requesting &&
+                product.creator?.id === currentUser?.id &&
+                handleUpdateProduct(product.id)
+              }
+              disabled={product.creator?.id !== currentUser?.id || props.requesting}
             >
               <FiEdit
-                className={`text-blue-600 ${props.requesting ? "text-gray-100" : ""}`}
+                className={`
+                  text-blue-600 
+                  ${props.requesting ? "text-gray-100" : ""}
+                  ${product.creator?.id !== currentUser?.id ? "!text-gray-100" : ""}
+                `}
               />
-            </div>
-            <div
-              className={`border-red-600 ${btnStyleDefault} ${
-                props.requesting ? "border-gray-400 bg-gray-400" : "hover:opacity-80"
-              }`}
-              onClick={() => !props.requesting && handleDeleteProduct(productId)}
+            </button>
+            <button
+              className={`
+                border-red-600 
+                ${btnStyleDefault} 
+                disabled:border-gray-400 disabled:bg-gray-400 disabled:opacity-100 disabled:cursor-auto
+              `}
+              onClick={() =>
+                !props.requesting &&
+                product.creator?.id === currentUser?.id &&
+                handleDeleteProduct(product.id)
+              }
+              disabled={product.creator?.id !== currentUser?.id || props.requesting}
             >
               <FiTrash2
-                className={`text-red-600 ${props.requesting ? "text-gray-100" : ""}`}
+                className={`
+                  text-red-600 
+                  ${props.requesting ? "text-gray-100" : ""}
+                  ${product.creator?.id !== currentUser?.id ? "!text-gray-100" : ""}
+                `}
               />
-            </div>
+            </button>
           </div>
         );
       },

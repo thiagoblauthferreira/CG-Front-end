@@ -20,6 +20,8 @@ export function Sidebar({ open, close }: ISidebarProps) {
 
   const [openModalLogout, setOpenModalLogout] = React.useState<boolean>(false);
 
+  if (!currentUser) return null;
+
   return (
     <aside
       className={`

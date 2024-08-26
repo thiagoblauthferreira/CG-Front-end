@@ -3,8 +3,9 @@ import { IUser } from "../../interfaces/user";
 
 export interface IAuthProvider {
   currentUser: IUser | null;
-  logout: () => void;
   status: string;
+  logout: () => void;
+  loginUser: () => void;
 }
 
 export interface IContextProvider {

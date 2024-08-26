@@ -1,4 +1,5 @@
 import { IAddress } from "./address";
+import { IParamsDefault } from "./default";
 import { IUser } from "./user";
 
 export interface IShelterCreate {
@@ -30,3 +31,5 @@ export interface IShelter {
   updatedAt?: Date;
   deletedAt?: Date;
 }
+
+export interface ISearchShelter extends IParamsDefault {}

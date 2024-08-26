@@ -1,6 +1,6 @@
 import {
   IDistribuitionPoint,
-  IDistribuitionPointUpdate,
+  IDistribuitionPointCreate,
 } from "../../../../interfaces/distriuition-points";
 import {
   IProduct,
@@ -17,6 +17,7 @@ export interface IProductsInitialData {
 export interface IDistribuitionPointProvider {
   setOpenModalProduct: (event: boolean) => void;
   setOpenModalUpdateProduct: (event: boolean) => void;
+  setOpenModalConfirmActionDP: (event: boolean) => void;
   setOpenModalConfirmActionProduct: (event: boolean) => void;
   handleFilter: (data: any) => void;
   handleProducts: (data: IPaginate) => void;
@@ -24,10 +25,12 @@ export interface IDistribuitionPointProvider {
   handleUpdateProduct: (productId: string, data: IProductUpdate) => void;
   handleDeleteProduct: (productId: string) => void;
   handleProduct: (productId: string) => Promise<IProduct>;
-  handleUpdateDistribuitionPoint: (data: IDistribuitionPointUpdate) => void;
+  handleUpdateDistribuitionPoint: (data: IDistribuitionPointCreate) => void;
+  handleDeleteDistribuitionPoint: (distribuitionPointId: string) => void;
   openModalProduct: boolean;
   openModalUpdateProduct: boolean;
   openModalConfirmActionProduct: boolean;
+  openModalConfirmActionDP: boolean;
   products: IProductsInitialData;
   distribuitionPoint?: IDistribuitionPoint;
   requesting: boolean;

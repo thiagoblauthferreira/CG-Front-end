@@ -1,10 +1,10 @@
 import { ButtonHTMLAttributes } from "react";
 
-interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string;
+interface IButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "prefix"> {
+  text: React.ReactNode;
   loading?: boolean;
-  prefix?: any;
-  sufix?: any;
+  prefix?: React.ReactNode;
+  sufix?: React.ReactNode;
 }
 
 export function Button({

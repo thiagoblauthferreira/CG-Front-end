@@ -3,7 +3,7 @@ import React from "react";
 interface IOptions {
   root?: Element | null | undefined;
   rootMargin?: string;
-  thresholds?: ReadonlyArray<number>;
+  threshold?: number;
 }
 
 type useInViewType = {
@@ -33,7 +33,7 @@ export default function useInView(options?: IOptions): useInViewType {
     return () => {
       if (containerRef.current) _observer.unobserve(containerRef.current);
     };
-  }, [containerRef, options]);
+  }, [options]);
 
   const observe = (
     element: React.RefObject<any>,

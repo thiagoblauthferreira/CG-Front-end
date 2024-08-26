@@ -1,59 +1,50 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IDistribuitionPointCreate } from "../../../../interfaces/distriuition-points";
-import { distributionPointSchema } from "../../../../validators";
-import { useDistribuitionPointProvider } from "../context";
+import { shelterSchema } from "../../../../validators";
+import { useShelterProvider } from "../context";
 import { Button, Collapse, Input, Textarea } from "../../../common";
-import { ModalConfirmAction } from "../../../modals";
+import { IShelterCreate } from "../../../../interfaces/shelter";
 
 const defaultStyleBtnCollapse =
   "py-4 border-b border-solid border-black font-bold text-base";
 
-export function TabDistribuitionPointSettings() {
-  const { id = "" } = useParams();
-  const {
-    distribuitionPoint,
-    openModalConfirmActionDP,
-    handleDeleteDistribuitionPoint,
-    handleUpdateDistribuitionPoint,
-    setOpenModalConfirmActionDP,
-  } = useDistribuitionPointProvider();
+export function TabShelterSettings() {
+  const { shelter, handleUpdateShelter } = useShelterProvider();
 
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<IDistribuitionPointCreate>({
-    resolver: zodResolver(distributionPointSchema),
+  } = useForm<IShelterCreate>({
+    resolver: zodResolver(shelterSchema),
   });
 
   React.useEffect(() => {
-    if (distribuitionPoint) {
-      for (const k in distribuitionPoint) {
-        const key = k as keyof IDistribuitionPointCreate;
-        if (key === "address" && distribuitionPoint[key] !== null) {
-          for (const sk in distribuitionPoint[key]) {
-            const subKey = sk as keyof IDistribuitionPointCreate["address"];
-            setValue(`${key}.${subKey}`, distribuitionPoint[key][subKey]);
+    if (shelter) {
+      for (const k in shelter) {
+        const key = k as keyof IShelterCreate;
+        if (key === "address" && shelter[key] !== null) {
+          for (const sk in shelter[key]) {
+            const subKey = sk as keyof IShelterCreate["address"];
+            setValue(`${key}.${subKey}`, shelter[key][subKey]);
           }
         } else {
-          setValue(key, distribuitionPoint[key]);
+          setValue(key, shelter[key]);
         }
       }
     }
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(handleUpdateDistribuitionPoint)}>
+    <form onSubmit={handleSubmit(handleUpdateShelter)}>
       <div className="my-5">
         <Collapse
           defaultIsOpen
           buttonArrow={{ className: "!top-3" }}
           btnCollapseChildren={
-            <p className={`${defaultStyleBtnCollapse} pt-0`}>Ponto de distribuição</p>
+            <p className={`${defaultStyleBtnCollapse} pt-0`}>Abrigo</p>
           }
         >
           <div
@@ -148,33 +139,12 @@ export function TabDistribuitionPointSettings() {
           </div>
         </Collapse>
 
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-          <Button
-            type="submit"
-            text="Atualizar ponto de distribuição"
-            className="w-full mt-4 bg-black text-white col-span-1 md:col-span-2"
-          />
-
-          <Button
-            type="button"
-            text="Excluir ponto de distribuição"
-            className="w-full mt-4 bg-red-500 text-white"
-            onClick={() => setOpenModalConfirmActionDP(true)}
-          />
-        </div>
+        <Button
+          type="submit"
+          text="Atualizar abrigo"
+          className="w-full mt-4 bg-black text-white"
+        />
       </div>
-
-      <ModalConfirmAction
-        title="Tem certeza que deseja excluir esse ponto de distribuição?"
-        open={openModalConfirmActionDP}
-        close={() => setOpenModalConfirmActionDP(false)}
-        onSubmit={() => handleDeleteDistribuitionPoint(id)}
-      >
-        <p className="mt-4 text-base font-medium text-center">
-          Ao confirmar esta ação, todas as referências de produtos neste ponto de
-          distribuição serão perdidas.
-        </p>
-      </ModalConfirmAction>
     </form>
   );
 }

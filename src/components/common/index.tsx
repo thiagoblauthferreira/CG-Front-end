@@ -14,3 +14,5 @@ export * from "./Collapse";
 export * from "./Skeleton";
 export * from "./Link";
 export * from "./Image";
+export * from "./Alert";
+export * from "./Tooltip";

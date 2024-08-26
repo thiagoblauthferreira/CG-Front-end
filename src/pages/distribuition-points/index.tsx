@@ -1,6 +1,12 @@
 import React from "react";
 import { CardPrimary } from "../../components/cards/CardPrimary";
-import { Button, LoadingScreen, Loading, Skeleton } from "../../components/common";
+import {
+  Button,
+  LoadingScreen,
+  Loading,
+  Skeleton,
+  Tooltip,
+} from "../../components/common";
 import { useNavigate } from "react-router-dom";
 import { BsChevronRight } from "react-icons/bs";
 import useInView from "../../hooks/useInView";
@@ -19,12 +25,15 @@ import { useAuthProvider } from "../../context/Auth";
 import { toast } from "react-toastify";
 import { toastMessage } from "../../helpers/toast-message";
 
-const limit = 10;
+const limit = 12;
 
 export default function DistribuitionPointsScreen() {
   const navigate = useNavigate();
   const { currentUser } = useAuthProvider();
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({
+    rootMargin: "-10px",
+    threshold: 1,
+  });
 
   const page = React.useRef<number>(0);
   const filter = React.useRef<ISearchDistribuitionPoint>({});
@@ -44,17 +53,26 @@ export default function DistribuitionPointsScreen() {
   };
 
   const handleFilter = async (data: ISearchDistribuitionPoint) => {
+    page.current = 0;
     filter.current = data;
 
     try {
       setRequesting(true);
 
-      const resp = await listDistribuitionPoints(filter.current);
-
+      const resp = await listDistribuitionPoints({
+        limit: limit,
+        offset: page.current * limit,
+        ...filter.current,
+      });
       const respData = resp.data;
+      const respTotal = resp.total;
+
       setDistribuitionPoints(respData);
+      setInfinitScroll(respTotal > limit ? respData.length > 0 : false);
+      page.current++;
     } catch (error) {
       console.error(error);
+      setInfinitScroll(false);
       toast.error(toastMessage.INTERNAL_SERVER_ERROR);
     } finally {
       setRequesting(false);
@@ -125,28 +143,38 @@ export default function DistribuitionPointsScreen() {
             onFilter={handleFilter}
             options={[
               {
-                optionKey: "teste1",
-                type: "select",
-                options: [{ label: "All", value: "" }],
+                optionKey: "search",
+                type: "input",
               },
               {
                 optionKey: "teste2",
                 type: "select",
-                options: [{ label: "All", value: "" }],
+                options: [
+                  { label: "All", value: "" },
+                  { label: "teste 1", value: "teste 1" },
+                  { label: "teste 2", value: "teste 2" },
+                ],
               },
               {
                 optionKey: "teste3",
                 type: "select",
-                options: [{ label: "All", value: "" }],
+                options: [
+                  { label: "All", value: "" },
+                  { label: "teste 1", value: "teste 1" },
+                  { label: "teste 2", value: "teste 2" },
+                ],
               },
             ]}
           />
 
-          <Button
-            text="Novo ponto de distribuição"
-            className="bg-black text-white"
-            onClick={() => setOpenModal(true)}
-          />
+          {(currentUser?.roles.includes("coordinator") ||
+            currentUser?.roles.includes("admin")) && (
+            <Button
+              text="Novo ponto de distribuição"
+              className="bg-black text-white"
+              onClick={() => setOpenModal(true)}
+            />
+          )}
         </div>
       </div>
 
@@ -177,28 +205,31 @@ export default function DistribuitionPointsScreen() {
               </div>
             )}
 
-            {distribuitionPoints.map((distribuitionPoint) => {
+            {distribuitionPoints.map((distribuitionPoint, index) => {
               return (
                 <CardPrimary
-                  key={distribuitionPoint.id}
+                  key={`${distribuitionPoint.id}-${index}`}
                   image=""
                   title={distribuitionPoint.name}
                 >
                   <div>
-                    <p>{distribuitionPoint.description}</p>
+                    <p>
+                      <strong>Tel:</strong> {distribuitionPoint.phone}
+                    </p>
+                    <Tooltip text={distribuitionPoint.description}>
+                      <p>{distribuitionPoint.description}</p>
+                    </Tooltip>
                   </div>
 
-                  <div
+                  <Button
                     className={`
-                      absolute bottom-0 right-0 cursor-pointer
-                      m-4 bg-slate-200 rounded-md p-2
-                      transition-colors
-                      hover:bg-slate-300 active:bg-slate-200
+                      absolute bottom-0 right-0
+                      m-4 bg-slate-200 !rounded-md p-2 h-max
+                      border-none
                     `}
                     onClick={() => handleRedirect(distribuitionPoint.id)}
-                  >
-                    <BsChevronRight />
-                  </div>
+                    text="Ver mais"
+                  />
                 </CardPrimary>
               );
             })}

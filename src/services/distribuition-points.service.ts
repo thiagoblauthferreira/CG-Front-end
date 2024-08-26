@@ -1,4 +1,4 @@
-import { get, patch, post } from "./cg-api.service";
+import { get, patch, post, del } from "./cg-api.service";
 import {
   IDistribuitionPointCreate,
   IDistribuitionPointUpdate,
@@ -22,4 +22,8 @@ export function updateDistribuitionPoints(
 
 export function listDistribuitionPoints(params: ISearchDistribuitionPoint) {
   return get(`/distribuitionPoint`, { params });
+}
+
+export function deleteDistribuitionPoint(distribuitionPointId: string) {
+  return del(`/distribuitionPoint/${distribuitionPointId}`);
 }
