@@ -11,7 +11,6 @@ import { useAuthProvider } from "../../context/Auth";
 
 
 export default function ProfileScreen(){
-    const [user, setUser] = React.useState<IUser>();
     const [product, setProduct] = React.useState<IProduct>();
     //vou ter que trabalhar após a criação da rota da demanda
     const navigate = useNavigate()
@@ -20,23 +19,11 @@ export default function ProfileScreen(){
       navigate(`/product/${id}`);
     };
    
-  React.useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const resp = await getUser();
-        setUser(resp.data);
-      } catch (error) {
-        console.error("Erro ao carregar o usuário:", error);
-      }
-    };    
-    fetchUser()
-  }, []);
-
-  
-
-  return (    
+    const { currentUser } = useAuthProvider()
+ 
+    return (    
     <section className="profile-section p-0 flex h-screen">
-      {user ? (
+      {currentUser ? (
          <>      
     <main className="data-section flex-1 pt-5 h-screen lg:block">
     <div className="user-section w-full flex flex-col items-center justify-center">
@@ -44,29 +31,29 @@ export default function ProfileScreen(){
     <li className="flex justify-center mb-4">
       <Avatar src={""} />
     </li>
-    <li className="flex justify-start text-lg">Nome: {user?.name};</li>
-    <li className="flex justify-start text-lg">E-mail: {user?.email};</li>
-    <li className="flex justify-start text-lg">Tel: {user?.phone};</li>    
+    <li className="flex justify-start text-lg">Nome: {currentUser?.name};</li>
+    <li className="flex justify-start text-lg">E-mail: {currentUser?.email};</li>
+    <li className="flex justify-start text-lg">Tel: {currentUser?.phone};</li>    
     <li className="flex justify-start text-lg">
-  Data de nascimento: {user?.birthDate ? new Date(user.birthDate).toLocaleDateString('pt-BR') : '01/01/2000'};
+  Data de nascimento: {currentUser?.birthDate ? new Date(currentUser.birthDate).toLocaleDateString('pt-BR') : '01/01/2000'};
     </li>
     <li className="flex justify-start text-lg">
       Endereço:{" "} 
-      {user?.address?.logradouro}, nº {user?.address?.numero};<br />
-      Bairro: {user?.address?.bairro}, {user?.address?.municipio} - {user?.address?.estado?.toUpperCase()};<br />
-      CEP: {user?.address?.cep};<br />
-      Complemento: {user?.address?.complemento || 'Não informado'}.
+      {currentUser?.address?.logradouro}, nº {currentUser?.address?.numero};<br />
+      Bairro: {currentUser?.address?.bairro}, {currentUser?.address?.municipio} - {currentUser?.address?.estado?.toUpperCase()};<br />
+      CEP: {currentUser?.address?.cep};<br />
+      Complemento: {currentUser?.address?.complemento || 'Não informado'}.
     </li>
     <li className="flex justify-start text-lg">Veiculo: {" "} 
-      {user.hasVehicle ? 
-       user.vehicleType
+      {currentUser?.hasVehicle ? 
+       currentUser?.vehicleType
       : 'Não possui.'}
     </li>    
   </ul>           
 </div>        
     <div className="donation-section flex-1">
       <div className="flex flex-col items-center w-full mb-4">
-        {user?.roles.includes('coordinator') ? 
+        {currentUser?.roles.includes('coordinator') ? 
         <>
         <div className="flex flex-row justify-between w-full">
                     <h4 className="text-2xl">Demandas</h4>
@@ -82,7 +69,7 @@ export default function ProfileScreen(){
                 `} />
                   </div>
               </div>
-    {/*Div de usuário coordenado para carregar os pontos de demanda, sendo produtos somente para testes.*/}
+    {/*Div de usuário coordenador para carregar os pontos de demanda, sendo produtos somente para testes.*/}
       <div className="flex flex-row justify-center space-x-4">
         {/*Tem que futuramente mudar para pontos de demanda*/}
       {product ?

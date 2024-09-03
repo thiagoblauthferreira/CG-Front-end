@@ -10,6 +10,7 @@ import SheltersScreen from "../pages/shelters";
 import CoordinatorsScreen from "../pages/shelters/id";
 import DistribuitionPointsScreen from "../pages/distribuition-points";
 import DistribuitionPointScreen from "../pages/distribuition-points/id";
+import  ProfileScreen from "../pages/profile"
 
 export function RoutesPage() {
   return (
@@ -28,6 +29,7 @@ export function RoutesPage() {
           />
           <Route element={<PrivateRoute />}>
             <Route path="/shelters" element={<SheltersScreen />} />
+            <Route path="/profile" element={<ProfileScreen />} />
             <Route path="/shelters/:id" element={<CoordinatorsScreen />} />
           </Route>
         </Route>
