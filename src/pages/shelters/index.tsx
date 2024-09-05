@@ -4,7 +4,6 @@ import { Button, Loading, Skeleton, Tooltip } from "../../components/common";
 import { LoadingScreen } from "../../components/common/LoadingScreen";
 import { ISearchShelter, IShelter, IShelterCreate } from "../../interfaces/shelter";
 import { createShelter, listShelters } from "../../services/shelter.service";
-import { BsChevronRight } from "react-icons/bs";
 import { Search } from "../../components/search";
 import useInView from "../../hooks/useInView";
 import { useNavigate } from "react-router-dom";

@@ -23,8 +23,10 @@ export function AuthProvider({ children }: IContextProvider) {
       setCurrentUser(resp.data);
       setStatus(resp.data.status);
     } catch (error) {
-      setStatus("unauthorized");
       console.error(error);
+      setStatus("unauthorized");
+      delCookie("token");
+      localStorage.clear();
     }
   };
 

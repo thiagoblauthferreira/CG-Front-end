@@ -9,6 +9,10 @@ export function listOneShelter(shelterId: string) {
   return get(`/shelter/${shelterId}`);
 }
 
+export function listCoordinators(shelterId: string, params: any) {
+  return get(`/shelter/${shelterId}/coordinators`, { params });
+}
+
 export function createShelter(data: IShelterCreate) {
   return post("/shelter", { data });
 }

@@ -7,6 +7,7 @@ import { distributionPointSchema } from "../../../../validators";
 import { useDistribuitionPointProvider } from "../context";
 import { Button, Collapse, Input, Textarea } from "../../../common";
 import { ModalConfirmAction } from "../../../modals";
+import { phoneMask, zipCodeMask } from "../../../../utils/masks";
 
 const defaultStyleBtnCollapse =
   "py-4 border-b border-solid border-black font-bold text-base";
@@ -74,6 +75,7 @@ export function TabDistribuitionPointSettings() {
                 label="Telefone: "
                 placeholder="(xx) x-xxxx-xxx"
                 {...register("phone")}
+                mask={phoneMask}
                 errors={errors}
               />
             </div>
@@ -101,6 +103,7 @@ export function TabDistribuitionPointSettings() {
               label="CEP: "
               placeholder="Digite o CEP"
               {...register("address.cep")}
+              mask={zipCodeMask}
               errors={errors}
             />
             <Input
@@ -172,7 +175,7 @@ export function TabDistribuitionPointSettings() {
       >
         <p className="mt-4 text-base font-medium text-center">
           Ao confirmar esta ação, todas as referências de produtos neste ponto de
-          distribuição serão perdidas.
+          distribuição serão removidas.
         </p>
       </ModalConfirmAction>
     </form>

@@ -5,12 +5,21 @@ import { shelterSchema } from "../../../../validators";
 import { useShelterProvider } from "../context";
 import { Button, Collapse, Input, Textarea } from "../../../common";
 import { IShelterCreate } from "../../../../interfaces/shelter";
+import { ModalConfirmAction } from "../../../modals";
+import { useParams } from "react-router-dom";
 
 const defaultStyleBtnCollapse =
   "py-4 border-b border-solid border-black font-bold text-base";
 
 export function TabShelterSettings() {
-  const { shelter, handleUpdateShelter } = useShelterProvider();
+  const { id = "" } = useParams();
+  const {
+    shelter,
+    openModalConfirmActionS,
+    setOpenModalConfirmActionS,
+    handleUpdateShelter,
+    handleDeleteShelter,
+  } = useShelterProvider();
 
   const {
     register,
@@ -139,12 +148,33 @@ export function TabShelterSettings() {
           </div>
         </Collapse>
 
-        <Button
-          type="submit"
-          text="Atualizar abrigo"
-          className="w-full mt-4 bg-black text-white"
-        />
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+          <Button
+            type="submit"
+            text="Atualizar abrigo"
+            className="w-full mt-4 bg-black text-white col-span-1 md:col-span-2"
+          />
+
+          <Button
+            type="button"
+            text="Excluir abrigo"
+            className="w-full mt-4 bg-red-500 text-white"
+            onClick={() => setOpenModalConfirmActionS(true)}
+          />
+        </div>
       </div>
+
+      <ModalConfirmAction
+        title="Tem certeza que deseja excluir esse abrigo?"
+        open={openModalConfirmActionS}
+        close={() => setOpenModalConfirmActionS(false)}
+        onSubmit={() => handleDeleteShelter(id)}
+      >
+        <p className="mt-4 text-base font-medium text-center">
+          Ao confirmar esta ação, todas as referências de cordenadores neste abrigo serão
+          removidas.
+        </p>
+      </ModalConfirmAction>
     </form>
   );
 }

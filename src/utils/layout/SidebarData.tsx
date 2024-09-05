@@ -6,7 +6,7 @@ export const sidebarData = (): ISidebar[] => {
     {
       id: "distribuition-points",
       text: "Ponto de distribuição",
-      route: "/distribuition-points",
+      route: "/",
     },
     { id: "shelters", text: "Abrigos", route: "/shelters" },
   ];

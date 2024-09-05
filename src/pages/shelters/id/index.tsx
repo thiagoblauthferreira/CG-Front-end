@@ -7,7 +7,10 @@ import { ICoordinatorsInitialData } from "../../../components/pages/Shelters/con
 import { IShelter } from "../../../interfaces/shelter";
 import { toast } from "react-toastify";
 import { listOneShelter } from "../../../services/shelter.service";
-import { TabShelterSettings } from "../../../components/pages/Shelters/tabs";
+import {
+  TabShelterSettings,
+  TabCoordinators,
+} from "../../../components/pages/Shelters/tabs";
 
 const initialData = {
   data: [],
@@ -58,7 +61,7 @@ function CoordinatorsScreen() {
     {
       key: "coordinators",
       label: "Coordenadores",
-      children: <></>,
+      children: <TabCoordinators />,
     },
   ];
 

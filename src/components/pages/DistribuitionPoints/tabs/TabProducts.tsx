@@ -2,7 +2,7 @@ import React from "react";
 import { Alert, Button } from "../../../common";
 import { ModalConfirmAction, ModalProduct } from "../../../modals";
 import { Search } from "../../../search";
-import { TableProducts } from "../../../tables/table-products";
+import { TableProducts } from "../../../tables/products";
 import { useDistribuitionPointProvider } from "../context";
 import { useAuthProvider } from "../../../../context/Auth";
 import { IProduct } from "../../../../interfaces/products";

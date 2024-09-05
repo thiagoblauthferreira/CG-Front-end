@@ -7,10 +7,11 @@ interface ITextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   errors?: any;
   register?: UseFormRegister<FieldValues>;
   containerClassName?: string;
+  mask?: (value: any) => any;
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, ITextareaProps>(
-  ({ label, errors, required, containerClassName = "", ...props }, ref) => {
+  ({ label, errors, required, containerClassName = "", mask, ...props }, ref) => {
     const error =
       (props.name && errors && getNestedValue(errors, props.name)?.message) || "";
 
@@ -31,6 +32,12 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, ITextareaProps>(
         <textarea
           {...props}
           ref={ref}
+          onChange={(e) => {
+            if (mask) {
+              e.target.value = mask(e.target.value);
+            }
+            return e;
+          }}
           className={`
             input input-bordered w-full max-w-xs
             rounded-xl min-h-10 min-w-full 

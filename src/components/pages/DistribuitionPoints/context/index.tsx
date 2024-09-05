@@ -41,6 +41,8 @@ export function DistribuitionPointProvider({
 
   const filteredRef = React.useRef({});
 
+  const [requesting, setRequesting] = React.useState<boolean>(false);
+
   const [openModalProduct, setOpenModalProduct] = React.useState<boolean>(false);
   const [openModalConfirmActionProduct, setOpenModalConfirmActionProduct] =
     React.useState<boolean>(false);
@@ -48,9 +50,6 @@ export function DistribuitionPointProvider({
     React.useState<boolean>(false);
   const [openModalUpdateProduct, setOpenModalUpdateProduct] =
     React.useState<boolean>(false);
-
-  const [requesting, setRequesting] = React.useState<boolean>(false);
-
   const [products, setProducts] = React.useState<IProductsInitialData>(initialData);
 
   const handleFilter = async (filter: any) => {
@@ -83,6 +82,7 @@ export function DistribuitionPointProvider({
       setProducts(resp);
     } catch (error) {
       console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
     } finally {
       setRequesting(false);
     }

@@ -19,13 +19,8 @@ export function TabAddress({ register, errors }: ITabAddress) {
       <Input
         label="CEP: "
         placeholder="Digite o CEP"
-        {...register("address.cep", {
-          onChange: (e) => {
-            const value = e.target.value;
-            e.target.value = zipCodeMask(value);
-            return e;
-          },
-        })}
+        {...register("address.cep")}
+        mask={zipCodeMask}
         errors={errors}
       />
       <Input

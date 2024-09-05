@@ -25,13 +25,8 @@ export function TabDistribuitionPoint({ register, errors }: ITabDistribuitionPoi
       <Input
         label="Telefone: "
         placeholder="(xx) x-xxxx-xxx"
-        {...register("phone", {
-          onChange: (e) => {
-            const value = e.target.value;
-            e.target.value = phoneMask(value);
-            return e;
-          },
-        })}
+        {...register("phone")}
+        mask={phoneMask}
         errors={errors}
       />
       <Textarea

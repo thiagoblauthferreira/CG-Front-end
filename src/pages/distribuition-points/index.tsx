@@ -8,7 +8,6 @@ import {
   Tooltip,
 } from "../../components/common";
 import { useNavigate } from "react-router-dom";
-import { BsChevronRight } from "react-icons/bs";
 import useInView from "../../hooks/useInView";
 import {
   createDistribuitionPoints,

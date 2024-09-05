@@ -1,1 +1,2 @@
-export * from "./table-products";
+export * from "./products";
+export * from "./coordinators";
