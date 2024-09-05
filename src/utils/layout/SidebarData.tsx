@@ -9,8 +9,6 @@ export const sidebarData = (): ISidebar[] => {
       route: "/",
     },
     { id: "shelters", text: "Abrigos", route: "/shelters" },
-    { id: "register-demand-point", text: "Cadastrar Ponto de demanda", route: "#" },
-    { id: "register-shelter", text: "Cadastrar abrigo", route: "#" },
     { id: "options", text: "Outras opções", route: "#" },
   ];
 };
