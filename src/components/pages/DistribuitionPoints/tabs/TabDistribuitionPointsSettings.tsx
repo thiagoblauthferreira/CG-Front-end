@@ -32,17 +32,15 @@ export function TabDistribuitionPointSettings() {
   });
 
   React.useEffect(() => {
-    if (distribuitionPoint) {
-      for (const k in distribuitionPoint) {
-        const key = k as keyof IDistribuitionPointCreate;
-        if (key === "address" && distribuitionPoint[key] !== null) {
-          for (const sk in distribuitionPoint[key]) {
-            const subKey = sk as keyof IDistribuitionPointCreate["address"];
-            setValue(`${key}.${subKey}`, distribuitionPoint[key][subKey]);
-          }
-        } else {
-          setValue(key, distribuitionPoint[key]);
+    for (const k in distribuitionPoint) {
+      const key = k as keyof IDistribuitionPointCreate;
+      if (key === "address" && distribuitionPoint[key] !== null) {
+        for (const sk in distribuitionPoint[key]) {
+          const subKey = sk as keyof IDistribuitionPointCreate["address"];
+          setValue(`${key}.${subKey}`, distribuitionPoint[key][subKey]);
         }
+      } else {
+        setValue(key, distribuitionPoint[key]);
       }
     }
   }, []);

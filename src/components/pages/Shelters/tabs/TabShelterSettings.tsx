@@ -31,17 +31,15 @@ export function TabShelterSettings() {
   });
 
   React.useEffect(() => {
-    if (shelter) {
-      for (const k in shelter) {
-        const key = k as keyof IShelterCreate;
-        if (key === "address" && shelter[key] !== null) {
-          for (const sk in shelter[key]) {
-            const subKey = sk as keyof IShelterCreate["address"];
-            setValue(`${key}.${subKey}`, shelter[key][subKey]);
-          }
-        } else {
-          setValue(key, shelter[key]);
+    for (const k in shelter) {
+      const key = k as keyof IShelterCreate;
+      if (key === "address" && shelter[key] !== null) {
+        for (const sk in shelter[key]) {
+          const subKey = sk as keyof IShelterCreate["address"];
+          setValue(`${key}.${subKey}`, shelter[key][subKey]);
         }
+      } else {
+        setValue(key, shelter[key]);
       }
     }
   }, []);

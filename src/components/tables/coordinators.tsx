@@ -1,16 +1,25 @@
 import { useAuthProvider } from "../../context/Auth";
 import { ITable } from "../../interfaces/default";
-import { IProduct } from "../../interfaces/products";
+import { IShelter } from "../../interfaces/shelter";
+import { IUser } from "../../interfaces/user";
 import { Table } from "../common";
 import { IColumn } from "../common/Table/interface";
 import { FiTrash2 } from "react-icons/fi";
 
-export interface ITableCoordinatorsProps extends ITable {}
+export interface ITableCoordinatorsProps extends ITable {
+  shelter: IShelter;
+  handleRemoveCoordinator: (coordenador: IUser) => void;
+}
 
 const btnStyleDefault =
   "p-2 rounded-md border border-solid text-base cursor-pointer transition-all hover:opacity-80";
 
-export function TableCoordinators({ dataSource, ...props }: ITableCoordinatorsProps) {
+export function TableCoordinators({
+  dataSource,
+  shelter,
+  handleRemoveCoordinator,
+  ...props
+}: ITableCoordinatorsProps) {
   const { currentUser } = useAuthProvider();
 
   const columns: IColumn[] = [
@@ -46,13 +55,16 @@ export function TableCoordinators({ dataSource, ...props }: ITableCoordinatorsPr
       title: "Tipo do veiculo",
       dataIndex: "vehicleType",
       render: (vehicleType: string) => {
-        return <p>{vehicleType}</p>;
+        return <p>{vehicleType ? vehicleType : "-"}</p>;
       },
     },
-    {
+  ];
+
+  if (shelter.creator.id === currentUser?.id) {
+    columns.push({
       title: "Ação",
       dataIndex: "",
-      render: (product: IProduct) => {
+      render: (coordenador: IUser) => {
         return (
           <button
             className={`
@@ -61,22 +73,20 @@ export function TableCoordinators({ dataSource, ...props }: ITableCoordinatorsPr
               disabled:border-gray-400 disabled:bg-gray-400 
               disabled:opacity-100 disabled:cursor-auto
             `}
-            onClick={() =>
-              !props.requesting && product.creator?.id === currentUser?.id && false
-            }
-            disabled={product.creator?.id !== currentUser?.id || props.requesting}
+            onClick={() => !props.requesting && handleRemoveCoordinator(coordenador)}
+            disabled={props.requesting}
           >
             <FiTrash2
               className={`
                 text-red-600 
                 ${props.requesting ? "text-gray-100" : ""}
-                ${product.creator?.id !== currentUser?.id ? "!text-gray-100" : ""}
               `}
             />
           </button>
         );
       },
-    },
-  ];
+    });
+  }
+
   return <Table {...props} columns={columns} dataSource={dataSource} />;
 }

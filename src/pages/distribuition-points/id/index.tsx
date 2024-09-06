@@ -28,7 +28,7 @@ function DistribuitionPointScreen() {
 
   const [initialProducts, setInitialProducts] =
     React.useState<IProductsInitialData>(initialData);
-  const [distribuitionPoint, setDistribuitionPoint] =
+  const [initialDistribuitionPoint, setInitialDistribuitionPoint] =
     React.useState<IDistribuitionPoint>();
 
   const load = async () => {
@@ -40,7 +40,7 @@ function DistribuitionPointScreen() {
         listProducts({ distribuitionPointId: id }),
       ]);
 
-      setDistribuitionPoint(respDistribuitionPoint);
+      setInitialDistribuitionPoint(respDistribuitionPoint);
       setInitialProducts(respProducts);
     } catch (error) {
       console.error(error);
@@ -68,7 +68,10 @@ function DistribuitionPointScreen() {
     },
   ];
 
-  if (distribuitionPoint && distribuitionPoint.creator.id === currentUser?.id) {
+  if (
+    initialDistribuitionPoint &&
+    initialDistribuitionPoint.creator.id === currentUser?.id
+  ) {
     tabs.push({
       key: "settings",
       label: "Atualizar",
@@ -76,9 +79,11 @@ function DistribuitionPointScreen() {
     });
   }
 
+  if (!initialDistribuitionPoint) return <></>;
+
   return (
     <DistribuitionPointProvider
-      distribuitionPoint={distribuitionPoint}
+      initialDistribuitionPoint={initialDistribuitionPoint!}
       initialProducts={initialProducts}
     >
       <LoadingScreen loading={loading} />

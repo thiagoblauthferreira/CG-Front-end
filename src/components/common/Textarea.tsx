@@ -36,6 +36,9 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, ITextareaProps>(
             if (mask) {
               e.target.value = mask(e.target.value);
             }
+            if (props.onChange) {
+              props.onChange(e);
+            }
             return e;
           }}
           className={`

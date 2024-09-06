@@ -27,9 +27,14 @@ export interface IShelter {
   address: IAddress;
   creator: IUser;
   coordinators: IUser[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  isSubscribe: boolean;
+  createdAt: Date;
+  updatedAt: Date;
   deletedAt?: Date;
+}
+
+export interface IAddOrRemoveCoordinator {
+  coordinatorId: string;
 }
 
 export interface ISearchShelter extends IParamsDefault {}

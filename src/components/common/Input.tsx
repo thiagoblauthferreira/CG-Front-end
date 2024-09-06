@@ -36,6 +36,9 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>(
             if (mask) {
               e.target.value = mask(e.target.value);
             }
+            if (props.onChange) {
+              props.onChange(e);
+            }
             return e;
           }}
           className={`

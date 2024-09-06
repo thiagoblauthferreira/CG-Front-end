@@ -1,23 +1,21 @@
 import AdressStep from "./SignUpSteps/Adress/AdressStep";
-import { useState } from "react";
+import React, { useState } from "react";
 import { PersonalInfosStep } from "./SignUpSteps/PersonalInfos/PersonalInfos";
-// import { useSession } from "../../../hooks/useSession";
-// import { Navigate } from "react-router-dom";
-// import { LoadingScreen } from "../../../components/common/LoadingScreen";
 import { register } from "../../../services/auth.service";
 import { LoadingScreen } from "../../../components/common";
+import { useNavigate } from "react-router-dom";
+import { useAuthProvider } from "../../../context/Auth";
+import { toast } from "react-toastify";
+import { toastMessage } from "../../../helpers/toast-message";
+import { setCookie } from "../../../services/cookie.service";
 
-/**
- * caso alguma prop seja passada para
- * o formulário adicione-a aqui
- */
-interface SignUpDoadorProps {}
+function SignUpScreen() {
+  const navigate = useNavigate();
+  const { loginUser } = useAuthProvider();
 
-function SignUpScreen(props: SignUpDoadorProps) {
+  const [requesting, setRequesting] = React.useState<boolean>(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [formValues, setFormValues] = useState({});
-  // const { user, status } = useSession();
-  let requestError = false;
 
   const steps = [PersonalInfosStep, AdressStep];
 
@@ -38,9 +36,28 @@ function SignUpScreen(props: SignUpDoadorProps) {
   async function submitForm(data: any) {
     const user = { ...formValues, ...data };
 
-    const response = await register(user);
+    if (requesting) {
+      toast.warn(toastMessage.REQUESTING);
+      return;
+    }
 
-    requestError = response;
+    try {
+      setRequesting(true);
+
+      const response = await register(user);
+
+      setCookie("token", response.token, 7);
+
+      loginUser();
+      toast.success("Cadastro feito com sucesso");
+
+      navigate("/");
+    } catch (error: any) {
+      console.error(error);
+      toast.error(toastMessage.INTERNAL_SERVER_ERROR);
+    } finally {
+      setRequesting(false);
+    }
   }
 
   return (
@@ -90,12 +107,7 @@ function SignUpScreen(props: SignUpDoadorProps) {
                   </div>
                 );
               })}
-              <span
-                className={`${
-                  !!requestError ? "" : "hidden"
-                } italic text-error text-center bold`}
-              >
-                {requestError}
+              <span className={`italic text-error text-center bold`}>
                 <a
                   href="https://discord.com/invite/FARNSbkZKt"
                   className="link text-blue-500 hover:text-blue-600 underline"

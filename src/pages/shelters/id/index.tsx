@@ -6,10 +6,11 @@ import { LoadingScreen, Tabs } from "../../../components/common";
 import { ICoordinatorsInitialData } from "../../../components/pages/Shelters/context/interface";
 import { IShelter } from "../../../interfaces/shelter";
 import { toast } from "react-toastify";
-import { listOneShelter } from "../../../services/shelter.service";
+import { listCoordinators, listOneShelter } from "../../../services/shelter.service";
 import {
   TabShelterSettings,
   TabCoordinators,
+  TabShelterDetails,
 } from "../../../components/pages/Shelters/tabs";
 
 const initialData = {
@@ -26,19 +27,21 @@ function CoordinatorsScreen() {
 
   const [initialCoordinators, setInitialCoordinators] =
     React.useState<ICoordinatorsInitialData>(initialData);
-  const [shelter, setShelter] = React.useState<IShelter>();
+  const [initialShelter, setInitialShelter] = React.useState<IShelter>();
 
   const load = async () => {
     try {
       setLoading(true);
 
-      const [respShelter] = await Promise.all([
+      const [respShelter, respCoordinators] = await Promise.all([
         listOneShelter(id || ""),
-        // listProducts({ distribuitionPointId: id }),
+        listCoordinators(id),
       ]);
 
-      setShelter(respShelter);
-      // setInitialCoordinators(respCoordinators);
+      console.log(respShelter);
+
+      setInitialShelter(respShelter);
+      setInitialCoordinators(respCoordinators);
     } catch (error) {
       console.error(error);
       toast.warn("Abrigo não encontrado");
@@ -56,7 +59,7 @@ function CoordinatorsScreen() {
     {
       key: "details",
       label: "Detalhes",
-      children: <></>,
+      children: <TabShelterDetails />,
     },
     {
       key: "coordinators",
@@ -65,7 +68,7 @@ function CoordinatorsScreen() {
     },
   ];
 
-  if (shelter && shelter.creator.id === currentUser?.id) {
+  if (initialShelter && initialShelter.creator.id === currentUser?.id) {
     tabs.push({
       key: "settings",
       label: "Atualizar",
@@ -73,8 +76,13 @@ function CoordinatorsScreen() {
     });
   }
 
+  if (!initialShelter) return <></>;
+
   return (
-    <ShelterProvider shelter={shelter} initialCoordinators={initialCoordinators}>
+    <ShelterProvider
+      initialShelter={initialShelter!}
+      initialCoordinators={initialCoordinators}
+    >
       <LoadingScreen loading={loading} />
       <div className="py-8">
         <Tabs tabs={tabs} />

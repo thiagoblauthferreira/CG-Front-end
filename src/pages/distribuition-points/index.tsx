@@ -145,24 +145,6 @@ export default function DistribuitionPointsScreen() {
                 optionKey: "search",
                 type: "input",
               },
-              {
-                optionKey: "teste2",
-                type: "select",
-                options: [
-                  { label: "All", value: "" },
-                  { label: "teste 1", value: "teste 1" },
-                  { label: "teste 2", value: "teste 2" },
-                ],
-              },
-              {
-                optionKey: "teste3",
-                type: "select",
-                options: [
-                  { label: "All", value: "" },
-                  { label: "teste 1", value: "teste 1" },
-                  { label: "teste 2", value: "teste 2" },
-                ],
-              },
             ]}
           />
 

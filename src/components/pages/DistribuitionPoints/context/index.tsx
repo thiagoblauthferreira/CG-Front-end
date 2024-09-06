@@ -9,7 +9,10 @@ import {
   updateDistribuitionPoints,
 } from "../../../../services/distribuition-points.service";
 import { IProductCreate, IProductUpdate } from "../../../../interfaces/products";
-import { IDistribuitionPointUpdate } from "../../../../interfaces/distriuition-points";
+import {
+  IDistribuitionPoint,
+  IDistribuitionPointUpdate,
+} from "../../../../interfaces/distriuition-points";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   createProduct,
@@ -22,18 +25,13 @@ import { toast } from "react-toastify";
 import { toastMessage } from "../../../../helpers/toast-message";
 import { IPaginate } from "../../../common/Table/interface";
 
-const initialData = {
-  data: [],
-  total: 0,
-};
-
 const DistribuitionPointContext = React.createContext<IDistribuitionPointProvider>(
   {} as IDistribuitionPointProvider
 );
 
 export function DistribuitionPointProvider({
   children,
-  distribuitionPoint,
+  initialDistribuitionPoint,
   initialProducts,
 }: IContextProvider) {
   const { id = "" } = useParams();
@@ -50,7 +48,16 @@ export function DistribuitionPointProvider({
     React.useState<boolean>(false);
   const [openModalUpdateProduct, setOpenModalUpdateProduct] =
     React.useState<boolean>(false);
-  const [products, setProducts] = React.useState<IProductsInitialData>(initialData);
+  const [products, setProducts] = React.useState<IProductsInitialData>(initialProducts);
+  const [distribuitionPoint, setDistribuitionPoint] = React.useState<IDistribuitionPoint>(
+    initialDistribuitionPoint
+  );
+
+  const updateDistribuitionPointState = (data: object) => {
+    setDistribuitionPoint((currentDistribuitionPoint) => {
+      return { ...currentDistribuitionPoint, ...data };
+    });
+  };
 
   const handleFilter = async (filter: any) => {
     filteredRef.current = filter;
@@ -205,6 +212,7 @@ export function DistribuitionPointProvider({
     try {
       setRequesting(true);
       await updateDistribuitionPoints(id, data);
+      updateDistribuitionPointState(data);
 
       toast.success("Ponto de distribuição atualizado");
     } catch (error) {
@@ -238,10 +246,6 @@ export function DistribuitionPointProvider({
     }
   };
 
-  React.useEffect(() => {
-    setProducts(initialProducts);
-  }, [initialProducts]);
-
   return (
     <DistribuitionPointContext.Provider
       value={{
@@ -257,6 +261,7 @@ export function DistribuitionPointProvider({
         handleProduct,
         handleUpdateDistribuitionPoint,
         handleDeleteDistribuitionPoint,
+        updateDistribuitionPointState,
         products,
         openModalProduct,
         openModalUpdateProduct,

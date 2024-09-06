@@ -1,3 +1,8 @@
+import moment from "moment";
+import "moment/locale/pt-br";
+
+moment.locale("pt-br");
+
 export function getNestedValue(obj: { [key: string]: any }, path: string) {
   const keys = path.split(".");
   let value = obj;
@@ -12,3 +17,15 @@ export function getNestedValue(obj: { [key: string]: any }, path: string) {
 
   return value;
 }
+
+export const formatDate = (
+  date: string | Date,
+  format: string = "DD/MM/YYYY HH:mm:ss"
+): string => {
+  const parsedDate = moment(date);
+  if (!parsedDate.isValid()) {
+    return "Data inválida";
+  }
+
+  return parsedDate.format(format);
+};

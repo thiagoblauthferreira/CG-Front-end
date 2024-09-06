@@ -27,17 +27,18 @@ export interface IDistribuitionPointProvider {
   handleProduct: (productId: string) => Promise<IProduct>;
   handleUpdateDistribuitionPoint: (data: IDistribuitionPointCreate) => void;
   handleDeleteDistribuitionPoint: (distribuitionPointId: string) => void;
+  updateDistribuitionPointState: (data: any) => void;
   openModalProduct: boolean;
   openModalUpdateProduct: boolean;
   openModalConfirmActionProduct: boolean;
   openModalConfirmActionDP: boolean;
   products: IProductsInitialData;
-  distribuitionPoint?: IDistribuitionPoint;
+  distribuitionPoint: IDistribuitionPoint;
   requesting: boolean;
 }
 
 export interface IContextProvider {
   children: React.ReactNode;
-  distribuitionPoint?: IDistribuitionPoint;
+  initialDistribuitionPoint: IDistribuitionPoint;
   initialProducts: IProductsInitialData;
 }

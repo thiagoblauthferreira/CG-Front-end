@@ -12,15 +12,20 @@ export interface IShelterProvider {
   handleFilter: (data: any) => void;
   handleCoordinators: (data: IPaginate) => void;
   setOpenModalConfirmActionS: (event: boolean) => void;
+  setOpenModalRemoveCoordinator: (event: boolean) => void;
   handleDeleteShelter: (shelterId: string) => void;
-  shelter?: IShelter;
+  handleSubscribeShelter: () => void;
+  handleRemoveCoordinator: (coordinatorid: string) => void;
+  updateShelterState: (data: any) => void;
+  shelter: IShelter;
   coordinators: ICoordinatorsInitialData;
   openModalConfirmActionS: boolean;
+  openModalRemoveCoordinator: boolean;
   requesting: boolean;
 }
 
 export interface IContextProvider {
   children: React.ReactNode;
-  shelter?: IShelter;
+  initialShelter: IShelter;
   initialCoordinators: ICoordinatorsInitialData;
 }

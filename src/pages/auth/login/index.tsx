@@ -95,7 +95,7 @@ function LoginPointScreen(props: LoginComponentProps) {
                 <button className="btn btn-primary">Login</button>
               </div>
               <label className="label">
-                <Link to={"/register"} className="label-text-alt link link-hover">
+                <Link to={"/auth/register"} className="label-text-alt link link-hover">
                   Não tem uma conta?
                 </Link>
               </label>

@@ -106,7 +106,6 @@ export default function SheltersScreen() {
   };
 
   React.useEffect(() => {
-    console.log(inView, "inView");
     if (inView) {
       load();
     }
@@ -130,16 +129,6 @@ export default function SheltersScreen() {
               {
                 optionKey: "search",
                 type: "input",
-              },
-              {
-                optionKey: "teste2",
-                type: "select",
-                options: [{ label: "All", value: "" }],
-              },
-              {
-                optionKey: "teste3",
-                type: "select",
-                options: [{ label: "All", value: "" }],
               },
             ]}
           />

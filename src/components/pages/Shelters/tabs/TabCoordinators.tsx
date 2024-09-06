@@ -1,12 +1,33 @@
+import React from "react";
 import { Search } from "../../../search";
 import { useAuthProvider } from "../../../../context/Auth";
 import { TableCoordinators } from "../../../tables";
 import { useShelterProvider } from "../context";
+import { Alert, Button } from "../../../common";
+import { IoWarningOutline } from "react-icons/io5";
+import { ModalConfirmAction } from "../../../modals";
+import { IUser } from "../../../../interfaces/user";
 
 export function TabCoordinators() {
-  const { coordinators, requesting, handleCoordinators, handleFilter } =
-    useShelterProvider();
+  const {
+    coordinators,
+    requesting,
+    openModalRemoveCoordinator,
+    shelter,
+    handleCoordinators,
+    handleFilter,
+    handleSubscribeShelter,
+    handleRemoveCoordinator,
+    setOpenModalRemoveCoordinator,
+  } = useShelterProvider();
   const { currentUser } = useAuthProvider();
+
+  const [coordinator, setCoordinator] = React.useState<IUser>();
+
+  const onCoordinator = async (coordinator: IUser) => {
+    setCoordinator(coordinator);
+    setOpenModalRemoveCoordinator(true);
+  };
 
   return (
     <div>
@@ -27,7 +48,28 @@ export function TabCoordinators() {
               },
             ]}
           />
+
+          {currentUser && currentUser.isCoordinator && (
+            <Button
+              text={shelter.isSubscribe ? "Sair do abrigo" : "Inscrever-se no abrigo"}
+              className="bg-black text-white"
+              disabled={requesting}
+              onClick={() => {
+                if (shelter.isSubscribe) {
+                  handleRemoveCoordinator(currentUser.id);
+                } else {
+                  handleSubscribeShelter();
+                }
+              }}
+            />
+          )}
         </div>
+
+        {currentUser && !currentUser.isCoordinator && (
+          <Alert icon={<IoWarningOutline />} type="alert-warning" className="mt-4">
+            <p>Para inscrever-se nesse abrigo, você precisa ser um coordenador.</p>
+          </Alert>
+        )}
       </div>
 
       <div>
@@ -35,10 +77,21 @@ export function TabCoordinators() {
           total={coordinators.total}
           dataSource={coordinators.data}
           onPaginate={handleCoordinators}
+          handleRemoveCoordinator={(coordinator) => onCoordinator(coordinator)}
           requesting={requesting}
-          textNotFound="Nenhum cordenador encontrado"
+          shelter={shelter}
+          textNotFound="Nenhum coordenador encontrado"
         />
       </div>
+
+      {shelter.creator.id === currentUser?.id && (
+        <ModalConfirmAction
+          title="Tem certeza que deseja remover esse coordenador?"
+          open={openModalRemoveCoordinator}
+          close={() => setOpenModalRemoveCoordinator(false)}
+          onSubmit={() => handleRemoveCoordinator(coordinator?.id || "")}
+        />
+      )}
     </div>
   );
 }

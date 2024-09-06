@@ -13,17 +13,9 @@ const apiBase = process.env.API_URI || "http://localhost:8080";
 
 async function responseJson(response: Response) {
   if (!response.ok || response.status >= 400) {
-    const errorText = await response.text();
-    try {
-      const errorJson = JSON.parse(errorText);
-      throw errorJson;
-    } catch (e) {
-      throw { message: errorText, status: response.status };
-    }
+    throw await response.clone().json();
   }
-
-  const text = await response.text();
-  return text ? JSON.parse(text) : {};
+  return response.json();
 }
 
 function isUrl(url: string): boolean {
